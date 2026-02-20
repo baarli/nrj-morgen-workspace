@@ -2,95 +2,115 @@
 
 **Dato:** Saturday 21. February 2026  
 **Sendestart:** 06:00  
-**Generert:** 01:16
+**Generert:** 04:52
 
 ---
 
 ## 🎙️ DAGENS INTRO
 
-> **God morgen! I dag har vi 'Peter (4) drept: – Tryglet dem' på menyen pluss mye annet snacks. Bli med!**
+> **God morgen! I dag starter vi med 'Norsk forsker får symptomer etter våpentest' - dette er helt vilt! Bli med!**
 
 ---
 
 ## 🔥 DAGENS SAKER
 
-### 📌 Peter (4) drept: – Tryglet dem
+### 💬 Norsk forsker får symptomer etter våpentest
 
-**Vinkel:** *Skandale rundt Peter - hva skjedde egentlig?*
+**Vinkel:** *Har du hørt om Norsk? Dette er helt vilt!*
 
-Hva: Peter (4) drept: – Tryglet dem (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva...
+Norske myndigheter er ikke kjent med den angivelige forskeren som skal ha fått symptomer som liknet «Havanna-syndromet» etter en våpentest.
 
-**Inngang:** "Skandale rundt Peter - hva skjedde egentlig?"
-
----
-
-### 📌 Tar Mette-Marit i forsvar: – Nå må vi puste litt
-
-**Vinkel:** *Skandale rundt Tar - hva skjedde egentlig?*
-
-Hva: Tar Mette-Marit i forsvar: – Nå må vi puste litt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er ...
-
-**Inngang:** "Skandale rundt Tar - hva skjedde egentlig?"
+**Inngang:** "Har du hørt om Norsk? Dette er helt vilt!"
 
 ---
 
-### 📌 SØR-SUDAN: – Vi har gått tom for nesten alt
+### 💬 USA trekker F-35 fra Nato-øvelse
 
-**Vinkel:** *Skandale rundt SØR-SUDAN: - hva skjedde egentlig?*
+**Vinkel:** *USA sjokkerer alle - hva nå?*
 
-Hva: SØR-SUDAN: – Vi har gått tom for nesten alt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia...
+USA trekker store deler av sine planlagte luftstyrker, inkludert moderne F-35 kampfly, fra øvelsen Cold Response, skriver avisa Fremover.
 
-**Inngang:** "Skandale rundt SØR-SUDAN: - hva skjedde egentlig?"
-
----
-
-### 📌 Løslatt: Fortsatt under etterforskning
-
-**Vinkel:** *Dette om Løslatt: må du bare høre!*
-
-Hva: Løslatt: Fortsatt under etterforskning (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her ...
-
-**Inngang:** "Dette om Løslatt: må du bare høre!"
+**Inngang:** "USA sjokkerer alle - hva nå?"
 
 ---
 
-### 📌 Advarer: Ordren kan være gitt
+### 💬 Marius Borg Høiby skaper frykt i rettssak
 
-**Vinkel:** *Skandale rundt Advarer: - hva skjedde egentlig?*
+**Vinkel:** *Har du hørt om Marius? Dette er helt vilt!*
 
-Hva: Advarer: Ordren kan være gitt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva ...
+Statsadvokat Henriksbø spør om hvordan Haukland og Høiby ble kjent. Haukland forteller at hun hadde hørt fra ei venninne at Høiby syntes hun var pen. ...
 
-**Inngang:** "Skandale rundt Advarer: - hva skjedde egentlig?"
-
----
-
-### 📰 IRAN: Har sendt brev til FN
-
-**Vinkel:** *IRAN: sjokkerer alle - hva nå?*
-
-Hva: IRAN: Har sendt brev til FN (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva be...
-
-**Inngang:** "IRAN: sjokkerer alle - hva nå?"
+**Inngang:** "Har du hørt om Marius? Dette er helt vilt!"
 
 ---
 
-### 📌 01:34 «Vokteren»: Fortsatt preget av skade
+### 💬 Kong Harald tar ferie i utlandet
 
-**Vinkel:** *Har du hørt om 01:34? Dette er helt vilt!*
+**Vinkel:** *Kong i trøbbel igjen - vi forklarer!*
 
-Hva: 01:34 «Vokteren»: Fortsatt preget av skade (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia ...
+SKAL VITNE: Danby Choi er venn av både Nora Haukland og Marius Borg Høiby. Han skal vitne i rettssaken neste fredag. Her er han og Haukland fotografer...
 
-**Inngang:** "Har du hørt om 01:34? Dette er helt vilt!"
+**Inngang:** "Kong i trøbbel igjen - vi forklarer!"
 
 ---
 
-### 📌 TV 2 erfarer: Søreide skulle avsløre hemmelig kjæreste – så avlyste hun
+### 💬 Pamela Anderson bryter rød løper-regel
 
-**Vinkel:** *TV i trøbbel igjen - vi forklarer!*
+**Vinkel:** *Pamela i trøbbel igjen - vi forklarer!*
 
-Hva: TV 2 erfarer: Søreide skulle avsløre hemmelig kjæreste – så avlyste hun (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”...
+Pamela Anderson (58) overrasket på rød løper.
 
-**Inngang:** "TV i trøbbel igjen - vi forklarer!"
+**Inngang:** "Pamela i trøbbel igjen - vi forklarer!"
+
+---
+
+### 💬 Marius Borg Høiby om Mette-Marits oppdragelse
+
+**Vinkel:** *Skandale rundt Marius - hva skjedde egentlig?*
+
+HARDT VÆR: Kronprinsesse Mette-Marit har vært i hardt vær etter at hennes private samtaler med avdøde Jeffrey Epstein ble offentliggjort. Nå harselere...
+
+**Inngang:** "Skandale rundt Marius - hva skjedde egentlig?"
+
+---
+
+### 💬 Nora Haukland vitner mot Marius Høiby
+
+**Vinkel:** *Nora sjokkerer alle - hva nå?*
+
+SKAL VITNE: Danby Choi er venn av både Nora Haukland og Marius Borg Høiby, og skal vitne under rettssaken. Her er Choi og Haukland på en rød løper i j...
+
+**Inngang:** "Nora sjokkerer alle - hva nå?"
+
+---
+
+### 💬 Prins Andrew arrestert for tjenestemisbruk
+
+**Vinkel:** *Dette om Prins må du bare høre!*
+
+Kong Charles vil ikke hjelpe sin bror unnslippe saken.
+
+**Inngang:** "Dette om Prins må du bare høre!"
+
+---
+
+### 💬 Prins Andrew under etterforskning på Sandringham
+
+**Vinkel:** *Prins sjokkerer alle - hva nå?*
+
+Politiet aksjonerer på Sandringham Estate mens prins Andrew feirer bursdag. Etterforskning knyttet til Epstein-skandalen pågår.
+
+**Inngang:** "Prins sjokkerer alle - hva nå?"
+
+---
+
+### 💬 Prins Andrew pågrepet av britisk politi
+
+**Vinkel:** *Prins i trøbbel igjen - vi forklarer!*
+
+Torsdag formiddag ble eks-prinsen pågrepet av britisk politi: - Alvorligste på mange år, sier norsk ekspert til Dagbladet.
+
+**Inngang:** "Prins i trøbbel igjen - vi forklarer!"
 
 ---
 
@@ -111,7 +131,7 @@ Hva: TV 2 erfarer: Søreide skulle avsløre hemmelig kjæreste – så avlyste h
 
 | | |
 |:---|:---|
-| **Saker totalt:** | 8 |
+| **Saker totalt:** | 10 |
 | **Ferskhet:** | 6-12 timer |
 | **Status:** | ✅ Klar for sending |
 

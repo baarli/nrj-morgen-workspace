@@ -13,10 +13,11 @@ echo ""
 source /root/.openclaw/workspace/.credentials/nrj-morgen.env 2>/dev/null || true
 source /root/.openclaw/workspace/.credentials/live-search.env 2>/dev/null || true
 
-TODAY=$(date +%Y-%m-%d)
+# Bruk Oslo-dato (der sendingen går)
+TODAY=$(TZ=Europe/Oslo date +%Y-%m-%d)
 OSLO_TIME=$(TZ=Europe/Oslo date +%H:%M)
 
-echo "📅 Dato: $TODAY"
+echo "📅 Dato: $TODAY (Oslo)"
 echo "🕐 Oslo-tid: $OSLO_TIME"
 echo ""
 
@@ -51,7 +52,8 @@ with open('/root/.openclaw/workspace/.credentials/nrj-morgen.env', 'r') as f:
             SUPABASE_SERVICE_KEY = line.split('=', 1)[1].strip().strip('"').strip("'")
 
 TENANT_ID = "a0000000-0000-0000-0000-000000000001"
-TODAY = os.popen('date +%Y-%m-%d').read().strip()
+# Bruk Oslo-dato (samme som sendingen)
+TODAY = os.popen('TZ=Europe/Oslo date +%Y-%m-%d').read().strip()
 
 # Les saker
 with open('/tmp/morning-news.json', 'r') as f:
