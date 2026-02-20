@@ -164,8 +164,7 @@ def format_brave_results(data, use_ai_titles=False):
             'description': description,
             'url': result.get('url', ''),
             'source': result.get('meta', {}).get('domain', 'Ukjent kilde'),
-            'publishedAt': result.get('age', 'Nylig'),
-            'image': result.get('meta', {}).get('thumbnail', '')
+            'publishedAt': result.get('age', 'Nylig')
         }
         articles.append(article)
     
