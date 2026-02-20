@@ -39,14 +39,16 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ## NRJ Morgen Credentials
 
-**Location:** `/root/.openclaw/workspace/.credentials/nrj-morgen.env`
+**Master Credentials:** `/root/.openclaw/workspace/.credentials/MASTER_CREDENTIALS.md`
 
 **Inneholder:**
-- Supabase URL + Service Key + Anon Key + **Access Token**
-- NRJ Refresh Token
+- Supabase URL + Service Key + Anon Key + Access Token
 - Brave API Key
-- GitHub credentials
-- Gmail credentials
+- NewsAPI Key
+- OpenAI API Key
+- NRJ Refresh Token
+- GitHub PAT
+- Gmail App Password
 - Tenant ID
 
 **Bruk i cron-jobber:**
@@ -54,12 +56,6 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 source /root/.openclaw/workspace/.credentials/nrj-morgen.env
 export SUPABASE_URL SUPABASE_SERVICE_KEY BRAVE_API_KEY NRJ_REFRESH_TOKEN TENANT_ID
 ```
-
-**Supabase Access Token:**
-- Brukes for å deploye Edge Functions
-- Generert: 2026-02-21
-- Gyldig: 90 dager
-- URL: https://app.supabase.com/account/tokens
 
 ---
 
