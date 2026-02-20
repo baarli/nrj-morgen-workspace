@@ -45,6 +45,30 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
 
+## 📝 Viktige Krav å Huske
+
+### Saksliste-krav (fra 2026-02-21):
+**ALLE saker i sakslista MÅ ha:**
+1. **Lenke (URL)** til original artikkel i `link_url`-feltet
+2. **Notat med oppsummering** i `notes`-feltet på formatet:
+   ```
+   [Første setning fra beskrivelse]
+
+   Kilde: [Kildenavn]
+   ```
+
+**Implementasjon:**
+- `brave-news-search.py`: Lagrer `url` og `summary` for hver artikkel
+- `create_summary()`: Trekker ut første setning + kilde
+- `integrated-morning-routine.sh`: Inserter `link_url` og `notes` til Supabase
+
+**Verifisering:**
+```bash
+curl -s "${SUPABASE_URL}/rest/v1/agenda_items?select=title,link_url,notes&..."
+```
+
+Se detaljer i: `.config/REQUIREMENT_LINK_AND_SUMMARY.md`
+
 ## Safety
 
 - Don't exfiltrate private data. Ever.

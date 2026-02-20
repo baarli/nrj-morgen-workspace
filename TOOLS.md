@@ -37,6 +37,22 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
+## NRJ Morgen - Viktige Krav
+
+### Saksliste-data (2026-02-21):
+**Hver sak MÅ inneholde:**
+- `link_url`: Direkte lenke til original artikkel
+- `notes`: Oppsummering på formatet "[Første setning]\n\nKilde: [Kilde]"
+
+**Hvordan det fungerer:**
+1. `brave-news-search.py` → `create_summary()` lager oppsummering
+2. Artikler lagres med `url` og `summary` i JSON
+3. `integrated-morning-routine.sh` → Inserter til Supabase med `link_url` og `notes`
+
+**Dokumentasjon:** `.config/REQUIREMENT_LINK_AND_SUMMARY.md`
+
+---
+
 ## NRJ Morgen Credentials
 
 **Master Credentials:** `/root/.openclaw/workspace/.credentials/MASTER_CREDENTIALS.md`

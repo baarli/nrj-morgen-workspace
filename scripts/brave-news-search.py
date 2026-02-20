@@ -50,22 +50,48 @@ def search_single(query, api_key, count=10, timeout=10):
         return None
 
 def format_results(data):
-    """Formater søkeresultater"""
+    """Formater søkeresultater med oppsummering"""
     if not data or 'results' not in data:
         return []
     
     articles = []
     for result in data.get('results', []):
+        title = result.get('title', 'Uten tittel')
+        description = result.get('description', '')
+        url = result.get('url', '')
+        source = result.get('meta', {}).get('domain', 'Ukjent kilde')
+        
+        # Lag oppsummerende notat
+        summary = create_summary(description, source)
+        
         article = {
-            'title': result.get('title', 'Uten tittel'),
-            'description': result.get('description', ''),
-            'url': result.get('url', ''),
-            'source': result.get('meta', {}).get('domain', 'Ukjent kilde'),
+            'title': title,
+            'description': description,
+            'url': url,
+            'source': source,
             'publishedAt': result.get('age', 'Nylig'),
+            'summary': summary
         }
         articles.append(article)
     
     return articles
+
+def create_summary(description, source):
+    """Lag et kort oppsummerende notat av saken"""
+    if not description:
+        return f"Kilde: {source}"
+    
+    # Trekk ut første setning (eller del av den)
+    first_sentence = description.split('.')[0].strip()
+    
+    # Begrens lengde
+    if len(first_sentence) > 150:
+        first_sentence = first_sentence[:147] + "..."
+    
+    # Lag oppsummering
+    summary = f"{first_sentence}\n\nKilde: {source}"
+    
+    return summary
 
 def main():
     max_results = int(sys.argv[1]) if len(sys.argv) > 1 else 10
