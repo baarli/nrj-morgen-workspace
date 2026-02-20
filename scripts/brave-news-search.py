@@ -191,6 +191,8 @@ def format_brave_results(data, use_ai_titles=False):
     for result in data.get('results', []):
         original_title = result.get('title', 'Uten tittel')
         description = result.get('description', '')
+        url = result.get('url', '')
+        source = result.get('meta', {}).get('domain', 'Ukjent kilde')
         
         # Generer AI-tittel hvis aktivert
         if use_ai_titles:
@@ -202,17 +204,38 @@ def format_brave_results(data, use_ai_titles=False):
         else:
             title = original_title
         
+        # Lag oppsummerende notat
+        summary = create_summary(description, source)
+        
         article = {
             'title': title,
             'original_title': original_title,
             'description': description,
-            'url': result.get('url', ''),
-            'source': result.get('meta', {}).get('domain', 'Ukjent kilde'),
-            'publishedAt': result.get('age', 'Nylig')
+            'url': url,
+            'source': source,
+            'publishedAt': result.get('age', 'Nylig'),
+            'summary': summary
         }
         articles.append(article)
     
     return articles
+
+def create_summary(description, source):
+    """Lag et kort oppsummerende notat av saken"""
+    if not description:
+        return f"Kilde: {source}"
+    
+    # Trekk ut første setning (eller del av den)
+    first_sentence = description.split('.')[0].strip()
+    
+    # Begrens lengde
+    if len(first_sentence) > 150:
+        first_sentence = first_sentence[:147] + "..."
+    
+    # Lag oppsummering
+    summary = f"{first_sentence}\n\nKilde: {source}"
+    
+    return summary
 
 def format_newsapi_results(data):
     """Formater NewsAPI resultater"""

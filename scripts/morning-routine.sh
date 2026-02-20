@@ -70,6 +70,7 @@ for i, article in enumerate(articles, 1):
     description = article.get('description', '')
     url = article.get('url', '')
     source = article.get('source', 'Ukjent')
+    summary = article.get('summary', f"Kilde: {source}")
     
     print(f"{i}. {title[:60]}...")
     
@@ -100,7 +101,7 @@ for i, article in enumerate(articles, 1):
         "category": "TALK",
         "show_date": TODAY,
         "link_url": url,
-        "notes": f"Kilde: {source}\nOriginal: {original_title}",
+        "notes": summary,
         "is_pinned": False,
         "is_completed": False
     }
