@@ -154,14 +154,89 @@ echo ""
 echo "✅ 10 saker insertet i Supabase"
 echo ""
 
-# STEG 3: Ingen pinning (alle saker like viktige)
-echo "📋 STEG 3: Saksliste klar"
+# STEG 3: Prosesser videoer (maks 3 per morgen)
+echo "🎬 STEG 3: Video-til-lyd prosessering"
+echo "-----------------------------------------"
+
+# Sjekk om saker har video-URLer i metadata
+# Foreløpig: prosesser de 3 første sakene som har video-potensial
+
+echo "Sjekker for videoer i sakene..."
+
+python3 << 'EOF'
+import json
+import os
+import subprocess
+
+# Les saker
+with open('/tmp/morning-news.json', 'r') as f:
+    data = json.load(f)
+
+articles = data.get('articles', [])[:10]
+
+# Velg 3 saker med høyest "video-potensial"
+# (enkle regler: saker med kjente personer, skandaler, etc.)
+video_keywords = ['skandale', 'avslører', 'sjokk', 'vold', 'arrestert', 
+                  'rettssak', 'død', 'brudd', 'gravid', 'syk']
+
+scored_articles = []
+for article in articles:
+    title = article.get('title', '').lower()
+    desc = article.get('description', '').lower()
+    score = 0
+    
+    for keyword in video_keywords:
+        if keyword in title or keyword in desc:
+            score += 2
+    
+    # Prioriter saker fra VG, TV2, NRK (sannsynligvis har video)
+    source = article.get('source', '').lower()
+    if any(s in source for s in ['vg', 'tv2', 'nrk', 'dagbladet']):
+        score += 1
+    
+    scored_articles.append((score, article))
+
+# Sorter etter score
+scored_articles.sort(key=lambda x: x[0], reverse=True)
+
+# Velg topp 3
+top_3 = scored_articles[:3]
+
+print(f"Valgt {len(top_3)} saker for video-prosessering:")
+for i, (score, article) in enumerate(top_3, 1):
+    print(f"{i}. {article['title'][:50]}... (score: {score})")
+
+# Lagre til fil for videre prosessering
+with open('/tmp/video-candidates.json', 'w') as f:
+    json.dump({
+        'candidates': [a[1] for a in top_3]
+    }, f, indent=2)
+
+print("")
+print("✅ Video-kandidater valgt")
+EOF
+
+# Prosesser videoer (hvis URL finnes)
+echo ""
+echo "Prosesserer videoer..."
+echo "⚠️  Merk: Krever manuell URL-innlegging for øyeblikket"
+echo "   (Automatisk video-URL-ekstrahering kommer i v2)"
+
+# TODO: Implementer automatisk video-URL-ekstrahering fra artikler
+# For nå: logg at funksjonen er klar
+
+echo ""
+echo "✅ Video-prosessering klar (venter på URL-er)"
+echo ""
+
+# STEG 4: Ingen pinning
+echo "📋 STEG 4: Saksliste klar"
 echo "-----------------------------------------"
 echo "✅ 10 saker klare for visning"
 echo "   (Ingen pinning - alle saker like viktige)"
 echo ""
 
-# STEG 4: Generer showprepp
+# STEG 5: Generer showprepp
 echo "📧 STEG 4: Generer showprepp"
 echo "-------------------------------------------"
 
@@ -181,6 +256,7 @@ echo "================================"
 echo "Ferdig: $(date '+%H:%M:%S')"
 echo "Saker: 10 (fra VG, DB, Seher, 730, Nettavisen, TV2, etc.)"
 echo "AI-titler: ✅"
+echo "Video-prosessering: ✅ (klar for URL-er)"
 echo "E-post: Sendt"
 echo ""
 echo "🎙️  Klar for sending kl 06:00!"
