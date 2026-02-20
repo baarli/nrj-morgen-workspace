@@ -41,10 +41,12 @@ echo "────────────────────────�
 if [ -f "/root/.openclaw/skills/news-aggregator/SKILL.md" ]; then
     echo "   📥 Samler nyheter fra kilder..."
     # Kjør faktisk nyhetsinnhenting
-    python3 /root/.openclaw/workspace/scripts/brave-news-search.py 10 > /tmp/news-result.json 2>&1 || true
-    if [ -f "/tmp/news-result.json" ]; then
-        COUNT=$(cat /tmp/news-result.json | jq '.articles | length' 2>/dev/null || echo "0")
+    python3 /root/.openclaw/workspace/scripts/brave-news-search.py 10 > /tmp/news-output.log 2>&1 || true
+    if [ -f "/tmp/morning-news.json" ]; then
+        COUNT=$(cat /tmp/morning-news.json | jq '.count' 2>/dev/null || echo "0")
         echo "   ✅ $COUNT artikler samlet"
+    else
+        echo "   ⚠️  Ingen artikler funnet"
     fi
 else
     echo "   ⚠️  News-aggregator ikke tilgjengelig"
@@ -101,8 +103,10 @@ echo "────────────────────────�
 if [ -f "/root/.openclaw/skills/nrj-content-suite/SKILL.md" ]; then
     echo "   📝 Genererer innhold..."
     # Kjør faktisk content-generering
-    if [ -f "/tmp/news-result.json" ]; then
-        echo "   ✅ Innhold generert fra $(cat /tmp/news-result.json | jq '.articles | length' 2>/dev/null || echo "0") kilder"
+    if [ -f "/tmp/morning-news.json" ]; then
+        echo "   ✅ Innhold generert fra $(cat /tmp/morning-news.json | jq '.count' 2>/dev/null || echo "0") kilder"
+    else
+        echo "   ⚠️  Ingen kilder tilgjengelig"
     fi
 else
     echo "   ⚠️  Content-suite ikke tilgjengelig"
@@ -128,7 +132,7 @@ echo ""
 # =============================================================================
 echo "💾 STEG 8: Insert til Supabase"
 echo "───────────────────────────────"
-if [ -f "/tmp/news-result.json" ]; then
+if [ -f "/tmp/morning-news.json" ]; then
     echo "   💾 Inserter saker i database..."
     # Kjør faktisk insert
     python3 << 'PYEOF'
@@ -148,7 +152,7 @@ TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 TODAY = os.popen('TZ=Europe/Oslo date -d "+1 day" +%Y-%m-%d').read().strip()
 
 try:
-    with open('/tmp/news-result.json', 'r') as f:
+    with open('/tmp/morning-news.json', 'r') as f:
         data = json.load(f)
     
     articles = data.get('articles', [])[:10]
