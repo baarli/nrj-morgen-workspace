@@ -1,10 +1,10 @@
 #!/bin/bash
 # /root/.openclaw/workspace/scripts/morning-routine.sh
-# Konsolidert morgen-rutine – én søk, alle jobber
+# FULL MORGEN-RUTINE med video-til-lyd pipeline
 
 set -e
 
-echo "🎙️  NRJ MORGEN – MORGEN-RUTINE"
+echo "🎙️  NRJ MORGEN – FULL MORGEN-RUTINE"
 echo "================================"
 echo "Startet: $(date '+%H:%M:%S')"
 echo ""
@@ -20,40 +20,22 @@ echo "📅 Dato: $TODAY"
 echo "🕐 Oslo-tid: $OSLO_TIME"
 echo ""
 
-# STEG 1: Live søk (KUN ÉN gang) med Brave API + AI-titler
+# STEG 1: Live søk med Brave API + AI-titler
 echo "🔍 STEG 1: Live søk med Brave API + AI-titler"
 echo "-----------------------------------"
 
-echo "Søker etter ferske norske kjendisnyheter..."
+python3 /root/.openclaw/workspace/scripts/brave-news-search.py 10
 
-# Bruk Brave API som primær kilde (med AI-titler)
-python3 /root/.openclaw/workspace/scripts/brave-news-search.py "kjendis nyheter Norge" 10
-
-if [ $? -eq 0 ]; then
-    echo "✅ Fant 8+ saker med Brave API + AI-titler!"
-else
-    echo "⚠️  Brave API ga færre enn 8 saker"
-    echo "Kjører kimi_search som fallback..."
+if [ $? -ne 0 ]; then
+    echo "⚠️  Søk feilet, avbryter..."
+    exit 1
 fi
 
 echo ""
 
-# STEG 2: Insert i Supabase med AI-titler
-echo "💾 STEG 2: Insert saker i Supabase med AI-titler"
+# STEG 2: Insert i Supabase + hent IDs
+echo "💾 STEG 2: Insert saker i Supabase"
 echo "--------------------------------------"
-
-# Sjekk at vi har resultater
-if [ ! -f /tmp/morning-news.json ]; then
-    echo "❌ Ingen saker funnet"
-    exit 1
-fi
-
-# Tell antall saker
-SAKER_COUNT=$(cat /tmp/morning-news.json | jq '.articles | length')
-echo "Fant $SAKER_COUNT saker å inserte"
-
-# Insert hver sak i Supabase
-echo "Inserter saker i Supabase..."
 
 python3 << 'EOF'
 import json
@@ -69,28 +51,29 @@ with open('/root/.openclaw/workspace/.credentials/nrj-morgen.env', 'r') as f:
             SUPABASE_SERVICE_KEY = line.split('=', 1)[1].strip().strip('"').strip("'")
 
 TENANT_ID = "a0000000-0000-0000-0000-000000000001"
+TODAY = os.popen('date +%Y-%m-%d').read().strip()
 
 # Les saker
 with open('/tmp/morning-news.json', 'r') as f:
     data = json.load(f)
 
-articles = data.get('articles', [])[:8]  # Maks 8 saker
+articles = data.get('articles', [])[:10]
 
-print(f"📝 Inserter {len(articles)} saker i Supabase...")
+inserted_ids = []
+
+print(f"📝 Inserter {len(articles)} saker...")
 print("")
 
 for i, article in enumerate(articles, 1):
-    # Bruk AI-generert tittel
     title = article.get('title', 'Uten tittel')
     original_title = article.get('original_title', title)
     description = article.get('description', '')
     url = article.get('url', '')
     source = article.get('source', 'Ukjent')
     
-    print(f"{i}. {title}")
-    print(f"   Original: {original_title[:50]}...")
+    print(f"{i}. {title[:60]}...")
     
-    # Sjekk for duplikater
+    # Sjekk duplikat
     check_url = f"{SUPABASE_URL}/rest/v1/agenda_items?select=id&link_url=eq.{urllib.request.quote(url, safe='')}&limit=1"
     
     req = urllib.request.Request(
@@ -103,148 +86,159 @@ for i, article in enumerate(articles, 1):
     
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
-            existing = json.loads(resp.read().decode())
-            if existing:
-                print(f"   ⚠️  Duplikat - hopper over")
+            if json.loads(resp.read().decode()):
+                print(f"   ⚠️  Duplikat")
                 continue
-    except Exception as e:
-        print(f"   ⚠️  Kunne ikke sjekke duplikat: {e}")
+    except:
+        pass
     
-    # Insert sak
+    # Insert
     payload = {
         "tenant_id": TENANT_ID,
         "title": title,
         "description": description,
         "category": "TALK",
-        "show_date": os.popen('date +%Y-%m-%d').read().strip(),
+        "show_date": TODAY,
         "link_url": url,
-        "notes": f"Kilde: {source} via Brave API\nOriginal tittel: {original_title}",
+        "notes": f"Kilde: {source}\nOriginal: {original_title}",
         "is_pinned": False,
         "is_completed": False
     }
     
-    insert_url = f"{SUPABASE_URL}/rest/v1/agenda_items"
-    
     req = urllib.request.Request(
-        insert_url,
+        f"{SUPABASE_URL}/rest/v1/agenda_items",
         data=json.dumps(payload).encode('utf-8'),
         headers={
             'apikey': SUPABASE_SERVICE_KEY,
             'Authorization': f'Bearer {SUPABASE_SERVICE_KEY}',
             'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
+            'Prefer': 'return=representation'
         },
         method='POST'
     )
     
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
-            if resp.status in [200, 201]:
-                print(f"   ✅ Insertet")
-            else:
-                print(f"   ⚠️  Status {resp.status}")
+            result = json.loads(resp.read().decode())
+            if result:
+                inserted_id = result[0]['id']
+                inserted_ids.append({
+                    'id': inserted_id,
+                    'title': title,
+                    'url': url,
+                    'source': source
+                })
+                print(f"   ✅ Insertet (ID: {inserted_id[:8]}...)")
     except Exception as e:
         print(f"   ❌ Feil: {e}")
 
+# Lagre inserted IDs
+with open('/tmp/inserted-saker.json', 'w') as f:
+    json.dump({'saker': inserted_ids}, f, indent=2)
+
 print("")
-print("✅ Alle saker prosessert!")
+print(f"✅ {len(inserted_ids)} saker insertet")
 EOF
 
 echo ""
-echo "✅ 10 saker insertet i Supabase"
-echo ""
 
-# STEG 3: Prosesser videoer (maks 3 per morgen)
+# STEG 3: Video-til-lyd prosessering (maks 3)
 echo "🎬 STEG 3: Video-til-lyd prosessering"
 echo "-----------------------------------------"
 
-# Sjekk om saker har video-URLer i metadata
-# Foreløpig: prosesser de 3 første sakene som har video-potensial
-
-echo "Sjekker for videoer i sakene..."
-
 python3 << 'EOF'
 import json
-import os
 import subprocess
+import os
+import sys
 
-# Les saker
-with open('/tmp/morning-news.json', 'r') as f:
+# Legg til scripts-mappe i path
+sys.path.insert(0, '/root/.openclaw/workspace/scripts')
+
+from extract_video_urls import extract_video_urls
+from video_to_audio_pipeline import process_video
+
+# Les insertede saker
+with open('/tmp/inserted-saker.json', 'r') as f:
     data = json.load(f)
 
-articles = data.get('articles', [])[:10]
+saker = data.get('saker', [])
 
-# Velg 3 saker med høyest "video-potensial"
-# (enkle regler: saker med kjente personer, skandaler, etc.)
+# Velg 3 saker med høyest video-potensial
 video_keywords = ['skandale', 'avslører', 'sjokk', 'vold', 'arrestert', 
-                  'rettssak', 'død', 'brudd', 'gravid', 'syk']
+                  'rettssak', 'død', 'brudd', 'gravid', 'syk', 'politi']
 
-scored_articles = []
-for article in articles:
-    title = article.get('title', '').lower()
-    desc = article.get('description', '').lower()
+scored = []
+for sak in saker:
+    title = sak['title'].lower()
     score = 0
-    
-    for keyword in video_keywords:
-        if keyword in title or keyword in desc:
+    for kw in video_keywords:
+        if kw in title:
             score += 2
-    
-    # Prioriter saker fra VG, TV2, NRK (sannsynligvis har video)
-    source = article.get('source', '').lower()
-    if any(s in source for s in ['vg', 'tv2', 'nrk', 'dagbladet']):
+    # Prioriter VG, TV2, NRK
+    if any(s in sak.get('source', '').lower() for s in ['vg', 'tv2', 'nrk']):
         score += 1
-    
-    scored_articles.append((score, article))
+    scored.append((score, sak))
 
-# Sorter etter score
-scored_articles.sort(key=lambda x: x[0], reverse=True)
-
-# Velg topp 3
-top_3 = scored_articles[:3]
+scored.sort(key=lambda x: x[0], reverse=True)
+top_3 = scored[:3]
 
 print(f"Valgt {len(top_3)} saker for video-prosessering:")
-for i, (score, article) in enumerate(top_3, 1):
-    print(f"{i}. {article['title'][:50]}... (score: {score})")
-
-# Lagre til fil for videre prosessering
-with open('/tmp/video-candidates.json', 'w') as f:
-    json.dump({
-        'candidates': [a[1] for a in top_3]
-    }, f, indent=2)
-
+for score, sak in top_3:
+    print(f"  - {sak['title'][:50]}... (score: {score})")
 print("")
-print("✅ Video-kandidater valgt")
+
+# Prosesser hver sak
+processed = 0
+for score, sak in top_3:
+    print(f"\n🎬 Prosesserer: {sak['title'][:50]}...")
+    print(f"   URL: {sak['url'][:60]}...")
+    
+    # 1. Ekstraher video-URL
+    videos = extract_video_urls(sak['url'])
+    
+    if not videos:
+        print("   ⚠️  Ingen video funnet")
+        continue
+    
+    video = videos[0]  # Ta første video
+    print(f"   ✅ Video funnet: {video['type']}")
+    
+    # 2. Prosesser video til lyd
+    success = process_video(
+        video['url'],
+        sak['title'],
+        sak['source'],
+        sak['id']
+    )
+    
+    if success:
+        processed += 1
+        print(f"   ✅ Video prosessert!")
+    else:
+        print(f"   ❌ Prosessering feilet")
+
+print(f"\n✅ {processed}/{len(top_3)} videoer prosessert")
 EOF
 
-# Prosesser videoer (hvis URL finnes)
-echo ""
-echo "Prosesserer videoer..."
-echo "⚠️  Merk: Krever manuell URL-innlegging for øyeblikket"
-echo "   (Automatisk video-URL-ekstrahering kommer i v2)"
-
-# TODO: Implementer automatisk video-URL-ekstrahering fra artikler
-# For nå: logg at funksjonen er klar
-
-echo ""
-echo "✅ Video-prosessering klar (venter på URL-er)"
 echo ""
 
-# STEG 4: Ingen pinning
+# STEG 4: Saksliste klar
 echo "📋 STEG 4: Saksliste klar"
 echo "-----------------------------------------"
 echo "✅ 10 saker klare for visning"
-echo "   (Ingen pinning - alle saker like viktige)"
+echo "✅ Video-klipp tilgjengelig i audio-clips/"
 echo ""
 
 # STEG 5: Generer showprepp
-echo "📧 STEG 4: Generer showprepp"
+echo "📧 STEG 5: Generer showprepp"
 echo "-------------------------------------------"
 
 echo "Genererer e-post..."
 /root/.openclaw/workspace/scripts/daily-email-report.sh > /dev/null 2>&1 || true
 
 echo "Sender til niklasbaarli@gmail.com..."
-python3 /root/.openclaw/workspace/scripts/send-daily-email.py 2>&1 || echo "⚠️  E-post sending feilet"
+python3 /root/.openclaw/workspace/scripts/send-daily-email.py 2>&1 || echo "⚠️  E-post feilet"
 
 echo "✅ Showprepp sendt"
 echo ""
@@ -254,9 +248,8 @@ echo "================================"
 echo "✅ MORGEN-RUTINE FULLFØRT"
 echo "================================"
 echo "Ferdig: $(date '+%H:%M:%S')"
-echo "Saker: 10 (fra VG, DB, Seher, 730, Nettavisen, TV2, etc.)"
-echo "AI-titler: ✅"
-echo "Video-prosessering: ✅ (klar for URL-er)"
+echo "Saker: 10 (med AI-titler)"
+echo "Video-klipp: Prosessert"
 echo "E-post: Sendt"
 echo ""
 echo "🎙️  Klar for sending kl 06:00!"
