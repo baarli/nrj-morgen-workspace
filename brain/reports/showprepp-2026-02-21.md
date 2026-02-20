@@ -2,13 +2,13 @@
 
 **Dato:** Saturday 21. February 2026  
 **Sendestart:** 06:00  
-**Generert:** 01:02
+**Generert:** 01:16
 
 ---
 
 ## 🎙️ DAGENS INTRO
 
-> **God morgen! Har du hørt om 'Peter (4) drept: – Tryglet dem'? Vi snakker om det og masse annet i dag!**
+> **God morgen! I dag har vi 'Peter (4) drept: – Tryglet dem' på menyen pluss mye annet snacks. Bli med!**
 
 ---
 
@@ -16,61 +16,61 @@
 
 ### 📌 Peter (4) drept: – Tryglet dem
 
-**Vinkel:** *Har du hørt om Peter? Dette er helt vilt!*
+**Vinkel:** *Skandale rundt Peter - hva skjedde egentlig?*
 
 Hva: Peter (4) drept: – Tryglet dem (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva...
 
-**Inngang:** "Har du hørt om Peter? Dette er helt vilt!"
+**Inngang:** "Skandale rundt Peter - hva skjedde egentlig?"
 
 ---
 
 ### 📌 Tar Mette-Marit i forsvar: – Nå må vi puste litt
 
-**Vinkel:** *Tar sjokkerer alle - hva nå?*
+**Vinkel:** *Skandale rundt Tar - hva skjedde egentlig?*
 
 Hva: Tar Mette-Marit i forsvar: – Nå må vi puste litt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er ...
 
-**Inngang:** "Tar sjokkerer alle - hva nå?"
+**Inngang:** "Skandale rundt Tar - hva skjedde egentlig?"
 
 ---
 
 ### 📌 SØR-SUDAN: – Vi har gått tom for nesten alt
 
-**Vinkel:** *SØR-SUDAN: sjokkerer alle - hva nå?*
+**Vinkel:** *Skandale rundt SØR-SUDAN: - hva skjedde egentlig?*
 
 Hva: SØR-SUDAN: – Vi har gått tom for nesten alt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia...
 
-**Inngang:** "SØR-SUDAN: sjokkerer alle - hva nå?"
+**Inngang:** "Skandale rundt SØR-SUDAN: - hva skjedde egentlig?"
 
 ---
 
 ### 📌 Løslatt: Fortsatt under etterforskning
 
-**Vinkel:** *Løslatt: sjokkerer alle - hva nå?*
+**Vinkel:** *Dette om Løslatt: må du bare høre!*
 
 Hva: Løslatt: Fortsatt under etterforskning (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her ...
 
-**Inngang:** "Løslatt: sjokkerer alle - hva nå?"
+**Inngang:** "Dette om Løslatt: må du bare høre!"
 
 ---
 
 ### 📌 Advarer: Ordren kan være gitt
 
-**Vinkel:** *Har du hørt om Advarer:? Dette er helt vilt!*
+**Vinkel:** *Skandale rundt Advarer: - hva skjedde egentlig?*
 
 Hva: Advarer: Ordren kan være gitt (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva ...
 
-**Inngang:** "Har du hørt om Advarer:? Dette er helt vilt!"
+**Inngang:** "Skandale rundt Advarer: - hva skjedde egentlig?"
 
 ---
 
 ### 📰 IRAN: Har sendt brev til FN
 
-**Vinkel:** *IRAN: i trøbbel igjen - vi forklarer!*
+**Vinkel:** *IRAN: sjokkerer alle - hva nå?*
 
 Hva: IRAN: Har sendt brev til FN (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”. Inngang: “Ok, hva er greia her – og hva be...
 
-**Inngang:** "IRAN: i trøbbel igjen - vi forklarer!"
+**Inngang:** "IRAN: sjokkerer alle - hva nå?"
 
 ---
 
@@ -86,11 +86,11 @@ Hva: 01:34 «Vokteren»: Fortsatt preget av skade (TV2). Hvorfor NRJ: Gir enten 
 
 ### 📌 TV 2 erfarer: Søreide skulle avsløre hemmelig kjæreste – så avlyste hun
 
-**Vinkel:** *TV sjokkerer alle - hva nå?*
+**Vinkel:** *TV i trøbbel igjen - vi forklarer!*
 
 Hva: TV 2 erfarer: Søreide skulle avsløre hemmelig kjæreste – så avlyste hun (TV2). Hvorfor NRJ: Gir enten en rask oppdatering eller en lett “snakkis”...
 
-**Inngang:** "TV sjokkerer alle - hva nå?"
+**Inngang:** "TV i trøbbel igjen - vi forklarer!"
 
 ---
 

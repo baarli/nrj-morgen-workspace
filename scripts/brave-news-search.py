@@ -61,13 +61,34 @@ PRIORITY_SOURCES = [
 # Internasjonale kilder
 INTL_SOURCES = ['tmz.com', 'bbc.com']
 
-# Kategorier vi søker etter
+# Kategorier vi søker etter - prioritert rekkefølge for kjendis/popkultur
 SEARCH_QUERIES = [
-    "kjendis",
-    "reality TV",
-    "musikk artist",
+    # Kjendis-skandaler og rød løper
+    "kjendis skandale",
+    "rød løper",
+    "kjendis nyheter",
+    "se og hør",
+    
+    # Reality TV
+    "reality TV Norge",
+    "farmen kjendis",
+    "paradise hotel",
+    "love island",
+    
+    # TV og underholdning
+    "TV2 underholdning",
+    "NRK underholdning",
+    "TV3 Norge",
+    
+    # Musikk og artister
+    "norsk musikk",
+    "artist nyheter",
+    "spotify Norge",
+    
+    # Popkultur
     "popkultur",
-    "underholdning"
+    "influencer Norge",
+    "instagram kjendis",
 ]
 
 def search_newsapi(query, api_key, count=10):
@@ -227,35 +248,63 @@ def main():
     
     all_articles = []
     
-    # Søk 1: Norske kjendisnyheter (bredt)
-    print("📡 Søker: Norske kjendisnyheter...")
-    data = search_brave("kjendisnyheter Norge", brave_key, 10)
-    if data:
-        articles = format_brave_results(data, use_ai_titles=use_ai)
-        all_articles.extend(articles)
-        print(f"   ✅ {len(articles)} saker")
+    # Søk etter kjendis-skandaler og rød løper
+    print("📡 Søker: Kjendis-skandaler og rød løper...")
+    for query in ["kjendis skandale", "rød løper", "se og hør"]:
+        print(f"   🔍 '{query}'...", end=" ")
+        data = search_brave(query, brave_key, 5)
+        if data:
+            articles = format_brave_results(data, use_ai_titles=use_ai)
+            existing_urls = {a['url'] for a in all_articles}
+            new_articles = [a for a in articles if a['url'] not in existing_urls]
+            all_articles.extend(new_articles)
+            print(f"{len(new_articles)} nye")
+        else:
+            print("0")
     
-    # Søk 2: Reality TV
+    # Søk etter reality TV
     print("📡 Søker: Reality TV...")
-    data = search_brave("reality TV Norge", brave_key, 5)
-    if data:
-        articles = format_brave_results(data, use_ai_titles=use_ai)
-        existing_urls = {a['url'] for a in all_articles}
-        new_articles = [a for a in articles if a['url'] not in existing_urls]
-        all_articles.extend(new_articles)
-        print(f"   ✅ {len(new_articles)} nye saker")
+    for query in ["reality TV Norge", "farmen kjendis", "paradise hotel", "love island"]:
+        print(f"   🔍 '{query}'...", end=" ")
+        data = search_brave(query, brave_key, 3)
+        if data:
+            articles = format_brave_results(data, use_ai_titles=use_ai)
+            existing_urls = {a['url'] for a in all_articles}
+            new_articles = [a for a in articles if a['url'] not in existing_urls]
+            all_articles.extend(new_articles)
+            print(f"{len(new_articles)} nye")
+        else:
+            print("0")
     
-    # Søk 3: Musikk
-    print("📡 Søker: Musikknyheter...")
-    data = search_brave("norsk musikk artist nyheter", brave_key, 5)
-    if data:
-        articles = format_brave_results(data, use_ai_titles=use_ai)
-        existing_urls = {a['url'] for a in all_articles}
-        new_articles = [a for a in articles if a['url'] not in existing_urls]
-        all_articles.extend(new_articles)
-        print(f"   ✅ {len(new_articles)} nye saker")
+    # Søk etter TV og underholdning
+    print("📡 Søker: TV og underholdning...")
+    for query in ["TV2 underholdning", "NRK underholdning", "TV3 Norge"]:
+        print(f"   🔍 '{query}'...", end=" ")
+        data = search_brave(query, brave_key, 3)
+        if data:
+            articles = format_brave_results(data, use_ai_titles=use_ai)
+            existing_urls = {a['url'] for a in all_articles}
+            new_articles = [a for a in articles if a['url'] not in existing_urls]
+            all_articles.extend(new_articles)
+            print(f"{len(new_articles)} nye")
+        else:
+            print("0")
     
-    # Søk 4: Popkultur
+    # Søk etter musikk
+    print("📡 Søker: Musikk og artister...")
+    for query in ["norsk musikk", "artist nyheter", "spotify Norge"]:
+        print(f"   🔍 '{query}'...", end=" ")
+        data = search_brave(query, brave_key, 3)
+        if data:
+            articles = format_brave_results(data, use_ai_titles=use_ai)
+            existing_urls = {a['url'] for a in all_articles}
+            new_articles = [a for a in articles if a['url'] not in existing_urls]
+            all_articles.extend(new_articles)
+            print(f"{len(new_articles)} nye")
+        else:
+            print("0")
+    
+    print("")
     print("📡 Søker: Popkultur...")
     data = search_brave("popkultur underholdning Norge", brave_key, 5)
     if data:
@@ -276,6 +325,33 @@ def main():
             seen_urls.add(url)
             unique_articles.append(article)
     
+    # Filtrer bort uønskede kategorier (sport, politikk, økonomi)
+    EXCLUDED_KEYWORDS = [
+        'fotball', 'håndball', 'ski', 'langrenn', 'skiskyting', 'hopp',
+        'politikk', 'storting', 'regjering', 'parti', 'valg',
+        'økonomi', 'børs', 'rente', 'finans', 'krig', 'ukraina',
+        'været', 'trafikk', 'koronavirus', 'covid',
+        'ol ', 'oslo ', 'vm ', 'em ', 'nm ',  # Sportsturneringer
+    ]
+    
+    filtered_articles = []
+    for article in unique_articles:
+        title = article.get('title', '').lower()
+        desc = article.get('description', '').lower()
+        combined = title + ' ' + desc
+        
+        # Sjekk om artikkelen inneholder ekskluderte ord
+        should_exclude = False
+        for keyword in EXCLUDED_KEYWORDS:
+            if keyword in combined:
+                should_exclude = True
+                break
+        
+        if not should_exclude:
+            filtered_articles.append(article)
+    
+    print(f"   🎯 {len(filtered_articles)}/{len(unique_articles)} saker etter filtrering")
+    
     # Fjern veldig lignende titler (samme sak fra ulike kilder)
     def normalize_title(title):
         words = title.lower().split()
@@ -285,7 +361,7 @@ def main():
     
     seen_titles = set()
     final_articles = []
-    for article in unique_articles:
+    for article in filtered_articles:
         norm = normalize_title(article.get('title', ''))
         is_duplicate = False
         for seen in seen_titles:
