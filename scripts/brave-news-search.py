@@ -22,34 +22,40 @@ def load_credentials():
                     creds[key] = value
     return creds
 
-def search_brave(query, api_key, count=10, site_filter=None):
+def search_brave(query, api_key, count=10, site_filter=None, timeout=10):
     """Søk med Brave Search API"""
     import urllib.request
     import urllib.parse
-
+    import socket
+    
     if not api_key:
         return None
-
+    
     # Bygg query med eventuelt site-filter
     if site_filter:
         full_query = f"{query} site:{site_filter}"
     else:
         full_query = query
-
+    
     encoded_query = urllib.parse.quote(full_query)
     url = f"https://api.search.brave.com/res/v1/news/search?q={encoded_query}&count={count}&search_lang=nb&freshness=pd"
-
+    
     headers = {
         'X-Subscription-Token': api_key,
         'Accept': 'application/json'
     }
-
+    
     try:
+        # Sett global timeout for socket
+        old_timeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(timeout)
         req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=15) as response:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
             data = json.loads(response.read().decode())
+            socket.setdefaulttimeout(old_timeout)
             return data
     except Exception as e:
+        socket.setdefaulttimeout(old_timeout)
         return None
 
 # Prioriterte kilder for norsk kjendis/popkultur-nyheter
@@ -246,7 +252,7 @@ def is_duplicate_topic(title, description=""):
         # Sport/Kjendis
         'erling haaland': ['haaland'],
         'martin ødegaard': ['ødegaard'],
-        
+
         # Internasjonalt
         'pamela anderson': ['pamela anderson'],
         'kristoffer joner': ['kristoffer joner'],
