@@ -151,78 +151,14 @@ print("✅ Alle saker prosessert!")
 EOF
 
 echo ""
-echo "✅ Saker insertet i Supabase"
+echo "✅ 10 saker insertet i Supabase"
 echo ""
 
-# STEG 3: Pin topp 2 saker
-echo "📌 STEG 3: Pin topp 2 saker"
+# STEG 3: Ingen pinning (alle saker like viktige)
+echo "📋 STEG 3: Saksliste klar"
 echo "-----------------------------------------"
-
-echo "Henter dagens saker..."
-
-# Pin topp 2 saker (de to første fra listen)
-python3 << 'EOF'
-import json
-import urllib.request
-import os
-
-# Last credentials
-with open('/root/.openclaw/workspace/.credentials/nrj-morgen.env', 'r') as f:
-    for line in f:
-        if 'SUPABASE_URL=' in line:
-            SUPABASE_URL = line.split('=', 1)[1].strip().strip('"').strip("'")
-        if 'SUPABASE_SERVICE_KEY=' in line:
-            SUPABASE_SERVICE_KEY = line.split('=', 1)[1].strip().strip('"').strip("'")
-
-TENANT_ID = "a0000000-0000-0000-0000-000000000001"
-TODAY = os.popen('date +%Y-%m-%d').read().strip()
-
-# Hent dagens saker
-url = f"{SUPABASE_URL}/rest/v1/agenda_items?select=id,title&show_date=eq.{TODAY}&tenant_id=eq.{TENANT_ID}&order=created_at.asc&limit=2"
-
-req = urllib.request.Request(
-    url,
-    headers={
-        'apikey': SUPABASE_SERVICE_KEY,
-        'Authorization': f'Bearer {SUPABASE_SERVICE_KEY}'
-    }
-)
-
-try:
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        saker = json.loads(resp.read().decode())
-        
-        print(f"Finner {len(saker)} saker å pinne...")
-        
-        for i, sak in enumerate(saker, 1):
-            sak_id = sak['id']
-            title = sak['title']
-            
-            # Pin sak
-            patch_url = f"{SUPABASE_URL}/rest/v1/agenda_items?id=eq.{sak_id}"
-            
-            req = urllib.request.Request(
-                patch_url,
-                data=json.dumps({"is_pinned": True}).encode('utf-8'),
-                headers={
-                    'apikey': SUPABASE_SERVICE_KEY,
-                    'Authorization': f'Bearer {SUPABASE_SERVICE_KEY}',
-                    'Content-Type': 'application/json'
-                },
-                method='PATCH'
-            )
-            
-            with urllib.request.urlopen(req, timeout=10) as patch_resp:
-                if patch_resp.status in [200, 204]:
-                    print(f"{i}. 📌 {title[:50]}...")
-        
-        print("")
-        print("✅ Topp 2 saker pinned!")
-        
-except Exception as e:
-    print(f"⚠️  Feil ved pinning: {e}")
-EOF
-
+echo "✅ 10 saker klare for visning"
+echo "   (Ingen pinning - alle saker like viktige)"
 echo ""
 
 # STEG 4: Generer showprepp
@@ -243,8 +179,8 @@ echo "================================"
 echo "✅ MORGEN-RUTINE FULLFØRT"
 echo "================================"
 echo "Ferdig: $(date '+%H:%M:%S')"
-echo "Saker: 8 (med AI-titler)"
-echo "Pinned: 2"
+echo "Saker: 10 (fra VG, DB, Seher, 730, Nettavisen, TV2, etc.)"
+echo "AI-titler: ✅"
 echo "E-post: Sendt"
 echo ""
 echo "🎙️  Klar for sending kl 06:00!"

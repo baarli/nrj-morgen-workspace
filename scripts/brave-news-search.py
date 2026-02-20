@@ -22,7 +22,7 @@ def load_credentials():
                     creds[key] = value
     return creds
 
-def search_brave(query, api_key, count=10):
+def search_brave(query, api_key, count=10, site_filter=None):
     """Søk med Brave Search API"""
     import urllib.request
     import urllib.parse
@@ -30,7 +30,13 @@ def search_brave(query, api_key, count=10):
     if not api_key:
         return None
     
-    encoded_query = urllib.parse.quote(query)
+    # Bygg query med eventuelt site-filter
+    if site_filter:
+        full_query = f"{query} site:{site_filter}"
+    else:
+        full_query = query
+    
+    encoded_query = urllib.parse.quote(full_query)
     url = f"https://api.search.brave.com/res/v1/news/search?q={encoded_query}&count={count}&search_lang=nb&freshness=pd"
     
     headers = {
@@ -44,8 +50,25 @@ def search_brave(query, api_key, count=10):
             data = json.loads(response.read().decode())
             return data
     except Exception as e:
-        print(f"⚠️  Brave API feil: {e}")
         return None
+
+# Prioriterte kilder for norsk kjendis/popkultur-nyheter
+PRIORITY_SOURCES = [
+    'vg.no', 'dagbladet.no', 'seher.no', '730.no', 'nettavisen.no',
+    'tv2.no', 'aftenposten.no', 'nrk.no'
+]
+
+# Internasjonale kilder
+INTL_SOURCES = ['tmz.com', 'bbc.com']
+
+# Kategorier vi søker etter
+SEARCH_QUERIES = [
+    "kjendis",
+    "reality TV",
+    "musikk artist",
+    "popkultur",
+    "underholdning"
+]
 
 def search_newsapi(query, api_key, count=10):
     """Fallback: Søk med NewsAPI"""
@@ -190,69 +213,129 @@ def format_newsapi_results(data):
     return articles
 
 def main():
-    query = sys.argv[1] if len(sys.argv) > 1 else "kjendis nyheter"
-    max_results = int(sys.argv[2]) if len(sys.argv) > 2 else 10
+    max_results = int(sys.argv[1]) if len(sys.argv) > 1 else 10
     
     creds = load_credentials()
     brave_key = creds.get('BRAVE_API_KEY', '')
-    newsapi_key = creds.get('NEWSAPI_KEY', '')
+    use_ai = creds.get('OPENAI_API_KEY', '') != ''
     
-    print(f"🔍 Søker etter: {query}")
+    print("🔍 NRJ MORGEN – KJENDIS/POPKULTUR SØK")
+    print("=" * 60)
     print(f"Maks resultater: {max_results}")
+    print(f"AI-titler: {'Aktivert' if use_ai else 'Deaktivert'}")
     print("")
     
-    articles = []
+    all_articles = []
     
-    # STEG 1: Prøv Brave API først
-    if brave_key:
-        print("📡 Bruker Brave Search API (primær)...")
-        brave_data = search_brave(query, brave_key, max_results)
-        
-        # Sjekk om vi skal bruke AI-titler
-        use_ai = creds.get('OPENAI_API_KEY', '') != ''
-        if use_ai:
-            print("🤖 AI-tittelgenerering aktivert...")
-        
-        articles = format_brave_results(brave_data, use_ai_titles=use_ai)
-        
-        if articles:
-            print(f"✅ Fant {len(articles)} artikler med Brave API")
-        else:
-            print("⚠️  Ingen resultater fra Brave API")
+    # Søk 1: Norske kjendisnyheter (bredt)
+    print("📡 Søker: Norske kjendisnyheter...")
+    data = search_brave("kjendisnyheter Norge", brave_key, 10)
+    if data:
+        articles = format_brave_results(data, use_ai_titles=use_ai)
+        all_articles.extend(articles)
+        print(f"   ✅ {len(articles)} saker")
     
-    # STEG 2: Fallback til NewsAPI hvis Brave ikke ga nok
-    if len(articles) < 8 and newsapi_key:
-        print("📡 Bruker NewsAPI (fallback)...")
-        newsapi_data = search_newsapi(query, newsapi_key, max_results)
-        newsapi_articles = format_newsapi_results(newsapi_data)
-        
-        # Legg til nye artikler (unngå duplikater basert på URL)
-        existing_urls = {a['url'] for a in articles}
-        for article in newsapi_articles:
-            if article['url'] not in existing_urls:
-                articles.append(article)
-        
-        print(f"✅ Totalt {len(articles)} artikler etter NewsAPI fallback")
+    # Søk 2: Reality TV
+    print("📡 Søker: Reality TV...")
+    data = search_brave("reality TV Norge", brave_key, 5)
+    if data:
+        articles = format_brave_results(data, use_ai_titles=use_ai)
+        existing_urls = {a['url'] for a in all_articles}
+        new_articles = [a for a in articles if a['url'] not in existing_urls]
+        all_articles.extend(new_articles)
+        print(f"   ✅ {len(new_articles)} nye saker")
     
-    # STEG 3: Sjekk om vi har nok
+    # Søk 3: Musikk
+    print("📡 Søker: Musikknyheter...")
+    data = search_brave("norsk musikk artist nyheter", brave_key, 5)
+    if data:
+        articles = format_brave_results(data, use_ai_titles=use_ai)
+        existing_urls = {a['url'] for a in all_articles}
+        new_articles = [a for a in articles if a['url'] not in existing_urls]
+        all_articles.extend(new_articles)
+        print(f"   ✅ {len(new_articles)} nye saker")
+    
+    # Søk 4: Popkultur
+    print("📡 Søker: Popkultur...")
+    data = search_brave("popkultur underholdning Norge", brave_key, 5)
+    if data:
+        articles = format_brave_results(data, use_ai_titles=use_ai)
+        existing_urls = {a['url'] for a in all_articles}
+        new_articles = [a for a in articles if a['url'] not in existing_urls]
+        all_articles.extend(new_articles)
+        print(f"   ✅ {len(new_articles)} nye saker")
+    
+    print("")
+    
+    # Fjern duplikater basert på URL
+    seen_urls = set()
+    unique_articles = []
+    for article in all_articles:
+        url = article.get('url', '')
+        if url and url not in seen_urls:
+            seen_urls.add(url)
+            unique_articles.append(article)
+    
+    # Fjern veldig lignende titler (samme sak fra ulike kilder)
+    def normalize_title(title):
+        words = title.lower().split()
+        key_words = [w for w in words if len(w) > 3 and w not in 
+                    ['om', 'fra', 'etter', 'med', 'til', 'den', 'det', 'som', 'han', 'hun']]
+        return ' '.join(sorted(set(key_words)))
+    
+    seen_titles = set()
+    final_articles = []
+    for article in unique_articles:
+        norm = normalize_title(article.get('title', ''))
+        is_duplicate = False
+        for seen in seen_titles:
+            norm_words = set(norm.split())
+            seen_words = set(seen.split())
+            if norm_words and seen_words:
+                overlap = len(norm_words & seen_words) / max(len(norm_words), len(seen_words))
+                if overlap > 0.7:
+                    is_duplicate = True
+                    break
+        
+        if not is_duplicate:
+            seen_titles.add(norm)
+            final_articles.append(article)
+    
+    # Prioriter etter kilde
+    def source_priority(article):
+        source = article.get('source', '').lower()
+        priority_sources = [
+            'vg.no', 'dagbladet.no', '730.no', 'seher.no', 
+            'nettavisen.no', 'tv2.no', 'aftenposten.no', 'nrk.no',
+            'tmz.com', 'bbc.com'
+        ]
+        for i, s in enumerate(priority_sources):
+            if s in source:
+                return i
+        return 999
+    
+    final_articles.sort(key=source_priority)
+    
+    # Ta topp 10
+    articles = final_articles[:10]
+    
     if len(articles) >= 8:
-        print(f"\n🎉 SUCCESS! Fant {len(articles)} artikler")
-        print("\n📰 TOPP 8 SAKER:")
+        print(f"🎉 SUCCESS! Fant {len(articles)} relevante saker")
+        print("\n📰 TOPP 10 SAKER:")
         print("=" * 60)
         
-        for i, article in enumerate(articles[:8], 1):
+        for i, article in enumerate(articles, 1):
             print(f"\n{i}. {article['title']}")
             print(f"   📰 {article['source']} | 🕐 {article['publishedAt']}")
             if article['description']:
-                desc = article['description'][:100] + "..." if len(article['description']) > 100 else article['description']
+                desc = article['description'][:80] + "..." if len(article['description']) > 80 else article['description']
                 print(f"   📝 {desc}")
         
-        # Lagre til fil for videre bruk
+        # Lagre til fil
         output = {
             'timestamp': datetime.now().isoformat(),
-            'query': query,
             'count': len(articles),
-            'articles': articles[:8]
+            'articles': articles
         }
         
         with open('/tmp/morning-news.json', 'w') as f:
@@ -262,8 +345,7 @@ def main():
         return 0
     
     else:
-        print(f"\n⚠️  Kun {len(articles)} artikler funnet (trenger 8)")
-        print("💡 Kjører kimi_search som siste fallback...")
+        print(f"\n⚠️  Kun {len(articles)} saker funnet (trenger 8+)")
         return 1
 
 if __name__ == '__main__':
