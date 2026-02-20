@@ -76,16 +76,92 @@ def search_kimi(query, count=10):
     except:
         return None
 
-def format_brave_results(data):
-    """Formater Brave søkeresultater"""
+def generate_ai_title(original_title, description=""):
+    """Bruk OpenAI for å generere konsis tittel"""
+    import urllib.request
+    
+    creds = load_credentials()
+    api_key = creds.get('OPENAI_API_KEY', '')
+    
+    if not api_key:
+        return None
+    
+    prompt = f"""Formater denne nyhetstittelen til en kort, konsis versjon på 5-7 ord for en radiomorgensending.
+
+Original tittel: {original_title}
+Beskrivelse: {description}
+
+Krav:
+- Maks 7 ord, helst 5-6
+- Inkluder hovedperson (navn) + handling
+- Gjør den umiddelbart forståelig for lyttere
+- Fjern unødvendige detaljer og fluff
+- Bruk aktiv form
+- Skriv på norsk
+
+Eksempler på gode titler:
+- "Ida Elise Broch søker ny jobb"
+- "Prins Andrew er løslatt fra politiet"  
+- "Durek Verrett om Epstein og Mette-Marit"
+- "Amanda Bynes er ugjenkjennelig"
+- "Prinsesse Désirée av Sverige er død"
+
+Gi KUN den formaterte tittelen, ingen forklaring eller anførselstegn:"""
+
+    try:
+        url = "https://api.openai.com/v1/chat/completions"
+        data = {
+            "model": "gpt-4o-mini",
+            "messages": [
+                {"role": "system", "content": "Du er en erfaren nyhetsredaktør for NRK P3 og NRJ Morgen. Din jobb er å lage korte, fengende titler som umiddelbart forteller hva saken handler om."},
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 50
+        }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(data).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {api_key}'
+            },
+            method='POST'
+        )
+        
+        with urllib.request.urlopen(req, timeout=30) as response:
+            result = json.loads(response.read().decode())
+            generated = result['choices'][0]['message']['content'].strip()
+            return generated.strip('"').strip("'")
+    except Exception as e:
+        print(f"⚠️  OpenAI feil: {e}")
+        return None
+
+def format_brave_results(data, use_ai_titles=False):
+    """Formater Brave søkeresultater, med valgfri AI tittel-generering"""
     if not data or 'results' not in data:
         return []
     
     articles = []
     for result in data.get('results', []):
+        original_title = result.get('title', 'Uten tittel')
+        description = result.get('description', '')
+        
+        # Generer AI-tittel hvis aktivert
+        if use_ai_titles:
+            ai_title = generate_ai_title(original_title, description)
+            if ai_title:
+                title = ai_title
+            else:
+                title = original_title
+        else:
+            title = original_title
+        
         article = {
-            'title': result.get('title', 'Uten tittel'),
-            'description': result.get('description', ''),
+            'title': title,
+            'original_title': original_title,
+            'description': description,
             'url': result.get('url', ''),
             'source': result.get('meta', {}).get('domain', 'Ukjent kilde'),
             'publishedAt': result.get('age', 'Nylig'),
@@ -132,7 +208,13 @@ def main():
     if brave_key:
         print("📡 Bruker Brave Search API (primær)...")
         brave_data = search_brave(query, brave_key, max_results)
-        articles = format_brave_results(brave_data)
+        
+        # Sjekk om vi skal bruke AI-titler
+        use_ai = creds.get('OPENAI_API_KEY', '') != ''
+        if use_ai:
+            print("🤖 AI-tittelgenerering aktivert...")
+        
+        articles = format_brave_results(brave_data, use_ai_titles=use_ai)
         
         if articles:
             print(f"✅ Fant {len(articles)} artikler med Brave API")
