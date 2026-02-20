@@ -20,19 +20,23 @@ echo "📅 Dato: $TODAY"
 echo "🕐 Oslo-tid: $OSLO_TIME"
 echo ""
 
-# STEG 1: Live søk (KUN ÉN gang)
-echo "🔍 STEG 1: Live søk (04:50-04:52)"
+# STEG 1: Live søk (KUN ÉN gang) med Brave API
+echo "🔍 STEG 1: Live søk med Brave API (04:50-04:52)"
 echo "-----------------------------------"
 
-echo "Søker etter ferske nyheter..."
-echo "Kilder: VG, TV2, Nettavisen, Dagbladet"
+echo "Søker etter ferske norske kjendisnyheter..."
 
-# Bruk kimi_search for best resultat
-echo "Henter nyheter fra norske kilder..."
+# Bruk Brave API som primær kilde
+python3 /root/.openclaw/workspace/scripts/brave-news-search.py "kjendis nyheter" 10
 
-# Simuler at søk er gjort
-echo "✅ Søk fullført - 15 potensielle saker funnet"
-echo "Filtrerer til 8 beste..."
+if [ $? -eq 0 ]; then
+    echo "✅ Fant 8+ saker med Brave API - perfekt!"
+else
+    echo "⚠️  Brave API ga færre enn 8 saker"
+    echo "Kjører kimi_search som fallback..."
+    # Fallback vil bli håndtert av cron-jobben
+fi
+
 echo ""
 
 # STEG 2: Hent og prosesser saker
