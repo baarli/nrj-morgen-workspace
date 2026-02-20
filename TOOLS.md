@@ -42,7 +42,7 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 **Location:** `/root/.openclaw/workspace/.credentials/nrj-morgen.env`
 
 **Inneholder:**
-- Supabase URL + Service Key + Anon Key
+- Supabase URL + Service Key + Anon Key + **Access Token**
 - NRJ Refresh Token
 - Brave API Key
 - GitHub credentials
@@ -54,6 +54,12 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 source /root/.openclaw/workspace/.credentials/nrj-morgen.env
 export SUPABASE_URL SUPABASE_SERVICE_KEY BRAVE_API_KEY NRJ_REFRESH_TOKEN TENANT_ID
 ```
+
+**Supabase Access Token:**
+- Brukes for å deploye Edge Functions
+- Generert: 2026-02-21
+- Gyldig: 90 dager
+- URL: https://app.supabase.com/account/tokens
 
 ---
 
