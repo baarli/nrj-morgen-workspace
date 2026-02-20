@@ -235,7 +235,7 @@ echo "📧 STEG 5: Generer showprepp"
 echo "-------------------------------------------"
 
 echo "Genererer e-post..."
-/root/.openclaw/workspace/scripts/daily-email-report.sh > /dev/null 2>&1 || true
+python3 /root/.openclaw/workspace/scripts/generate-showprepp.py > /dev/null 2>&1 || true
 
 echo "Sender til niklasbaarli@gmail.com..."
 python3 /root/.openclaw/workspace/scripts/send-daily-email.py 2>&1 || echo "⚠️  E-post feilet"
