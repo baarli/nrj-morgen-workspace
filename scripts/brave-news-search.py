@@ -61,82 +61,125 @@ PRIORITY_SOURCES = [
 # Internasjonale kilder
 INTL_SOURCES = ['tmz.com', 'bbc.com']
 
-# Kategorier vi søker etter - bred dekning av norsk kjendis/popkultur
-# Ingen begrensninger innenfor kategoriene - alt skal med!
+# Kategorier vi søker etter - PERFEKT 2026-OPPDATERT DEKNING
+# Ingen begrensninger - alt skal med!
 SEARCH_QUERIES = [
-    # NORSK KJENDIS - ALT (høyest prioritet)
-    "norsk kjendis",
-    "norsk kjendis nyheter",
-    "norsk kjendis sladder",
-    "norsk kjendis skandale",
-    "norsk kjendis blogg",
-    "norsk kjendis Instagram",
-    "norsk kjendis rykte",
-    "norsk kjendis brudd",
-    "norsk kjendis forhold",
-    "norsk kjendis baby",
+    # INFLUENCER & SOSIALE MEDIER (12 søk)
+    "norsk influencer drama",
+    "influencer skandale",
+    "influencer økonomi",
+    "TikTok Norge trend",
+    "viral i Norge",
+    "Snapchat-stjerne nyheter",
+    "Vixen Awards",
+    "norsk influencer priser",
+    "reklame-merking klage",
+    "Oskar Westerlin",
+    "Sophie Elise",
+    "Isabel Raad",
+    "Sara Emilie Tandberg",
     
-    # NORSK REALITY TV - ALT
+    # REALITY TV - ALTOMFATTENDE (12 søk)
     "reality TV Norge",
-    "norsk reality",
-    "reality stjerne Norge",
-    "farmen",
-    "paradise hotel",
-    "love island",
-    "robinson",
-    "71 grader nord",
-    "norsk reality skandale",
-    "ex on the beach",
+    "norsk reality casting",
+    "reality lekkasje",
+    "Spillet",
+    "Forræder",
+    "Vokteren",
+    "Kompani Lauritzen",
+    "Mesternes Mester",
+    "Farmen kjendis",
+    "Paradise Hotel 2026",
+    "reality-brudd",
+    "reality-skandale",
+    "reality-par",
     
-    # NORSK UNDERHOLDNING - ALT
-    "norsk underholdning",
-    "norsk TV underholdning",
-    "TV2 underholdning",
-    "NRK underholdning",
-    "TV3 Norge",
-    "norsk TV serie",
-    "norsk premiere",
-    "norsk film",
-    "norsk TV kjendis",
-    "norsk talkshow",
-    
-    # NORSK MUSIKK - ALT
-    "norsk musikk",
-    "norsk artist",
-    "norsk band",
-    "norsk låt",
-    "norsk album",
-    "norsk konsert",
-    "norsk musikkpris",
-    "norsk musikkvideo",
-    "norsk Spotify",
-    "norsk slager",
-    
-    # NORSK KONGEHUS
-    "kongehuset",
+    # KONGEHUS & SOSITET (10 søk)
     "kongehuset nyheter",
+    "Slottet pressemelding",
     "kronprinsessen",
-    "kronprins Haakon",
-    "prinsesse Ingrid Alexandra",
-    "dronning Sonja",
+    "Marius Borg Høiby",
+    "Märtha Louise",
+    "Durek Verrett",
+    "Leah Isadora Behn",
+    "Ingrid Alexandra",
     "Sverre Magnus",
-    "norsk kongefamilie",
+    "kongelig bryllup",
+    "kongehus skandale",
+    "prinsesse-debatt",
     
-    # RØD LØPER & EVENTS
+    # PODKAST & SNAKKISER (10 søk)
+    "norsk podkast nyheter",
+    "Podme nyheter",
+    "kontroversiell podkast",
+    "Fetisha Williams",
+    "Tusvik og Tønne",
+    "Berrum og Beyer",
+    "Høvla øve",
+    "Med all respekt",
+    "Jan Thomas og Harald",
+    "podkast-avsløring",
+    "podkast-drama",
+    "podcast snakkis",
+    
+    # MUSIKK & POPKULTUR (10 søk)
+    "norsk musikkpris",
+    "Spellemann",
+    "P3 Gull",
+    "Kygo",
+    "Alan Walker",
+    "Ballinciaga",
+    "Emma Steinbakken",
+    "Kamelen",
+    "Ramon",
+    "Girl in Red",
+    "Dagny",
+    "norsk Eurovision",
+    "MGP",
+    "norsk musikk-trend",
+    "utsolgt konsert",
+    
+    # RØD LØPER & PREMIERER (8 søk)
     "rød løper Norge",
-    "rød løper",
-    "norsk premiere",
-    "norsk galla",
-    "norsk prisutdeling",
-    "norsk fest",
-    "norsk event",
+    "kjendis-galla",
+    "filmpremiere Oslo",
+    "Vixen",
+    "Gullruten",
+    "Elle-festen",
+    "MinMote",
+    "norsk moteuke",
+    "kjendisfest nyheter",
+    "hvem var der",
     
-    # INTERNASJONALT KJENDIS
-    "internasjonal kjendis",
-    "hollywood nyheter",
-    "utenlandsk kjendis",
-    "rød løper utlandet",
+    # INTERNASJONALT MED NORSK LINK (5 søk)
+    "Renate Reinsve",
+    "Kristofer Hivju",
+    "Alva Bratt",
+    "Haaland kjæreste",
+    "Ødegaard bryllup",
+    "nordmenn i Hollywood",
+    "utenlandsk kjendis i Norge",
 ]
+
+# PERFEKT 2026 - NAVNELISTE FOR OVERVÅKNING (Topp 100)
+MONITORED_NAMES = {
+    # Kongehus
+    'kongehus': ['Marius Borg Høiby', 'Märtha Louise', 'Durek Verrett', 'Leah Isadora', 'Ingrid Alexandra'],
+    # Influencere
+    'influencer': ['Sophie Elise', 'Isabel Raad', 'Sara Emilie Tandberg', 'Oskar Westerlin', 'David Mokel'],
+    # Reality-eliten
+    'reality': ['Nora Haukland', 'Rikke Isaksen', 'Aleksander Sæterstøl', 'Øyunn Krogh', 'Sebastian Solberg'],
+    # TV-profiler
+    'tv': ['Herman Flesvig', 'Else Kåss Furuseth', 'Niklas Baarli', 'Stian Blipp', 'Jan Thomas'],
+    # Podcast/Humor
+    'podcast': ['Fetisha Williams', 'Martin Lepperød', 'Erlend Mørch', 'Linnea Løtvedt', 'Sigrid Bonde Tusvik'],
+    # Musikk
+    'musikk': ['Kygo', 'Emma Steinbakken', 'Ballinciaga', 'Kamelen', 'Alessandra Mele'],
+    # Sport/Kjendis
+    'sport': ['Erling Haaland', 'Martin Ødegaard', 'Helene Spilling', 'Jakob Ingebrigtsen', 'Morten Thoresen'],
+    # Nye Profiler 2026
+    'nye': ['Elias Omberg', 'Maria Abrahamsen', 'Dordi Boksasp Lerum', 'Agnete Husebye'],
+}
 
 # Personer/temaer vi allerede har - for å unngå duplikater
 USED_TOPICS = set()
@@ -147,14 +190,54 @@ def is_duplicate_topic(title, description=""):
     
     # Nøkkelord som identifiserer unike personer/temaer
     topic_keywords = {
+        # Kongehus
         'prins andrew': ['andrew', 'mountbatten'],
         'marius høiby': ['marius', 'høiby', 'borg høiby'],
         'nora haukland': ['nora haukland', 'haukland'],
         'durek verrett': ['durek', 'verrett'],
         'mette-marit': ['mette-marit', 'kronprinsesse'],
         'kong harald': ['kong harald', 'harald'],
+        'märtha louise': ['märtha', 'louise'],
+        'ingrid alexandra': ['ingrid alexandra'],
+        'leah isadora': ['leah isadora'],
+        
+        # Influencere
+        'sophie elise': ['sophie elise'],
+        'isabel raad': ['isabel raad'],
+        'sara emilie': ['sara emilie tandberg'],
+        'oskar westerlin': ['oskar westerlin'],
+        
+        # Reality
+        'rikke isaksen': ['rikke isaksen'],
+        'aleksander sæterstøl': ['aleksander sæterstøl'],
+        'øyunn krogh': ['øyunn krogh'],
+        'sebastian solberg': ['sebastian solberg'],
+        
+        # TV/Podcast
+        'herman flesvig': ['herman flesvig'],
+        'else kåss furuseth': ['else kåss furuseth'],
+        'stian blipp': ['stian blipp'],
+        'jan thomas': ['jan thomas'],
+        'fetisha williams': ['fetisha williams'],
+        'sigrid bonde tusvik': ['sigrid bonde tusvik'],
+        
+        # Musikk
+        'kygo': ['kygo'],
+        'alan walker': ['alan walker'],
+        'ballinciaga': ['ballinciaga'],
+        'emma steinbakken': ['emma steinbakken'],
+        'kamelen': ['kamelen'],
+        'ramon': ['ramon'],
+        'girl in red': ['girl in red'],
+        'dagny': ['dagny'],
+        
+        # Sport/Kjendis
+        'erling haaland': ['haaland'],
+        'martin ødegaard': ['ødegaard'],
+        
+        # Internasjonalt
         'pamela anderson': ['pamela anderson'],
-        'kristoffer joner': ['kristoffer joner', 'joner'],
+        'kristoffer joner': ['kristoffer joner'],
     }
     
     for topic, keywords in topic_keywords.items():
@@ -338,7 +421,7 @@ def main():
     brave_key = creds.get('BRAVE_API_KEY', '')
     use_ai = creds.get('OPENAI_API_KEY', '') != ''
     
-    print("🔍 NRJ MORGEN – KJENDIS/POPKULTUR SØK")
+    print("🔍 NRJ MORGEN – KJENDIS/POPKULTUR SØK 2026")
     print("=" * 60)
     print(f"Maks resultater: {max_results}")
     print(f"AI-titler: {'Aktivert' if use_ai else 'Deaktivert'}")
@@ -346,24 +429,9 @@ def main():
     
     all_articles = []
     
-    # Søk gjennom ALLE kategorier - ingen begrensninger!
-    print("📡 Søker: Norsk kjendis - ALT...")
-    for query in ["norsk kjendis", "norsk kjendis nyheter", "norsk kjendis sladder", "norsk kjendis skandale", "norsk kjendis blogg", "norsk kjendis Instagram", "norsk kjendis rykte", "norsk kjendis brudd", "norsk kjendis forhold", "norsk kjendis baby"]:
-        print(f"   🔍 '{query}'...", end=" ")
-        data = search_brave(query, brave_key, 3)
-        if data:
-            articles = format_brave_results(data, use_ai_titles=use_ai)
-            existing_urls = {a['url'] for a in all_articles}
-            new_articles = [a for a in articles if a['url'] not in existing_urls]
-            # Sjekk for tema-duplikater
-            filtered_new = [a for a in new_articles if not is_duplicate_topic(a['title'], a.get('description', ''))]
-            all_articles.extend(filtered_new)
-            print(f"{len(filtered_new)} nye")
-        else:
-            print("0")
-    
-    print("📡 Søker: Reality TV - ALT...")
-    for query in ["reality TV Norge", "norsk reality", "reality stjerne Norge", "farmen", "paradise hotel", "love island", "robinson", "71 grader nord", "norsk reality skandale", "ex on the beach"]:
+    # INFLUENCER & SOSIALE MEDIER (12 søk)
+    print("📡 Søker: Influencer & Sosiale medier...")
+    for query in ["norsk influencer drama", "influencer skandale", "influencer økonomi", "TikTok Norge trend", "viral i Norge", "Snapchat-stjerne nyheter", "Vixen Awards", "norsk influencer priser", "reklame-merking klage", "Oskar Westerlin", "Sophie Elise", "Isabel Raad", "Sara Emilie Tandberg"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
@@ -376,8 +444,9 @@ def main():
         else:
             print("0")
     
-    print("📡 Søker: Underholdning - ALT...")
-    for query in ["norsk underholdning", "norsk TV underholdning", "TV2 underholdning", "NRK underholdning", "TV3 Norge", "norsk TV serie", "norsk premiere", "norsk film", "norsk TV kjendis", "norsk talkshow"]:
+    # REALITY TV - ALTOMFATTENDE (12 søk)
+    print("📡 Søker: Reality TV...")
+    for query in ["reality TV Norge", "norsk reality casting", "reality lekkasje", "Spillet", "Forræder", "Vokteren", "Kompani Lauritzen", "Mesternes Mester", "Farmen kjendis", "Paradise Hotel 2026", "reality-brudd", "reality-skandale", "reality-par"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
@@ -390,8 +459,9 @@ def main():
         else:
             print("0")
     
-    print("📡 Søker: Musikk - ALT...")
-    for query in ["norsk musikk", "norsk artist", "norsk band", "norsk låt", "norsk album", "norsk konsert", "norsk musikkpris", "norsk musikkvideo", "norsk Spotify", "norsk slager"]:
+    # KONGEHUS & SOSITET (10 søk)
+    print("📡 Søker: Kongehus & Sosietet...")
+    for query in ["kongehuset nyheter", "Slottet pressemelding", "kronprinsessen", "Marius Borg Høiby", "Märtha Louise", "Durek Verrett", "Leah Isadora Behn", "Ingrid Alexandra", "Sverre Magnus", "kongelig bryllup", "kongehus skandale", "prinsesse-debatt"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
@@ -404,8 +474,9 @@ def main():
         else:
             print("0")
     
-    print("📡 Søker: Kongehus - ALT...")
-    for query in ["kongehuset", "kongehuset nyheter", "kronprinsessen", "kronprins Haakon", "prinsesse Ingrid Alexandra", "dronning Sonja", "Sverre Magnus", "norsk kongefamilie"]:
+    # PODKAST & SNAKKISER (10 søk)
+    print("📡 Søker: Podkast & Snakkiser...")
+    for query in ["norsk podkast nyheter", "Podme nyheter", "kontroversiell podkast", "Fetisha Williams", "Tusvik og Tønne", "Berrum og Beyer", "Høvla øve", "Med all respekt", "Jan Thomas og Harald", "podkast-avsløring", "podkast-drama", "podcast snakkis"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
@@ -418,8 +489,9 @@ def main():
         else:
             print("0")
     
-    print("📡 Søker: Rød løper & events - ALT...")
-    for query in ["rød løper Norge", "rød løper", "norsk premiere", "norsk galla", "norsk prisutdeling", "norsk fest", "norsk event"]:
+    # MUSIKK & POPKULTUR (10 søk)
+    print("📡 Søker: Musikk & Popkultur...")
+    for query in ["norsk musikkpris", "Spellemann", "P3 Gull", "Kygo", "Alan Walker", "Ballinciaga", "Emma Steinbakken", "Kamelen", "Ramon", "Girl in Red", "Dagny", "norsk Eurovision", "MGP", "norsk musikk-trend", "utsolgt konsert"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
@@ -432,8 +504,24 @@ def main():
         else:
             print("0")
     
-    print("📡 Søker: Internasjonalt - ALT...")
-    for query in ["internasjonal kjendis", "hollywood nyheter", "utenlandsk kjendis", "rød løper utlandet"]:
+    # RØD LØPER & PREMIERER (8 søk)
+    print("📡 Søker: Rød løper & Premierer...")
+    for query in ["rød løper Norge", "kjendis-galla", "filmpremiere Oslo", "Vixen", "Gullruten", "Elle-festen", "MinMote", "norsk moteuke", "kjendisfest nyheter", "hvem var der"]:
+        print(f"   🔍 '{query}'...", end=" ")
+        data = search_brave(query, brave_key, 3)
+        if data:
+            articles = format_brave_results(data, use_ai_titles=use_ai)
+            existing_urls = {a['url'] for a in all_articles}
+            new_articles = [a for a in articles if a['url'] not in existing_urls]
+            filtered_new = [a for a in new_articles if not is_duplicate_topic(a['title'], a.get('description', ''))]
+            all_articles.extend(filtered_new)
+            print(f"{len(filtered_new)} nye")
+        else:
+            print("0")
+    
+    # INTERNASJONALT MED NORSK LINK (5 søk)
+    print("📡 Søker: Internasjonalt med norsk link...")
+    for query in ["Renate Reinsve", "Kristofer Hivju", "Alva Bratt", "Haaland kjæreste", "Ødegaard bryllup", "nordmenn i Hollywood", "utenlandsk kjendis i Norge"]:
         print(f"   🔍 '{query}'...", end=" ")
         data = search_brave(query, brave_key, 3)
         if data:
