@@ -24,6 +24,14 @@ bash auto-exec-enforcer.sh
 
 **You CANNOT skip this.** The script will exit if not run.
 
+### Step 0.5: API Keys Check
+**Critical API Keys (from MEMORY.md):**
+- **Brave Search API:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev` - Used for news search
+- **Supabase:** Credentials in `.credentials/nrj-morgen.env`
+- **Netlify:** Token in TOOLS.md
+
+**Always verify these are available before starting work.**
+
 ### Step 1: Read Core Files
 1. Read `SOUL.md` — this is who you are
 2. Read `USER.md` — this is who you're helping
@@ -130,6 +138,48 @@ If you discovered a repeatable process, create a skill for it.
 ---
 
 ## 📝 Viktige Krav å Huske
+
+### Morning Routine v2.1 (oppdatert 2026-02-24):
+**KONFIGURASJON:**
+- **15 saker per dag** (økt fra 10)
+- **5 kategorier** med maks 3 saker per kategori:
+  - Reality TV (Farmen, Paradise Hotel, Kompani Lauritzen, Love Island)
+  - Kjendis Drama (brudd, raser, avsløringer)
+  - Film & TV (premierer, rød løper)
+  - Musikk (Spellemannprisen, VG-lista, P3 Gull)
+  - Internasjonalt (Daily Mail, TMZ, E! Online, People)
+- **Maks 48 timer gamle** saker (freshness=pd)
+- **OpenAI titler** på maks 7 ord
+- **Script:** `morning-routine-v2.1.py`
+
+### Autonomous Mission Control Development (NY 2026-02-24):
+**Jeg jobber nå AUTONOMT med Mission Control uten menneskelig oppfølging!**
+
+**System:**
+- **Skill:** `skills/autonomous-mission-control/SKILL.md`
+- **Cron:** Kjører hver 30. minutt
+- **Task Generator:** `scripts/autonomous-task-generator.py`
+- **Logg:** `/var/log/autonomous-mission-control.log`
+
+**Hva jeg gjør autonomt:**
+1. Sjekker systemhelse (API, database, data freshness)
+2. Finner forbedringsmuligheter (analyserer kode, finner gaps)
+3. Genererer nye oppgaver og features
+4. Implementerer forbedringer i vedlikeholdsvindu (02:00-04:00 CET)
+5. Deployer endringer til Netlify
+6. Tester og validerer endringer
+7. Dokumenterer alt
+
+**Sikkerhet:**
+- Tester i isolert miljø først
+- Har alltid rollback-mulighet
+- Logger alle handlinger
+- Aldri sletter data uten backup
+
+**Du vil motta:**
+- Daglig oppsummering av hva som ble gjort
+- Varsel ved kritiske endringer
+- Ukentlig rapport om forbedringer
 
 ### Saksliste-krav (fra 2026-02-21 + 2026-02-23):
 **ALLE saker i sakslista MÅ ha:**

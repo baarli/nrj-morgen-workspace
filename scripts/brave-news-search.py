@@ -3,51 +3,38 @@
 NRJ MORGEN - SANNTIDS NYHETSSØK
 Optimalisert for kommersiell morgenradio med høyt tempo og bred appell (18–35)
 
-Utfør et sanntids nyhetssøk optimalisert for NRJ Morgen.
+BRAVE API KEY: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 
-Mål:
-Finn de 15 beste og mest underholdende sakene fra siste 24–48 timer som egner seg 
-for kommersiell morgenradio med høyt tempo og bred appell (18–35).
+VIKTIG - KUN LETT UNDERHOLDNING:
+✅ Kjendisnyheter (brudd, drama, avsløringer)
+✅ Reality-TV (Farmen, Paradise Hotel, Kompani Lauritzen)
+✅ Influencere og profiler
+✅ Film og musikk (premierer, priser)
+✅ Kongehus (lett underholdning)
+✅ Sosiale medier og viral content
 
-Innholdskategorier (prioritert):
-- Norske og internasjonale kjendisnyheter
-- TV-nyheter (underholdning, nye programmer, deltakere, konflikter)
-- Reality (drama, brudd, konflikter, avsløringer, exit)
-- Influencere og profiler med høy SoMe-rekkevidde
-- Skandaler, kontroverser, krangler, rettssaker
-- Rød løper, prisutdelinger, film, musikk
-- Virale øyeblikk med norsk relevans
+❌ KUTTET - IKKE INKLUDER:
+- Sport (fotball, håndball, ski, etc.)
+- Hard politikk (regjering, storting, lovforslag)
+- Krig og konflikt
+- Harde nyheter (drap, ulykker, tragedier)
+- Økonomi og finans
+- Korona og helse
 
-Krav:
-- Kun saker publisert siste 48 timer (prioriter <24t)
-- Kilder: VG, Dagbladet, Nettavisen, TV2, NRK, Se & Hør, Aftenposten + 
-  relevante internasjonale tabloider ved stor norsk interesse
-- Unngå politiske tungvektsaker uten kjendiskobling
-- Prioriter konflikt, overraskelse, brudd, comeback, drama, pinlige øyeblikk, 
-  sterke sitater
+KRAV:
+- KUN saker publisert siste 24 timer (freshness=pd)
+- Maks 48 timer gamle
+- Kilder: VG, Dagbladet, Nettavisen, TV2, NRK, Se & Hør, Aftenposten
+- Prioriter: konflikt, overraskelse, brudd, drama, pinlige øyeblikk
 
 For hver sak lever:
 1. Kort, punchy tittel
 2. 2–3 setninger med essens
-3. Hvorfor den fungerer på NRJ Morgen (drama, humor, gjenkjennelse, 
-   diskusjonspotensial)
+3. Hvorfor den fungerer på NRJ Morgen
 4. Publiseringstidspunkt og kilde
 5. Direkte lenke
 
-Sorter etter:
-1) Aktualitet
-2) Underholdningsverdi
-3) Snakkis-potensial
-
 Returner kun topp 15. Ingen duplikater. Ingen saker eldre enn 48 timer.
-
-VIKTIG - SAKSLISTE-KRAV (oppdatert 2026-02-23):
-- Hver sak MÅ ha bilde i link_metadata: {"image_url": "..."}
-- Hver sak MÅ ha bilde i description: <img src="..." alt="..." />
-- Hver sak MÅ ha created_by satt til BaarliClaw: 10aa1508-6d52-490c-8ae5-fa3da9a152c4
-- Hver sak MÅ ha notes med format: "[Første setning]\n\nKilde: [Kilde]"
-- Hver sak MÅ ha link_url med direkte lenke til artikkel
-- Se: .config/nrj-morgen-config.md for full konfigurasjon
 """
 
 import os
@@ -234,24 +221,34 @@ def is_relevant_source(url):
     return any(source in url_lower for source in relevant_sources)
 
 def is_excluded(title, description):
-    """Sjekk om saken skal ekskluderes"""
+    """Sjekk om saken skal ekskluderes - KUTT: sport, hard politikk, krig, harde nyheter"""
     combined = (title + ' ' + description).lower()
     
-    # Ekskluder politiske tungvektsaker uten kjendiskobling
-    political_heavy = ['politikk', 'storting', 'regjering', 'lovforslag', 'budsjett']
+    # HARD EKSKLUDERING - disse skal ALLTID kuttes
+    hard_excluded = [
+        'fotball', 'krig', 'terror', 'død', 'tragedie', 'ulykke', 'drap',
+        'skudd', 'vold', 'politi', 'pågripelse', 'fengsel', 'dom', 'rettssak',
+        'regjering', 'storting', 'parti', 'politiker', 'lovforslag', 'budsjett',
+        'skatt', 'økonomi', 'finans', 'rente', 'inflasjon', 'sykehus', 'korona',
+        'skiforbundet', 'langrenn', 'ski', 'hopp', 'alpint', 'skiskyting',
+        'fotballforbundet', 'håndball', 'volleyball', 'basketball', 'ishockey'
+    ]
+    
+    for word in hard_excluded:
+        if word in combined:
+            return True
+    
+    # EKSKLUDER sport (med mindre det er kjendis-relatert)
+    sport_words = ['seriegull', 'gull', 'sølv', 'bronse', 'medalje', 'cup', 'liga', 
+                   'kamp', 'seier', 'tap', 'spiller', 'laget', 'trener', 'slår',
+                   'konkurrere', 'konkurranse', 'mesterskap', 'forbund']
+    has_sport = any(word in combined for word in sport_words)
     has_celebrity = any(word in combined for word in [
-        'kjendis', 'artist', 'skuespiller', 'influencer', 'profil'
+        'kjendis', 'artist', 'skuespiller', 'influencer', 'profil', 'rampelys'
     ])
     
-    if all(word in combined for word in political_heavy) and not has_celebrity:
+    if has_sport and not has_celebrity:
         return True
-    
-    # Ekskluder spesifikke temaer
-    excluded = ['fotball', 'krig', 'terror', 'død', 'tragedie']
-    if any(word in combined for word in excluded):
-        # Men behold hvis det er kjendis-relatert
-        if not has_celebrity:
-            return True
     
     return False
 
@@ -271,43 +268,71 @@ def main():
     print(f"Målgruppe: 18-35 år, kommersiell morgenradio")
     print("")
     
-    # Optimaliserte søk for NRJ Morgen
+    # Optimaliserte søk for NRJ Morgen - FOKUS: Lett underholdning, maks 48 timer gamle
+    # KUTTET: Sport, hard politikk, krig, harde nyheter
     search_queries = [
-        # Kjendis-fokus
-        "site:dagbladet.no kjendis",
+        # Kjendis-fokus (lett underholdning)
+        "site:dagbladet.no kjendis brudd",
+        "site:dagbladet.no kjendis raser",
+        "site:dagbladet.no kjendis avslører",
         "site:seher.no kjendis",
+        "site:seher.no reality",
         "site:nettavisen.no kjendis",
         "site:vg.no rampelys",
+        "site:vg.no kjendis reagerer",
         
-        # TV og Reality
+        # TV og Reality (underholdning)
         "site:tv2.no underholdning",
-        "site:nrk.no kultur",
-        "Farmen kjendis",
-        "Paradise Hotel",
+        "site:nrk.no kultur reality",
+        "Farmen Kjendis",
+        "Paradise Hotel Norge",
         "Spillet TV 2",
         "Kompani Lauritzen",
+        "Love Island Norge",
+        "Ex on the Beach Norge",
         
         # Influencere og profiler
         "Sophie Elise",
         "Isabel Raad",
         "Oskar Westerlin",
         "Marius Borg Høiby",
+        "Mikael Simpson",
+        "Christine Dancke",
         
-        # Kongehus (alltid interessant)
+        # Kongehus (lett underholdning)
         "Mette-Marit",
         "Märtha Louise",
         "kronprinsessen",
+        "prinsesse Ingrid Alexandra",
         
-        # Film og musikk
+        # Film og musikk (underholdning)
         "Renate Reinsve",
         "Kristofer Hivju",
+        "Aksel Hennie",
         "Spellemannprisen",
         "P3 Gull",
+        "VG-lista",
+        "Eurovision Norge",
         
-        # Skandaler og drama
+        # Skandaler og drama (lett underholdning)
         "brudd kjendis",
+        "kjendispar slutt",
         "krangel reality",
-        "avsløring",
+        "avsløring reality",
+        "deltaker exit",
+        "raser mot",
+        "slakter",
+        "hylles",
+        "vekker oppsikt",
+        
+        # Premier og events
+        "premiere TV Norge",
+        "rød løper Norge",
+        "premiere film Norge",
+        
+        # Sosiale medier og viral
+        "TikTok Norge viral",
+        "Instagram Norge influencer",
     ]
     
     print(f"📡 Starter {len(search_queries)} målrettede søk...")

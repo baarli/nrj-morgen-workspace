@@ -1,6 +1,11 @@
 #!/bin/bash
 # /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
-# INTEGRERT MORGENRUTINE - Bruker faktisk alle skills
+# INTEGRERT MORGENRUTINE v2.1 - 15 saker med god spredning
+# Sist oppdatert: 2026-02-24
+# - 15 saker per dag (økt fra 10)
+# - 5 kategorier med maks 3 saker per kategori
+# - OpenAI-genererte titler (maks 7 ord)
+# - Maks 48 timer gamle saker
 
 set -e
 
@@ -128,13 +133,21 @@ fi
 echo ""
 
 # =============================================================================
-# STEG 8: INSERT TIL SUPABASE
+# STEG 8: MORNING ROUTINE v2.1 - Hent og insert 15 saker
 # =============================================================================
-echo "💾 STEG 8: Insert til Supabase"
-echo "───────────────────────────────"
-if [ -f "/tmp/morning-news.json" ]; then
-    echo "   💾 Inserter saker i database..."
-    # Kjør faktisk insert
+echo "💾 STEG 8: Morning Routine v2.1"
+echo "────────────────────────────────"
+echo "   🔄 Kjører Morning Routine v2.1..."
+echo "   📊 Henter 15 saker fra 5 kategorier..."
+echo "   🤖 Genererer OpenAI-titler (maks 7 ord)..."
+
+# Kjør Morning Routine v2.1
+python3 /root/.openclaw/workspace/scripts/morning-routine-v2.1.py > /tmp/morning-v2.1.log 2>&1
+
+if [ -f "/tmp/morning-routine-v2-result.json" ]; then
+    echo "   ✅ Morning Routine v2.1 fullført"
+    
+    # Insert til Supabase
     python3 << 'PYEOF'
 import json
 import urllib.request
@@ -152,14 +165,16 @@ TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 TODAY = os.popen('TZ=Europe/Oslo date -d "+1 day" +%Y-%m-%d').read().strip()
 
 try:
-    with open('/tmp/morning-news.json', 'r') as f:
+    with open('/tmp/morning-routine-v2-result.json', 'r') as f:
         data = json.load(f)
     
-    articles = data.get('articles', [])[:10]
+    # Støtter både top_10 og top_15
+    articles = data.get('top_15', data.get('top_10', []))
     inserted = 0
     
     for article in articles:
-        title = article.get('title', '')
+        # Bruk short_title hvis tilgjengelig
+        title = article.get('short_title', article.get('title', ''))
         url = article.get('url', '')
         
         if not title or not url:
@@ -184,7 +199,7 @@ try:
             "category": "TALK",
             "show_date": TODAY,
             "link_url": url,
-            "notes": article.get('summary', f"Kilde: {article.get('source', 'Ukjent')}"),
+            "notes": f"{article.get('description', '')[:300]}\n\nUnderholdningsverdi: {article.get('score', 70)}/100\nKilde: {article.get('category', 'Ukjent')}",
             "is_pinned": False,
             "is_completed": False
         }
@@ -207,12 +222,12 @@ try:
         except:
             pass
     
-    print(f"   ✅ {inserted} saker insertet")
+    print(f"   ✅ {inserted} av {len(articles)} saker insertet")
 except Exception as e:
     print(f"   ⚠️  Feil: {e}")
 PYEOF
 else
-    echo "   ⚠️  Ingen nyheter å inserte"
+    echo "   ⚠️  Morning Routine v2.1 feilet - sjekk logg: /tmp/morning-v2.1.log"
 fi
 echo ""
 

@@ -18,6 +18,8 @@ mkdir -p "$BUILD_DIR"
 
 # Copy the external version (no local dependencies)
 cp "$MISSION_CONTROL/public/index-external.html" "$BUILD_DIR/index.html"
+cp "$MISSION_CONTROL/public/cron-control.html" "$BUILD_DIR/cron-control.html"
+cp "$MISSION_CONTROL/public/sakslista-pro.html" "$BUILD_DIR/sakslista-pro.html" 2>/dev/null || true
 
 echo "✅ Build created in: $BUILD_DIR"
 echo ""

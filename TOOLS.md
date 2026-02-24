@@ -9,6 +9,40 @@
 - **Token:** `nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092`
 - **Deploy:** `cd mission-control/public && netlify deploy --prod`
 
+### Morning Routine v2.1 (Oppdatert 2026-02-24)
+
+**Konfigurasjon:**
+- **Antall saker:** 15 per dag
+- **Kategorier:** 5 (maks 3 saker per kategori)
+  - Reality TV: Farmen, Paradise Hotel, Kompani Lauritzen, Love Island
+  - Kjendis Drama: brudd, raser, avsløringer
+  - Film & TV: premierer, rød løper
+  - Musikk: Spellemannprisen, VG-lista, P3 Gull
+  - Internasjonalt: Daily Mail, TMZ, E! Online, People
+- **Alder:** Maks 48 timer (freshness=pd)
+- **Titler:** OpenAI-generert, maks 7 ord
+
+**Script:**
+```bash
+# Kjør Morning Routine v2.1
+python3 /root/.openclaw/workspace/scripts/morning-routine-v2.1.py
+
+# Auto-insert til Supabase
+python3 /tmp/add-top10-tomorrow.py
+```
+
+**Integrert rutine:**
+```bash
+bash /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
+```
+
+---
+
+### Brave Search API
+- **API Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **Brukes i:** Morning Routine, nyhetssøk, trending
+- **Dokumentasjon:** https://api.search.brave.com/app/documentation
+
 ### NRJ Morgen Dashboard
 - **IKKE sakslista** - eget dashboard-system
 - **Panel ID:** `0b1f6b6b-3fde-434b-b7c8-dcf306beea72`
