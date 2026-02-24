@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Git & Deploy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea; --primary-dark: #764ba2; --success: #10b981;
+            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --dark: #0f172a; --dark-light: #1e293b; --text: #e2e8f0;
+            --text-muted: #94a3b8; --text-dim: #64748b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--text); min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px; background: rgba(30, 41, 59, 0.98); padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1); position: fixed;
+            height: 100vh; overflow-y: auto; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .nav { list-style: none; }
+        .nav li { margin-bottom: 8px; }
+        .nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: var(--text-muted); text-decoration: none; transition: all 0.2s; }
+        .nav a:hover, .nav a.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .main { flex: 1; margin-left: 280px; padding: 32px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 28px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; }
+        .repo-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .repo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .repo-header h3 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .repo-status { display: flex; gap: 16px; margin-bottom: 16px; font-size: 14px; color: var(--text-muted); }
+        .repo-status span { display: flex; align-items: center; gap: 6px; }
+        .status-clean { color: var(--success); }
+        .status-dirty { color: var(--warning); }
+        .commit-list { background: rgba(15, 23, 42, 0.3); border-radius: 8px; padding: 16px; }
+        .commit-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .commit-item:last-child { border-bottom: none; }
+        .commit-hash { font-family: monospace; color: var(--primary); font-size: 13px; }
+        .commit-message { flex: 1; font-size: 14px; }
+        .commit-date { font-size: 12px; color: var(--text-dim); }
+        .deploy-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .notification-container { position: fixed; top: 20px; right: 20px; z-index: 1001; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
+    </style>
+    <script src="realtime-collaboration.js" defer>
+    <script src="mobile-experience.js" defer></script>
+    <script src="ai-content-suggestions.js" defer></script>
+    <script src="shared-navigation.js" defer></script>
+    <link rel="manifest" href="/manifest.json">
+    <script src="dark-mode-manager.js" defer></script>
+    <script src="security-manager.js" defer></script>
+    <script src="test-suite.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Standard Navigation Template - Copy this to all HTML files -->
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">🚀</div>
+        <div>
+            <h1 style="font-size: 18px; margin: 0;">Mission Control</h1>
+            <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 0 0;">v3.0</p>
+        </div>
+    </div>
+    <ul class="nav">
+        <li><a href="total-control.html"><i class="fas fa-home"></i> Oversikt</a></li>
+        <li><a href="sakslista-pro.html"><i class="fas fa-list"></i> Saker</a></li>
+        <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analyse</a></li>
+        <li><a href="ai-assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+        <li><a href="widget-dashboard.html"><i class="fas fa-th-large"></i> Widgets</a></li>
+        <li><a href="podkast-control.html"><i class="fas fa-podcast"></i> Podkast</a></li>
+        <li><a href="cron-control.html"><i class="fas fa-clock"></i> Cron</a></li>
+        <li><a href="agent-control.html"><i class="fas fa-robot"></i> Agent</a></li>
+        <li><a href="notifications.html"><i class="fas fa-bell"></i> Varsler</a></li>
+        <li><a href="system-monitor.html"><i class="fas fa-heartbeat"></i> System</a></li>
+        <li><a href="database-admin.html"><i class="fas fa-database"></i> Database</a></li>
+        <li><a href="git-control.html" class="active"><i class="fas fa-code-branch"></i> Git</a></li>
+        <li><a href="api-docs.html"><i class="fas fa-book"></i> API Docs</a></li>
+        <li><a href="innstillinger.html"><i class="fas fa-cog"></i> Innstillinger</a></li>
+    </ul>
+</aside>
+
+        <main class="main">
+            <div class="header">
+                <h2>Git & Deploy</h2>
+                <button class="btn btn-primary" onclick="refreshRepos()"><i class="fas fa-sync"></i> Oppdater</button>
+            </div>
+
+            <div id="repos-container">
+                <!-- Repositories loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <div class="notification-container" id="notification-container"></div>
+
+    <script>
+        const repos = [
+            { name: 'baarliogbenjamin', path: '/root/.openclaw/workspace/baarliogbenjamin', deployTarget: 'Vercel' },
+            { name: 'nrjmorgen-ui', path: '/root/.openclaw/workspace/nrjmorgen-ui', deployTarget: 'Netlify' },
+            { name: 'mission-control', path: '/root/.openclaw/workspace/mission-control', deployTarget: 'Netlify' }
+        ];
+
+        async function loadRepos() {
+            const container = document.getElementById('repos-container');
+            container.innerHTML = '<div style="text-align:center;padding:40px;"><i class="fas fa-spinner fa-spin"></i> Laster...</div>';
+            
+            try {
+                const response = await fetch('http://47.84.19.119:8081/api/git/repos');
+                const data = await response.json();
+                renderRepos(data);
+            } catch (error) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--danger);">Kunne ikke laste repositories</div>';
+            }
+        }
+
+        function renderRepos(repoData) {
+            const container = document.getElementById('repos-container');
+            
+            if (!repoData || repoData.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;">Ingen repositories funnet</div>';
+                return;
+            }
+            
+            container.innerHTML = repoData.map(repo => `
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <h3><i class="fab fa-git-alt"></i> ${repo.name}</h3>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn btn-secondary" onclick="viewLogs('${repo.name}')"><i class="fas fa-file-alt"></i> Logger</button>
+                            <button class="btn btn-primary" onclick="deployRepo('${repo.name}')"><i class="fas fa-rocket"></i> Deploy</button>
+                        </div>
+                    </div>
+                    
+                    <div class="repo-status">
+                        <span class="${repo.clean ? 'status-clean' : 'status-dirty'}">
+                            <i class="fas fa-${repo.clean ? 'check' : 'exclamation'}-circle"></i>
+                            ${repo.clean ? 'Ingen endringer' : 'Ukommitterte endringer'}
+                        </span>
+                        <span><i class="fas fa-code-branch"></i> ${repo.branch || 'main'}</span>
+                        <span><i class="fas fa-clock"></i> Sist oppdatert: Nylig</span>
+                    </div>
+                    
+                    <div class="commit-list">
+                        <div class="commit-item">
+                            <span class="commit-hash">${repo.last_commit?.split(' ')[0] || 'abc123'}</span>
+                            <span class="commit-message">${repo.last_commit?.substring(8) || 'Siste commit'}</span>
+                            <span class="commit-date">Nylig</span>
+                        </div>
+                    </div>
+                    
+                    <div class="deploy-section">
+                        <strong>Deploy-mål:</strong> ${repo.deployTarget || 'Ikke konfigurert'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function deployRepo(repoName) {
+            showNotification(`Deployer ${repoName}...`, 'info');
+            
+            try {
+                const response = await fetch('http://47.84.19.119:8081/api/git/deploy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ repo: repoName })
+                });
+                
+                const result = await response.json();
+                showNotification(`${repoName} deploy startet!`, 'success');
+            } catch (error) {
+                showNotification(`Deploy feilet: ${error.message}`, 'error');
+            }
+        }
+
+        function viewLogs(repoName) {
+            showNotification(`Logger for ${repoName} - kommer snart`, 'info');
+        }
+
+        function refreshRepos() {
+            loadRepos();
+        }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notification-container');
+            const notif = document.createElement('div');
+            notif.style.cssText = `padding: 16px 20px; background: rgba(30,41,59,0.98); border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'});`;
+            notif.textContent = message;
+            container.appendChild(notif);
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadRepos);
+    </script>
+<script src="auto-nav.js"></script>
+    <script src="pwa-manager.js" defer></script>
+</body>
+</html>

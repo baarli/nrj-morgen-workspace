@@ -1,0 +1,277 @@
+2026-02-24 15:04:21,674 - MissionControlAPI - INFO - Total Control API v2.0 running on port 8081
+2026-02-24 15:04:21,674 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:47:42,224 - MissionControlAPI - INFO - Total Control API v2.0 running on port 8081
+2026-02-24 15:47:42,224 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:47:45,734 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+2026-02-24 15:49:48,602 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:49:57,969 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:49:57,971 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:49:57,971 - MissionControlAPI - INFO - Mission Control API v3.0 running on port 8081
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO - Endpoints:
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/health              - Health check
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/status              - API status
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/system/metrics      - System metrics (CPU, RAM, disk)
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/cron/jobs           - List cron jobs
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/podcast/episodes    - Podcast episodes from RSS
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/nrj/saker           - NRJ saker from Supabase
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/nrj/stats           - NRJ stats (Nielsen + Podtoppen)
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   POST /api/routine/morning-v2  - Run Morning Routine v2.1
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO -   GET  /api/metrics             - API metrics
+2026-02-24 15:49:57,972 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:50:19,660 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 15:50:43,921 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 15:51:02,629 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 15:51:19,035 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 15:51:29,241 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+2026-02-24 15:53:39,014 - MissionControlAPI - WARNING - API Error: Authentication required
+2026-02-24 15:53:39,015 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/system/metrics HTTP/1.1" 401 -
+2026-02-24 15:53:54,030 - MissionControlAPI - WARNING - API Error: Authentication required
+2026-02-24 15:53:54,030 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/cron/jobs HTTP/1.1" 401 -
+2026-02-24 15:54:07,046 - MissionControlAPI - WARNING - API Error: Authentication required
+2026-02-24 15:54:07,047 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/system/metrics HTTP/1.1" 401 -
+2026-02-24 15:54:26,096 - MissionControlAPI - WARNING - API Error: Authentication required
+2026-02-24 15:54:26,097 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/system/metrics HTTP/1.1" 401 -
+2026-02-24 15:55:04,400 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - Mission Control API v3.0 running on port 8081
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - Endpoints:
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/health              - Health check
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/status              - API status
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/system/metrics      - System metrics (CPU, RAM, disk)
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/cron/jobs           - List cron jobs
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/podcast/episodes    - Podcast episodes from RSS
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/nrj/saker           - NRJ saker from Supabase
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/nrj/stats           - NRJ stats (Nielsen + Podtoppen)
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   POST /api/routine/morning-v2  - Run Morning Routine v2.1
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO -   GET  /api/metrics             - API metrics
+2026-02-24 15:55:04,402 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:55:28,597 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO - Mission Control API v3.0 running on port 8081
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO - Endpoints:
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/health              - Health check
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/status              - API status
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/system/metrics      - System metrics (CPU, RAM, disk)
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/cron/jobs           - List cron jobs
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/podcast/episodes    - Podcast episodes from RSS
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/nrj/saker           - NRJ saker from Supabase
+2026-02-24 15:55:28,600 - MissionControlAPI - INFO -   GET  /api/nrj/stats           - NRJ stats (Nielsen + Podtoppen)
+2026-02-24 15:55:28,601 - MissionControlAPI - INFO -   POST /api/routine/morning-v2  - Run Morning Routine v2.1
+2026-02-24 15:55:28,601 - MissionControlAPI - INFO -   GET  /api/metrics             - API metrics
+2026-02-24 15:55:28,601 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:20,514 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - Mission Control API v3.0 running on port 8081
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - Endpoints:
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/health              - Health check
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/status              - API status
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/system/metrics      - System metrics (CPU, RAM, disk)
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/cron/jobs           - List cron jobs
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/podcast/episodes    - Podcast episodes from RSS
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/nrj/saker           - NRJ saker from Supabase
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/nrj/stats           - NRJ stats (Nielsen + Podtoppen)
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   POST /api/routine/morning-v2  - Run Morning Routine v2.1
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO -   GET  /api/metrics             - API metrics
+2026-02-24 15:56:20,517 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:26,243 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 15:56:44,158 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - Mission Control API v3.0 running on port 8081
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - WebSocket server on port 8082
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - Endpoints:
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/health              - Health check
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/status              - API status
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/system/metrics      - System metrics (CPU, RAM, disk)
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/cron/jobs           - List cron jobs
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/podcast/episodes    - Podcast episodes from RSS
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/nrj/saker           - NRJ saker from Supabase
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/nrj/stats           - NRJ stats (Nielsen + Podtoppen)
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   POST /api/routine/morning-v2  - Run Morning Routine v2.1
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO -   GET  /api/metrics             - API metrics
+2026-02-24 15:56:44,160 - MissionControlAPI - INFO - ============================================================
+2026-02-24 15:56:52,609 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/health HTTP/1.1" 200 -
+2026-02-24 16:35:54,940 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:38:07,496 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:38:07,500 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:40:26,715 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:40:54,940 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:42:25,499 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:43:36,636 - MissionControlAPI - INFO - 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+2026-02-24 16:44:44,762 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:45:54,943 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:46:43,547 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:49:02,809 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:50:54,942 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:51:01,594 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:53:20,857 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:55:19,649 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:55:54,945 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:57:38,906 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 16:59:37,695 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:00:54,946 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:01:56,957 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:03:55,748 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:05:54,949 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:06:15,004 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:08:13,787 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:10:28,954 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:10:33,080 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:10:54,948 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:12:31,834 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:12:48,218 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:14:51,098 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:15:54,951 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:16:49,882 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:17:06,283 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:19:09,146 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:20:54,950 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:21:07,931 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:21:24,315 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:23:27,195 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:25:25,978 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:25:42,365 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:25:54,952 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:27:45,247 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:29:44,027 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:30:00,414 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:30:54,955 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:32:03,294 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:34:02,075 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:34:18,458 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:35:54,956 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:36:21,343 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:38:20,122 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:38:36,508 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:40:39,386 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:40:54,957 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:42:38,171 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:42:50,463 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:42:54,554 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:44:57,435 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:45:09,725 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:45:54,958 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:46:56,218 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:47:12,603 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:49:15,482 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:49:27,772 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:50:54,960 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:51:14,266 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:51:30,651 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:53:33,533 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:53:45,819 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:55:32,315 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:55:48,700 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:55:54,962 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:57:51,579 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:58:03,867 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 17:59:50,362 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:00:06,747 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:00:54,962 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:02:09,625 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:02:21,914 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:04:08,411 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:04:24,794 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:05:54,964 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:06:27,675 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:06:39,962 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:08:26,459 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:08:42,842 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:10:45,722 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:10:54,965 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:10:58,011 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:12:44,509 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:13:00,890 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:15:03,772 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:15:11,962 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:15:16,058 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:15:54,966 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:17:02,554 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:17:18,938 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:17:31,226 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:19:21,817 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:19:34,105 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:20:54,968 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:21:20,605 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:21:36,987 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:21:49,275 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:23:39,866 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:23:52,154 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:25:38,651 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:25:54,985 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:25:55,076 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:26:07,322 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:27:57,921 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:28:10,202 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:29:56,700 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:30:13,082 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:30:25,371 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:30:54,970 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:32:15,962 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:32:28,250 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:34:14,747 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:34:31,131 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:34:43,419 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:35:54,981 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:36:34,015 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:36:46,299 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:38:08,217 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:38:32,795 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:38:49,178 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:39:01,466 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:40:52,075 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:40:55,132 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:41:04,347 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:42:50,845 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:43:07,233 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:43:19,515 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:45:22,393 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:45:54,992 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:47:08,893 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:47:25,274 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:47:33,466 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:47:37,562 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:49:40,443 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:49:52,730 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:50:54,992 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:51:26,938 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:51:43,323 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:51:55,618 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:53:58,492 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:54:10,778 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:55:44,986 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:55:54,994 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:56:01,370 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:56:13,658 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:58:04,251 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:58:16,538 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 18:58:28,827 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:00:03,035 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:00:19,419 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:00:31,706 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:00:55,001 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:02:22,298 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:02:34,587 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:02:46,877 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:04:21,083 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:04:37,468 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:04:49,755 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:05:54,996 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:06:40,345 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:06:52,640 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:07:04,922 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:08:39,131 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:08:55,513 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:09:07,802 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:10:29,722 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:10:55,000 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:10:58,395 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server
+2026-02-24 19:11:10,688 - MissionControlAPI - WARNING - WebSocket server not available. Install websocket-server package: pip3 install websocket-server

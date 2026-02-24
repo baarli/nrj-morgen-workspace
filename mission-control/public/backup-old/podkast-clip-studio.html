@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podkast Clip Studio - Baarli og Benjamin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea; --primary-dark: #764ba2; --success: #10b981;
+            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --dark: #0f172a; --dark-light: #1e293b; --text: #e2e8f0;
+            --text-muted: #94a3b8; --text-dim: #64748b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--text); min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px; background: rgba(30, 41, 59, 0.98); padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1); position: fixed;
+            height: 100vh; overflow-y: auto; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .nav { list-style: none; }
+        .nav li { margin-bottom: 8px; }
+        .nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: var(--text-muted); text-decoration: none; transition: all 0.2s; cursor: pointer; }
+        .nav a:hover, .nav a.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .main { flex: 1; margin-left: 280px; padding: 32px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 28px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; }
+        .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; }
+        .btn-sm { padding: 8px 16px; font-size: 12px; }
+        
+        /* Waveform Editor */
+        .editor-container { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
+        .episode-selector { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; }
+        .episode-selector h3 { font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .episode-list { max-height: 400px; overflow-y: auto; }
+        .episode-item { padding: 12px; background: rgba(15, 23, 42, 0.5); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+        .episode-item:hover { background: rgba(255,255,255,0.05); }
+        .episode-item.active { border-left: 3px solid var(--primary); background: rgba(102, 126, 234, 0.1); }
+        .episode-item h4 { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .episode-item p { font-size: 11px; color: var(--text-muted); }
+        
+        .waveform-editor { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; }
+        .waveform-canvas { width: 100%; height: 200px; background: rgba(15, 23, 42, 0.5); border-radius: 8px; margin-bottom: 16px; position: relative; overflow: hidden; }
+        .waveform-placeholder { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); flex-direction: column; gap: 12px; }
+        
+        /* Clip Markers */
+        .clip-markers { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .clip-marker { background: rgba(102, 126, 234, 0.2); border: 1px solid var(--primary); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .clip-marker:hover { background: rgba(102, 126, 234, 0.3); }
+        .clip-marker.active { background: var(--primary); }
+        .clip-marker .time { font-weight: 600; }
+        .clip-marker .delete { color: var(--danger); cursor: pointer; }
+        
+        /* Timeline Controls */
+        .timeline-controls { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .time-display { font-family: monospace; font-size: 24px; font-weight: bold; color: var(--primary); min-width: 120px; text-align: center; }
+        .timeline-slider { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; position: relative; cursor: pointer; }
+        .timeline-progress { height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 4px; width: 0%; }
+        .timeline-handle { position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        
+        /* Transport Controls */
+        .transport-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 16px; }
+        .transport-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 18px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .transport-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+        .transport-btn.play { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); font-size: 24px; }
+        
+        /* Clip Settings */
+        .clip-settings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+        .setting-group { background: rgba(15, 23, 42, 0.5); border-radius: 8px; padding: 16px; }
+        .setting-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        .setting-group input, .setting-group select { width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: white; font-size: 14px; }
+        
+        /* AI Detection */
+        .ai-detection { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .ai-detection h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .ai-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+        .ai-option { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .ai-option:hover { border-color: var(--primary); }
+        .ai-option.selected { border-color: var(--primary); background: rgba(102, 126, 234, 0.2); }
+        .ai-option i { font-size: 24px; margin-bottom: 8px; color: var(--primary); }
+        .ai-option h4 { font-size: 13px; margin-bottom: 4px; }
+        .ai-option p { font-size: 11px; color: var(--text-muted); }
+        
+        /* Generated Clips */
+        .clips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .clip-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; transition: all 0.2s; }
+        .clip-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        .clip-card .preview { height: 120px; background: rgba(15, 23, 42, 0.5); border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .clip-card h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .clip-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+        .clip-card .meta { display: flex; gap: 12px; font-size: 11px; color: var(--text-dim); margin-bottom: 12px; }
+        .clip-card .actions { display: flex; gap: 8px; }
+        .clip-card .actions button { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+        
+        /* Export Options */
+        .export-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        .export-option { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .export-option:hover { border-color: var(--success); }
+        .export-option i { font-size: 28px; margin-bottom: 8px; }
+        .export-option h4 { font-size: 13px; margin-bottom: 4px; }
+        .export-option p { font-size: 11px; color: var(--text-muted); }
+        
+        .notification-container { position: fixed; top: 20px; right: 20px; z-index: 1001; display: flex; flex-direction: column; gap: 8px; }
+        .notification { padding: 16px 20px; background: rgba(30, 41, 59, 0.98); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 12px; min-width: 300px; max-width: 400px; animation: slideIn 0.3s ease; }
+        .notification.success { border-left: 4px solid var(--success); }
+        .notification.error { border-left: 4px solid var(--danger); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        @media (max-width: 1200px) { .editor-container { grid-template-columns: 1fr; } .ai-options, .export-options { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; padding: 20px; } .clip-settings { grid-template-columns: 1fr; } }
+    </style>
+    <script src="realtime-collaboration.js" defer>
+    <script src="mobile-experience.js" defer></script>
+    <script src="ai-content-suggestions.js" defer></script>
+    <script src="shared-navigation.js" defer></script>
+    <script src="auto-nav.js" defer></script>
+    <link rel="manifest" href="/manifest.json">
+    <script src="dark-mode-manager.js" defer></script>
+    <script src="security-manager.js" defer></script>
+    <script src="test-suite.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">✂️</div>
+                <div>
+                    <h1 style="font-size: 18px; margin: 0;">Clip Studio</h1>
+                    <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 0 0;">Pro Klippeverktøy</p>
+                </div>
+            </div>
+            <ul class="nav">
+                <li><a href="total-control.html"><i class="fas fa-home"></i> Oversikt</a></li>
+                <li><a href="podkast-control.html"><i class="fas fa-podcast"></i> Podkast</a></li>
+                <li><a href="podkast-clip-studio.html" class="active"><i class="fas fa-cut"></i> Clip Studio</a></li>
+                <li><a href="sakslista-pro.html"><i class="fas fa-list"></i> Saker</a></li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <div class="header">
+                <div>
+                    <h2>🎬 Podkast Clip Studio</h2>
+                    <p style="color: var(--text-muted); margin-top: 4px;">Profesjonelt klippeverktøy med AI-deteksjon</p>
+                </div>
+                <div style="display:flex;gap:12px;">
+                    <button class="btn btn-secondary" onclick="loadEpisodes()"><i class="fas fa-sync-alt"></i> Oppdater</button>
+                    <button class="btn btn-primary" onclick="autoDetectClips()"><i class="fas fa-magic"></i> AI Auto-Klipp</button>
+                </div>
+            </div>
+
+            <!-- AI Detection Section -->
+            <div class="ai-detection">
+                <h3><i class="fas fa-robot" style="color: var(--primary);"></i> AI Deteksjon - Velg hva du vil finne</h3>
+                <div class="ai-options">
+                    <div class="ai-option selected" onclick="selectAIDetection('laughter')">
+                        <i class="fas fa-laugh-beam"></i>
+                        <h4>Latter</h4>
+                        <p>Finn morsomme øyeblikk</p>
+                    </div>
+                    <div class="ai-option" onclick="selectAIDetection('reaction')">
+                        <i class="fas fa-surprise"></i>
+                        <h4>Reaksjoner</h4>
+                        <p>Sjokk, overraskelse</p>
+                    </div>
+                    <div class="ai-option" onclick="selectAIDetection('quote')">
+                        <i class="fas fa-quote-right"></i>
+                        <h4>Citater</h4>
+                        <p>Memorable quotes</p>
+                    </div>
+                    <div class="ai-option" onclick="selectAIDetection('conversation')">
+                        <i class="fas fa-comments"></i>
+                        <h4>Samtale</h4>
+                        <p>Engasjerende dialog</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="runAIDetection()" id="btn-ai-detect">
+                    <i class="fas fa-search"></i> Start AI Analyse
+                </button>
+            </div>
+
+            <!-- Editor Container -->
+            <div class="editor-container">
+                <!-- Episode Selector -->
+                <div class="episode-selector">
+                    <h3><i class="fas fa-list"></i> Episoder</h3>
+                    <div class="episode-list" id="episode-list">
+                        <div class="episode-item active" onclick="selectEpisode(0)">
+                            <h4>Episode 157: Gameboy på sofaen</h4>
+                            <p>45:32 • 2026-02-23</p>
+                        </div>
+                        <div class="episode-item" onclick="selectEpisode(1)">
+                            <h4>Episode 156: Handleapp, hyperfokus...</h4>
+                            <p>52:18 • 2026-02-20</p>
+                        </div>
+                        <div class="episode-item" onclick="selectEpisode(2)">
+                            <h4>Episode 155: Penger og problemer</h4>
+                            <p>48:45 • 2026-02-17</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Waveform Editor -->
+                <div class="waveform-editor">
+                    <div class="waveform-canvas" id="waveform-canvas">
+                        <div class="waveform-placeholder">
+                            <i class="fas fa-wave-square" style="font-size: 48px; opacity: 0.3;"></i>
+                            <p>Velg en episode for å se waveform</p>
+                        </div>
+                    </div>
+
+                    <!-- Clip Markers -->
+                    <div class="clip-markers" id="clip-markers">
+                        <div class="clip-marker active">
+                            <span class="time">02:34 - 03:04</span>
+                            <span style="color: var(--text-muted);">Latter</span>
+                            <i class="fas fa-times delete" onclick="removeMarker(this)"></i>
+                        </div>
+                        <div class="clip-marker">
+                            <span class="time">15:22 - 15:52</span>
+                            <span style="color: var(--text-muted);">Reaksjon</span>
+                            <i class="fas fa-times delete" onclick="removeMarker(this)"></i>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Controls -->
+                    <div class="timeline-controls">
+                        <div class="time-display" id="current-time">00:00</div>
+                        <div class="timeline-slider" id="timeline-slider">
+                            <div class="timeline-progress" id="timeline-progress"></div>
+                            <div class="timeline-handle" id="timeline-handle" style="left: 0%;"></div>
+                        </div>
+                        <div class="time-display" id="total-time">45:32</div>
+                    </div>
+
+                    <!-- Transport Controls -->
+                    <div class="transport-controls">
+                        <button class="transport-btn" onclick="skipBackward()"><i class="fas fa-backward"></i></button>
+                        <button class="transport-btn" onclick="markStart()"><i class="fas fa-flag"></i></button>
+                        <button class="transport-btn play" onclick="togglePlay()" id="play-btn"><i class="fas fa-play"></i></button>
+                        <button class="transport-btn" onclick="markEnd()"><i class="fas fa-flag-checkered"></i></button>
+                        <button class="transport-btn" onclick="skipForward()"><i class="fas fa-forward"></i></button>
+                    </div>
+
+                    <!-- Clip Settings -->
+                    <div class="clip-settings">
+                        <div class="setting-group">
+                            <label>Klipp-lengde</label>
+                            <select id="clip-duration" onchange="updateClipDuration()">
+                                <option value="15">15 sekunder</option>
+                                <option value="30" selected>30 sekunder</option>
+                                <option value="45">45 sekunder</option>
+                                <option value="60">60 sekunder</option>
+                                <option value="custom">Egendefinert</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>Fade In/Out</label>
+                            <select id="fade-duration">
+                                <option value="0">Ingen</option>
+                                <option value="0.5" selected>0.5 sek</option>
+                                <option value="1">1 sek</option>
+                                <option value="2">2 sek</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>Output Format</label>
+                            <select id="output-format">
+                                <option value="mp3" selected>MP3 (Audio)</option>
+                                <option value="mp4">MP4 (Video)</option>
+                                <option value="wav">WAV (Lossless)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-primary" onclick="previewClip()" style="flex: 1;">
+                            <i class="fas fa-play-circle"></i> Forhåndsvis
+                        </button>
+                        <button class="btn btn-success" onclick="generateClip()" style="flex: 1;">
+                            <i class="fas fa-cut"></i> Generer Klipp
+                        </button>
+                        <button class="btn btn-warning" onclick="generateAllClips()" style="flex: 1;">
+                            <i class="fas fa-magic"></i> Generer Alle
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Options -->
+            <h3 style="margin-bottom: 16px;"><i class="fas fa-share-alt" style="color: var(--success);"></i> Eksport til Sosiale Medier</h3>
+            <div class="export-options">
+                <div class="export-option" onclick="exportTo('tiktok')">
+                    <i class="fab fa-tiktok" style="color: #fff;"></i>
+                    <h4>TikTok</h4>
+                    <p>9:16 format</p>
+                </div>
+                <div class="export-option" onclick="exportTo('instagram')">
+                    <i class="fab fa-instagram" style="color: #e4405f;"></i>
+                    <h4>Instagram Reels</h4>
+                    <p>9:16 format</p>
+                </div>
+                <div class="export-option" onclick="exportTo('youtube')">
+                    <i class="fab fa-youtube" style="color: #ff0000;"></i>
+                    <h4>YouTube Shorts</h4>
+                    <p>9:16 format</p>
+                </div>
+                <div class="export-option" onclick="exportTo('twitter')">
+                    <i class="fab fa-twitter" style="color: #1da1f2;"></i>
+                    <h4>Twitter/X</h4>
+                    <p>16:9 format</p>
+                </div>
+            </div>
+
+            <!-- Generated Clips -->
+            <h3 style="margin-bottom: 16px;"><i class="fas fa-film" style="color: var(--primary);"></i> Genererte Klipp</h3>
+            <div class="clips-grid" id="clips-grid">
+                <div class="clip-card">
+                    <div class="preview"><i class="fas fa-music"></i></div>
+                    <h4>Gameboy-latter-moment.mp3</h4>
+                    <p>Episode 157 • Latter-deteksjon</p>
+                    <div class="meta">
+                        <span><i class="fas fa-clock"></i> 00:30</span>
+                        <span><i class="fas fa-database"></i> 471 KB</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-secondary" onclick="playClip(this)"><i class="fas fa-play"></i> Spill</button>
+                        <button class="btn-primary" onclick="downloadClip(this)"><i class="fas fa-download"></i> Last ned</button>
+                    </div>
+                </div>
+                <div class="clip-card">
+                    <div class="preview"><i class="fas fa-music"></i></div>
+                    <h4>Reaksjon-på-avsløring.mp3</h4>
+                    <p>Episode 157 • Reaksjon-deteksjon</p>
+                    <div class="meta">
+                        <span><i class="fas fa-clock"></i> 00:30</span>
+                        <span><i class="fas fa-database"></i> 468 KB</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-secondary" onclick="playClip(this)"><i class="fas fa-play"></i> Spill</button>
+                        <button class="btn-primary" onclick="downloadClip(this)"><i class="fas fa-download"></i> Last ned</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notifications"></div>
+
+    <script>
+        // State
+        let currentEpisode = null;
+        let isPlaying = false;
+        let currentTime = 0;
+        let clips = [];
+        let aiDetectionMode = 'laughter';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEpisodes();
+            setupTimelineInteractions();
+        });
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(notification);
+            setTimeout(() => notification.remove(), 5000);
+        }
+
+        // Load episodes
+        async function loadEpisodes() {
+            showNotification('Laster episoder...', 'info');
+            // Simulate API call
+            setTimeout(() => {
+                showNotification('Episoder lastet!', 'success');
+            }, 1000);
+        }
+
+        // Select episode
+        function selectEpisode(index) {
+            document.querySelectorAll('.episode-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+            currentEpisode = index;
+            showNotification(`Valgte episode ${index + 1}`, 'info');
+        }
+
+        // AI Detection
+        function selectAIDetection(mode) {
+            aiDetectionMode = mode;
+            document.querySelectorAll('.ai-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function runAIDetection() {
+            const btn = document.getElementById('btn-ai-detect');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyserer...';
+            
+            showNotification(`Starter AI ${aiDetectionMode}-deteksjon...`, 'info');
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search"></i> Start AI Analyse';
+                showNotification(`Fant 3 ${aiDetectionMode}-øyeblikk!`, 'success');
+                addDetectedClips();
+            }, 3000);
+        }
+
+        function addDetectedClips() {
+            const markers = document.getElementById('clip-markers');
+            markers.innerHTML += `
+                <div class="clip-marker">
+                    <span class="time">22:15 - 22:45</span>
+                    <span style="color: var(--text-muted);">${aiDetectionMode}</span>
+                    <i class="fas fa-times delete" onclick="removeMarker(this)"></i>
+                </div>
+            `;
+        }
+
+        // Timeline interactions
+        function setupTimelineInteractions() {
+            const slider = document.getElementById('timeline-slider');
+            const handle = document.getElementById('timeline-handle');
+            let isDragging = false;
+
+            handle.addEventListener('mousedown', () => isDragging = true);
+            document.addEventListener('mouseup', () => isDragging = false);
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const rect = slider.getBoundingClientRect();
+                const percent = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+                updateTimeline(percent);
+            });
+        }
+
+        function updateTimeline(percent) {
+            document.getElementById('timeline-progress').style.width = percent + '%';
+            document.getElementById('timeline-handle').style.left = percent + '%';
+            
+            const totalSeconds = 45 * 60 + 32;
+            currentTime = Math.floor((percent / 100) * totalSeconds);
+            document.getElementById('current-time').textContent = formatTime(currentTime);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Transport controls
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('play-btn');
+            btn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        }
+
+        function skipBackward() {
+            currentTime = Math.max(0, currentTime - 10);
+            updateTimeline((currentTime / (45 * 60 + 32)) * 100);
+        }
+
+        function skipForward() {
+            currentTime = Math.min(45 * 60 + 32, currentTime + 10);
+            updateTimeline((currentTime / (45 * 60 + 32)) * 100);
+        }
+
+        function markStart() {
+            showNotification(`Markert start: ${formatTime(currentTime)}`, 'success');
+        }
+
+        function markEnd() {
+            showNotification(`Markert slutt: ${formatTime(currentTime)}`, 'success');
+        }
+
+        function removeMarker(el) {
+            el.parentElement.remove();
+        }
+
+        // Clip generation
+        function previewClip() {
+            showNotification('Forhåndsviser klipp...', 'info');
+        }
+
+        function generateClip() {
+            showNotification('Genererer klipp...', 'info');
+            setTimeout(() => {
+                showNotification('Klipp generert!', 'success');
+                addClipToGrid();
+            }, 2000);
+        }
+
+        function generateAllClips() {
+            showNotification('Genererer alle klipp...', 'info');
+            setTimeout(() => {
+                showNotification('Alle klipp generert!', 'success');
+            }, 5000);
+        }
+
+        function addClipToGrid() {
+            const grid = document.getElementById('clips-grid');
+            const clipCard = document.createElement('div');
+            clipCard.className = 'clip-card';
+            clipCard.innerHTML = `
+                <div class="preview"><i class="fas fa-music"></i></div>
+                <h4>Nytt-klipp-${Date.now()}.mp3</h4>
+                <p>Episode 157 • Manuelt</p>
+                <div class="meta">
+                    <span><i class="fas fa-clock"></i> 00:30</span>
+                    <span><i class="fas fa-database"></i> 470 KB</span>
+                </div>
+                <div class="actions">
+                    <button class="btn-secondary" onclick="playClip(this)"><i class="fas fa-play"></i> Spill</button>
+                    <button class="btn-primary" onclick="downloadClip(this)"><i class="fas fa-download"></i> Last ned</button>
+                </div>
+            `;
+            grid.insertBefore(clipCard, grid.firstChild);
+        }
+
+        // Export
+        function exportTo(platform) {
+            showNotification(`Eksporterer til ${platform}...`, 'info');
+        }
+
+        function playClip(btn) {
+            showNotification('Spiller av klipp...', 'info');
+        }
+
+        function downloadClip(btn) {
+            showNotification('Laster ned klipp...', 'success');
+        }
+
+        function autoDetectClips() {
+            showNotification('Starter AI auto-deteksjon for alle episoder...', 'info');
+        }
+
+        function updateClipDuration() {
+            const duration = document.getElementById('clip-duration').value;
+            showNotification(`Klipp-lengde satt til ${duration} sekunder`, 'info');
+        }
+    </script>
+    <script src="pwa-manager.js" defer></script>
+</body>
+</html>

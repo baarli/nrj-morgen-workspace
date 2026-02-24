@@ -1,0 +1,91 @@
+{
+  "pending": [
+    {
+      "name": "AI-Powered Content Suggestions",
+      "description": "Use OpenAI to suggest improvements to sakslista items",
+      "priority": "high",
+      "estimated_hours": 4
+    },
+    {
+      "name": "Real-time Collaboration",
+      "description": "Enable multiple users to edit sakslista simultaneously",
+      "priority": "medium",
+      "estimated_hours": 8
+    },
+    {
+      "name": "Advanced Analytics Dashboard",
+      "description": "ML-powered predictions for content performance",
+      "priority": "medium",
+      "estimated_hours": 6
+    }
+  ],
+  "in_progress": [],
+  "backlog": [
+    {
+      "name": "Social Media Integration",
+      "description": "Auto-post clips to TikTok, Instagram, YouTube",
+      "priority": "high",
+      "estimated_hours": 5
+    },
+    {
+      "name": "Voice Control Interface",
+      "description": "Control Mission Control with voice commands",
+      "priority": "low",
+      "estimated_hours": 10
+    },
+    {
+      "name": "Mobile App Wrapper",
+      "description": "PWA or React Native app for mobile",
+      "priority": "medium",
+      "estimated_hours": 12
+    },
+    {
+      "name": "Automated A/B Testing",
+      "description": "Test different headlines and thumbnails automatically",
+      "priority": "medium",
+      "estimated_hours": 7
+    },
+    {
+      "name": "Content Calendar",
+      "description": "Visual calendar for planning posts and releases",
+      "priority": "high",
+      "estimated_hours": 5
+    },
+    {
+      "name": "Competitor Analysis",
+      "description": "Monitor and analyze competitor content",
+      "priority": "low",
+      "estimated_hours": 8
+    },
+    {
+      "name": "Auto-Thumbnail Generation",
+      "description": "AI-generated thumbnails for all content",
+      "priority": "high",
+      "estimated_hours": 6
+    },
+    {
+      "name": "Optimize Database Queries",
+      "description": "Add indexes and optimize slow queries",
+      "priority": "high",
+      "estimated_hours": 3
+    },
+    {
+      "name": "Implement Caching Layer",
+      "description": "Add Redis or similar for API response caching",
+      "priority": "medium",
+      "estimated_hours": 4
+    },
+    {
+      "name": "Compress Assets",
+      "description": "Minify CSS/JS and optimize images",
+      "priority": "medium",
+      "estimated_hours": 2
+    },
+    {
+      "name": "Lazy Loading",
+      "description": "Implement lazy loading for images and data",
+      "priority": "low",
+      "estimated_hours": 3
+    }
+  ]
+}

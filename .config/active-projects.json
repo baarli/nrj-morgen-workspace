@@ -1,0 +1,18 @@
+{
+  "projects": [
+    {
+      "name": "Automated Testing Suite",
+      "description": "Add comprehensive test suite for all features",
+      "tasks": [
+        "Set up testing framework",
+        "Write unit tests",
+        "Add integration tests",
+        "Set up CI/CD pipeline",
+        "Add test coverage reporting"
+      ],
+      "priority": "medium",
+      "started_at": 1771930500,
+      "status": "active"
+    }
+  ]
+}

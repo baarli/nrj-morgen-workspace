@@ -547,6 +547,6 @@ netlify deploy --prod
 
 ---
 
-**Sist oppdatert:** 2026-02-24 18:36
+**Sist oppdatert:** 2026-02-24 18:43
 **Opprettet av:** BaarliClaw
 **Formål:** Garantert riktig bruk av alle systemer

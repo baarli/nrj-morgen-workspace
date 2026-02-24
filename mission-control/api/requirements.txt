@@ -1,0 +1,14 @@
+# Mission Control API - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+psutil>=5.9.0
+
+# Authentication
+PyJWT>=2.8.0
+
+# WebSocket support
+websocket-server>=0.6.4
+
+# Optional but recommended
+python-dotenv>=1.0.0

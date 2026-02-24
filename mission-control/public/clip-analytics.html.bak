@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podkast Clip Analytics - Mission Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="shared-navigation.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea; --primary-dark: #764ba2; --success: #10b981;
+            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --purple: #8b5cf6; --pink: #ec4899; --cyan: #06b6d4;
+            --dark: #0f172a; --dark-light: #1e293b; --dark-lighter: #334155;
+            --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+            --border: rgba(255,255,255,0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--text); min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .main { flex: 1; margin-left: 280px; padding: 32px; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+        .header h2 { font-size: 28px; }
+        .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+        .header-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        
+        /* Buttons */
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; }
+        .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.05); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        
+        /* Time Filter */
+        .time-filter { display: flex; gap: 4px; padding: 4px; background: rgba(15, 23, 42, 0.5); border-radius: 12px; }
+        .time-filter button { padding: 8px 16px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+        .time-filter button:hover { color: var(--text); }
+        .time-filter button.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+        .stat-card {
+            background: rgba(30, 41, 59, 0.7); border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px; transition: transform 0.2s, box-shadow 0.2s;
+            position: relative; overflow: hidden;
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+        .stat-card.success::before { background: linear-gradient(90deg, var(--success), #059669); }
+        .stat-card.warning::before { background: linear-gradient(90deg, var(--warning), #d97706); }
+        .stat-card.danger::before { background: linear-gradient(90deg, var(--danger), #dc2626); }
+        .stat-card.info::before { background: linear-gradient(90deg, var(--info), #1d4ed8); }
+        
+        .stat-card h3 { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .value { font-size: 32px; font-weight: bold; margin-bottom: 4px; }
+        .stat-card .label { font-size: 13px; color: var(--text-dim); }
+        .stat-card .trend { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+        .trend.up { color: var(--success); }
+        .trend.down { color: var(--danger); }
+        .trend.neutral { color: var(--text-muted); }
+        .stat-icon { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0.8; }
+        .stat-icon.purple { background: linear-gradient(135deg, var(--purple), #7c3aed); }
+        .stat-icon.blue { background: linear-gradient(135deg, var(--info), #1d4ed8); }
+        .stat-icon.green { background: linear-gradient(135deg, var(--success), #059669); }
+        .stat-icon.orange { background: linear-gradient(135deg, var(--warning), #d97706); }
+        
+        /* Cards */
+        .card { background: rgba(30, 41, 59, 0.7); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+        .card-title { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .card-actions { display: flex; gap: 8px; }
+        
+        /* Charts */
+        .chart-container { position: relative; height: 300px; }
+        .chart-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { text-align: left; padding: 12px 16px; font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+        .data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .data-table tr:last-child td { border-bottom: none; }
+        
+        /* Badges */
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .badge-info { background: rgba(59, 130, 246, 0.2); color: var(--info); }
+        .badge-purple { background: rgba(139, 92, 246, 0.2); color: var(--purple); }
+        .badge-tiktok { background: rgba(255, 0, 80, 0.2); color: #ff0050; }
+        .badge-instagram { background: rgba(225, 48, 108, 0.2); color: #e1306c; }
+        .badge-youtube { background: rgba(255, 0, 0, 0.2); color: #ff0000; }
+        .badge-twitter { background: rgba(29, 161, 242, 0.2); color: #1da1f2; }
+        
+        /* Platform Cards */
+        .platform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 24px; }
+        .platform-card {
+            background: rgba(30, 41, 59, 0.7); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; text-align: center;
+            transition: all 0.2s; cursor: pointer;
+        }
+        .platform-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        .platform-card.active { border-color: var(--primary); background: rgba(102, 126, 234, 0.1); }
+        .platform-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
+        .platform-icon.tiktok { background: linear-gradient(135deg, #ff0050, #00f2ea); }
+        .platform-icon.instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+        .platform-icon.youtube { background: linear-gradient(135deg, #ff0000, #cc0000); }
+        .platform-icon.twitter { background: linear-gradient(135deg, #1da1f2, #0d8bd9); }
+        .platform-card h4 { font-size: 16px; margin-bottom: 8px; }
+        .platform-card .platform-stat { font-size: 24px; font-weight: bold; margin-bottom: 4px; }
+        .platform-card .platform-label { font-size: 12px; color: var(--text-muted); }
+        
+        /* Clip Item */
+        .clip-item { display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(15, 23, 42, 0.5); border-radius: 12px; margin-bottom: 12px; transition: all 0.2s; }
+        .clip-item:hover { background: rgba(15, 23, 42, 0.7); transform: translateX(4px); }
+        .clip-rank { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; background: rgba(255,255,255,0.1); }
+        .clip-rank.top { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+        .clip-thumbnail { width: 80px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; }
+        .clip-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .clip-duration { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.8); padding: 2px 6px; border-radius: 4px; font-size: 10px; }
+        .clip-info { flex: 1; }
+        .clip-title { font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .clip-meta { font-size: 12px; color: var(--text-muted); display: flex; gap: 12px; }
+        .clip-stats { display: flex; gap: 20px; }
+        .clip-stat { text-align: center; }
+        .clip-stat-value { font-weight: bold; font-size: 16px; }
+        .clip-stat-label { font-size: 11px; color: var(--text-muted); }
+        .clip-actions { display: flex; gap: 8px; }
+        
+        /* Progress Bars */
+        .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+        .progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
+        .progress-fill.primary { background: linear-gradient(90deg, var(--primary), var(--primary-dark)); }
+        
+        /* Live Indicator */
+        .live-indicator { display: inline-flex; align-items: center; gap: 6px; color: var(--success); font-size: 12px; }
+        .live-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        /* Export Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: var(--dark-light); border-radius: 16px; width: 90%; max-width: 500px; transform: scale(0.9); transition: transform 0.3s; }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+        
+        /* Responsive */
+        @media (max-width: 1400px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .platform-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1024px) { .chart-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { 
+            .main { margin-left: 0; padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .platform-grid { grid-template-columns: 1fr; }
+            .clip-item { flex-wrap: wrap; }
+            .clip-stats { width: 100%; justify-content: space-around; margin-top: 12px; }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--dark-lighter); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation injected by shared-navigation.js -->
+        
+        <!-- Main Content -->
+        <main class="main">
+            <div class="header">
+                <div>
+                    <h2><i class="fas fa-chart-line" style="color: var(--primary);"></i> Podkast Clip Analytics</h2>
+                    <p>Track performance of podcast clips across all platforms</p>
+                </div>
+                <div class="header-actions">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        <span>Live Data</span>
+                    </div>
+                    <div class="time-filter">
+                        <button class="active" onclick="setTimeFilter(7)">7 dager</button>
+                        <button onclick="setTimeFilter(30)">30 dager</button>
+                        <button onclick="setTimeFilter(90)">90 dager</button>
+                    </div>
+                    <button class="btn btn-secondary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn btn-primary" onclick="openExportModal()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Key Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fas fa-eye"></i></div>
+                    <h3>Total Views</h3>
+                    <div class="value" id="stat-views">1.2M</div>
+                    <div class="label">Across all platforms</div>
+                    <div class="trend up"><i class="fas fa-arrow-up"></i> +24.5% vs forrige periode</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon green"><i class="fas fa-heart"></i></div>
+                    <h3>Total Likes</h3>
+                    <div class="value" id="stat-likes">89.4K</div>
+                    <div class="label">Engagement</div>
+                    <div class="trend up"><i class="fas fa-arrow-up"></i> +18.2% vs forrige periode</div>
+                </div>
+                <div class="stat-card info">
+                    <div class="stat-icon blue"><i class="fas fa-share"></i></div>
+                    <h3>Total Shares</h3>
+                    <div class="value" id="stat-shares">34.2K</div>
+                    <div class="label">Viral reach</div>
+                    <div class="trend up"><i class="fas fa-arrow-up"></i> +31.8% vs forrige periode</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon orange"><i class="fas fa-download"></i></div>
+                    <h3>Downloads</h3>
+                    <div class="value" id="stat-downloads">12.8K</div>
+                    <div class="label">Audio downloads</div>
+                    <div class="trend up"><i class="fas fa-arrow-up"></i> +12.3% vs forrige periode</div>
+                </div>
+            </div>
+
+            <!-- Platform Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-globe" style="color: var(--primary);"></i> Platform Performance</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-ghost btn-sm" onclick="filterPlatform('all')">All</button>
+                    </div>
+                </div>
+                <div class="platform-grid">
+                    <div class="platform-card" onclick="filterPlatform('tiktok')">
+                        <div class="platform-icon tiktok"><i class="fab fa-tiktok"></i></div>
+                        <h4>TikTok</h4>
+                        <div class="platform-stat">542K</div>
+                        <div class="platform-label">views</div>
+                        <div class="progress-bar"><div class="progress-fill primary" style="width: 85%;"></div></div>
+                    </div>
+                    <div class="platform-card" onclick="filterPlatform('instagram')">
+                        <div class="platform-icon instagram"><i class="fab fa-instagram"></i></div>
+                        <h4>Instagram</h4>
+                        <div class="platform-stat">387K</div>
+                        <div class="platform-label">views</div>
+                        <div class="progress-bar"><div class="progress-fill primary" style="width: 65%;"></div></div>
+                    </div>
+                    <div class="platform-card" onclick="filterPlatform('youtube')">
+                        <div class="platform-icon youtube"><i class="fab fa-youtube"></i></div>
+                        <h4>YouTube</h4>
+                        <div class="platform-stat">198K</div>
+                        <div class="platform-label">views</div>
+                        <div class="progress-bar"><div class="progress-fill primary" style="width: 42%;"></div></div>
+                    </div>
+                    <div class="platform-card" onclick="filterPlatform('twitter')">
+                        <div class="platform-icon twitter"><i class="fab fa-twitter"></i></div>
+                        <h4>Twitter/X</h4>
+                        <div class="platform-stat">73K</div>
+                        <div class="platform-label">views</div>
+                        <div class="progress-bar"><div class="progress-fill primary" style="width: 28%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="chart-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-chart-line" style="color: var(--success);"></i> View Trends</h3>
+                        <select class="btn btn-ghost btn-sm" id="trendMetric" onchange="updateTrendChart()">
+                            <option value="views">Views</option>
+                            <option value="likes">Likes</option>
+                            <option value="shares">Shares</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-chart-pie" style="color: var(--purple);"></i> Platform Distribution</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="platformChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Clips Bar Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-trophy" style="color: var(--warning);"></i> Top Performing Clips</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-ghost btn-sm" onclick="sortClips('views')">By Views</button>
+                        <button class="btn btn-ghost btn-sm" onclick="sortClips('engagement')">By Engagement</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="topClipsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top 10 Clips List -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-list-ol" style="color: var(--info);"></i> Top 10 Clips</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-ghost btn-sm" onclick="refreshClips()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div id="topClipsList">
+                    <!-- Clips injected by JS -->
+                </div>
+            </div>
+
+            <!-- Platform Breakdown Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-table" style="color: var(--cyan);"></i> Platform Breakdown</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Clips</th>
+                            <th>Views</th>
+                            <th>Likes</th>
+                            <th>Shares</th>
+                            <th>Eng. Rate</th>
+                            <th>Growth</th>
+                        </tr>
+                    </thead>
+                    <tbody id="platformTable">
+                        <!-- Injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-download"></i> Export Analytics</h3>
+                <button class="modal-close" onclick="closeExportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Export Format</label>
+                    <select class="btn btn-ghost" style="width: 100%; text-align: left;" id="exportFormat">
+                        <option value="csv">CSV (Excel)</option>
+                        <option value="pdf">PDF Report</option>
+                        <option value="json">JSON Data</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <select class="btn btn-ghost" style="width: 100%; text-align: left;" id="exportRange">
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="all">All time</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Include</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" checked style="accent-color: var(--primary);"> Summary Statistics
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" checked style="accent-color: var(--primary);"> Top Clips
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" checked style="accent-color: var(--primary);"> Platform Breakdown
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" style="accent-color: var(--primary);"> Raw Data
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeExportModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data
+        const mockData = {
+            clips: [
+                { id: 1, title: "Baarli og Benjamin går i terapi - Episode 157", episode: "E157", duration: "0:30", platform: "tiktok", views: 145320, likes: 12450, shares: 3420, downloads: 890, date: "2026-02-24", thumbnail: "🎙️" },
+                { id: 2, title: "Hyperfokus og husarbeid - Funny Moment", episode: "E157", duration: "0:30", platform: "instagram", views: 98200, likes: 8750, shares: 2100, downloads: 650, date: "2026-02-24", thumbnail: "😂" },
+                { id: 3, title: "Terapisession - Den vonde sannheten", episode: "E156", duration: "0:30", platform: "tiktok", views: 87650, likes: 7230, shares: 1890, downloads: 520, date: "2026-02-21", thumbnail: "💭" },
+                { id: 4, title: "Baarli's beste råd - Livsvisdom", episode: "E155", duration: "0:30", platform: "youtube", views: 65400, likes: 5420, shares: 1200, downloads: 2100, date: "2026-02-18", thumbnail: "💡" },
+                { id: 5, title: "Benjamin's tabbe - LOL moment", episode: "E154", duration: "0:30", platform: "twitter", views: 42300, likes: 3800, shares: 4500, downloads: 180, date: "2026-02-15", thumbnail: "🤣" },
+                { id: 6, title: "Kjærlighetssorg - Rårende ærlig", episode: "E153", duration: "0:30", platform: "instagram", views: 38900, likes: 4200, shares: 980, downloads: 340, date: "2026-02-12", thumbnail: "💔" },
+                { id: 7, title: "Vennskap på prøve - Konflikten", episode: "E152", duration: "0:30", platform: "tiktok", views: 34200, likes: 2900, shares: 760, downloads: 280, date: "2026-02-09", thumbnail: "⚡" },
+                { id: 8, title: "Fremtidsplaner - Drømmer og mål", episode: "E151", duration: "0:30", platform: "youtube", views: 29800, likes: 2400, shares: 520, downloads: 890, date: "2026-02-06", thumbnail: "🚀" },
+                { id: 9, title: "Barndomsminner - Nostalgi", episode: "E150", duration: "0:30", platform: "instagram", views: 26500, likes: 2100, shares: 430, downloads: 220, date: "2026-02-03", thumbnail: "👶" },
+                { id: 10, title: "Skandale avsløring - Tea spilling", episode: "E149", duration: "0:30", platform: "twitter", views: 23400, likes: 1850, shares: 3200, downloads: 150, date: "2026-01-31", thumbnail: "☕" },
+                { id: 11, title: "Morgenrutine - Hvordan starte dagen", episode: "E148", duration: "0:30", platform: "tiktok", views: 19800, likes: 1600, shares: 380, downloads: 190, date: "2026-01-28", thumbnail: "🌅" },
+                { id: 12, title: "Podcast bak kulissene - Hemmeligheter", episode: "E147", duration: "0:30", platform: "youtube", views: 15600, likes: 1200, shares: 280, downloads: 650, date: "2026-01-25", thumbnail: "🎧" }
+            ],
+            dailyStats: {
+                7: {
+                    labels: ['18 Feb', '19 Feb', '20 Feb', '21 Feb', '22 Feb', '23 Feb', '24 Feb'],
+                    views: [45000, 52000, 48000, 61000, 58000, 72000, 85000],
+                    likes: [3200, 3800, 3500, 4600, 4200, 5400, 6800],
+                    shares: [1200, 1400, 1300, 1800, 1600, 2200, 2800]
+                },
+                30: {
+                    labels: ['25 Jan', '1 Feb', '8 Feb', '15 Feb', '22 Feb', '24 Feb'],
+                    views: [180000, 220000, 280000, 340000, 520000, 650000],
+                    likes: [12000, 16000, 21000, 28000, 42000, 58000],
+                    shares: [4500, 5800, 7500, 9800, 15000, 21000]
+                },
+                90: {
+                    labels: ['Nov', 'Des', 'Jan', 'Feb'],
+                    views: [450000, 680000, 920000, 1200000],
+                    likes: [32000, 48000, 65000, 89400],
+                    shares: [12000, 18000, 25000, 34200]
+                }
+            },
+            platforms: {
+                tiktok: { views: 542000, likes: 48500, shares: 15200, downloads: 1200, clips: 45, growth: 32.5 },
+                instagram: { views: 387000, likes: 29800, shares: 6200, downloads: 1800, clips: 38, growth: 18.2 },
+                youtube: { views: 198000, likes: 8900, shares: 1800, downloads: 8900, clips: 28, growth: 24.8 },
+                twitter: { views: 73000, likes: 2200, shares: 11000, downloads: 450, clips: 22, growth: 15.3 }
+            }
+        };
+
+        let currentFilter = 7;
+        let trendChart, platformChart, topClipsChart;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            renderTopClips();
+            renderPlatformTable();
+            updateStats();
+        });
+
+        function initCharts() {
+            const ctx1 = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: mockData.dailyStats[7].labels,
+                    datasets: [{
+                        label: 'Views',
+                        data: mockData.dailyStats[7].views,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#667eea',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8', callback: function(value) { return value >= 1000 ? (value/1000) + 'K' : value; } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('platformChart').getContext('2d');
+            platformChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['TikTok', 'Instagram', 'YouTube', 'Twitter'],
+                    datasets: [{
+                        data: [542000, 387000, 198000, 73000],
+                        backgroundColor: ['#ff0050', '#e1306c', '#ff0000', '#1da1f2'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#e2e8f0', padding: 20, usePointStyle: true }
+                        }
+                    }
+                }
+            });
+
+            const ctx3 = document.getElementById('topClipsChart').getContext('2d');
+            topClipsChart = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: mockData.clips.slice(0, 8).map(c => c.title.substring(0, 25) + '...'),
+                    datasets: [{
+                        label: 'Views',
+                        data: mockData.clips.slice(0, 8).map(c => c.views),
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderRadius: 6,
+                        barThickness: 20
+                    }, {
+                        label: 'Likes',
+                        data: mockData.clips.slice(0, 8).map(c => c.likes),
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                        borderRadius: 6,
+                        barThickness: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e2e8f0' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8', callback: function(value) { return value >= 1000 ? (value/1000) + 'K' : value; } }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setTimeFilter(days) {
+            currentFilter = days;
+            document.querySelectorAll('.time-filter button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update trend chart
+            const stats = mockData.dailyStats[days];
+            trendChart.data.labels = stats.labels;
+            trendChart.data.datasets[0].data = stats.views;
+            trendChart.update();
+            
+            // Update stats
+            updateStats();
+        }
+
+        function updateTrendChart() {
+            const metric = document.getElementById('trendMetric').value;
+            const stats = mockData.dailyStats[currentFilter];
+            
+            trendChart.data.datasets[0].label = metric.charAt(0).toUpperCase() + metric.slice(1);
+            trendChart.data.datasets[0].data = stats[metric];
+            
+            const colors = {
+                views: { border: '#667eea', bg: 'rgba(102, 126, 234, 0.1)' },
+                likes: { border: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
+                shares: { border: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' }
+            };
+            
+            trendChart.data.datasets[0].borderColor = colors[metric].border;
+            trendChart.data.datasets[0].backgroundColor = colors[metric].bg;
+            trendChart.data.datasets[0].pointBackgroundColor = colors[metric].border;
+            
+            trendChart.update();
+        }
+
+        function updateStats() {
+            const multiplier = currentFilter === 7 ? 1 : currentFilter === 30 ? 4.2 : 12;
+            document.getElementById('stat-views').textContent = formatNumber(Math.round(1200000 * multiplier / 12));
+            document.getElementById('stat-likes').textContent = formatNumber(Math.round(89400 * multiplier / 12));
+            document.getElementById('stat-shares').textContent = formatNumber(Math.round(34200 * multiplier / 12));
+            document.getElementById('stat-downloads').textContent = formatNumber(Math.round(12800 * multiplier / 12));
+        }
+
+        function renderTopClips() {
+            const container = document.getElementById('topClipsList');
+            const clips = mockData.clips.slice(0, 10);
+            
+            container.innerHTML = clips.map((clip, index) => `
+                <div class="clip-item">
+                    <div class="clip-rank ${index < 3 ? 'top' : ''}">${index + 1}</div>
+                    <div class="clip-thumbnail">
+                        ${clip.thumbnail}
+                        <span class="clip-duration">${clip.duration}</span>
+                    </div>
+                    <div class="clip-info">
+                        <div class="clip-title">${clip.title}</div>
+                        <div class="clip-meta">
+                            <span class="badge badge-${clip.platform}">${clip.platform}</span>
+                            <span><i class="fas fa-calendar"></i> ${clip.date}</span>
+                            <span><i class="fas fa-headphones"></i> ${clip.episode}</span>
+                        </div>
+                    </div>
+                    <div class="clip-stats">
+                        <div class="clip-stat">
+                            <div class="clip-stat-value">${formatNumber(clip.views)}</div>
+                            <div class="clip-stat-label">views</div>
+                        </div>
+                        <div class="clip-stat">
+                            <div class="clip-stat-value">${formatNumber(clip.likes)}</div>
+                            <div class="clip-stat-label">likes</div>
+                        </div>
+                        <div class="clip-stat">
+                            <div class="clip-stat-value">${formatNumber(clip.shares)}</div>
+                            <div class="clip-stat-label">shares</div>
+                        </div>
+                        <div class="clip-stat">
+                            <div class="clip-stat-value">${formatNumber(clip.downloads)}</div>
+                            <div class="clip-stat-label">downloads</div>
+                        </div>
+                    </div>
+                    <div class="clip-actions">
+                        <button class="btn btn-ghost btn-sm" title="View Details"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-ghost btn-sm" title="Download"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPlatformTable() {
+            const tbody = document.getElementById('platformTable');
+            const platforms = [
+                { name: 'TikTok', icon: 'fab fa-tiktok', color: '#ff0050', ...mockData.platforms.tiktok },
+                { name: 'Instagram', icon: 'fab fa-instagram', color: '#e1306c', ...mockData.platforms.instagram },
+                { name: 'YouTube', icon: 'fab fa-youtube', color: '#ff0000', ...mockData.platforms.youtube },
+                { name: 'Twitter/X', icon: 'fab fa-twitter', color: '#1da1f2', ...mockData.platforms.twitter }
+            ];
+            
+            tbody.innerHTML = platforms.map(p => {
+                const engagementRate = ((p.likes + p.shares) / p.views * 100).toFixed(2);
+                return `
+                    <tr>
+                        <td><i class="${p.icon}" style="color: ${p.color}; margin-right: 8px;"></i><strong>${p.name}</strong></td>
+                        <td>${p.clips}</td>
+                        <td>${formatNumber(p.views)}</td>
+                        <td>${formatNumber(p.likes)}</td>
+                        <td>${formatNumber(p.shares)}</td>
+                        <td>${engagementRate}%</td>
+                        <td class="trend up"><i class="fas fa-arrow-up"></i> +${p.growth}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function filterPlatform(platform) {
+            document.querySelectorAll('.platform-card').forEach(card => card.classList.remove('active'));
+            if (platform !== 'all') {
+                event.currentTarget.classList.add('active');
+            }
+            // In a real app, this would filter the data
+            showNotification(`Filtered by ${platform === 'all' ? 'all platforms' : platform}`, 'info');
+        }
+
+        function sortClips(by) {
+            if (by === 'views') {
+                mockData.clips.sort((a, b) => b.views - a.views);
+            } else {
+                mockData.clips.sort((a, b) => (b.likes + b.shares) - (a.likes + a.shares));
+            }
+            renderTopClips();
+            showNotification(`Sorted by ${by}`, 'success');
+        }
+
+        function refreshData() {
+            showNotification('Refreshing data...', 'info');
+            setTimeout(() => {
+                showNotification('Data refreshed!', 'success');
+            }, 1000);
+        }
+
+        function refreshClips() {
+            refreshData();
+        }
+
+        function openExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        function exportData() {
+            const format = document.getElementById('exportFormat').value;
+            showNotification(`Exporting as ${format.toUpperCase()}...`, 'info');
+            
+            setTimeout(() => {
+                if (format === 'csv') {
+                    exportCSV();
+                } else if (format === 'json') {
+                    exportJSON();
+                } else {
+                    showNotification('PDF export would generate a report', 'success');
+                }
+                closeExportModal();
+            }, 1000);
+        }
+
+        function exportCSV() {
+            const headers = ['Rank', 'Title', 'Episode', 'Platform', 'Views', 'Likes', 'Shares', 'Downloads', 'Date'];
+            const rows = mockData.clips.slice(0, 10).map((clip, i) => [
+                i + 1, `"${clip.title}"`, clip.episode, clip.platform, clip.views, clip.likes, clip.shares, clip.downloads, clip.date
+            ]);
+            
+            const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            downloadFile(csv, 'podcast-clip-analytics.csv', 'text/csv');
+            showNotification('CSV exported successfully!', 'success');
+        }
+
+        function exportJSON() {
+            const data = {
+                exportDate: new Date().toISOString(),
+                period: `${currentFilter} days`,
+                summary: {
+                    totalViews: 1200000,
+                    totalLikes: 89400,
+                    totalShares: 34200,
+                    totalDownloads: 12800
+                },
+                clips: mockData.clips.slice(0, 10),
+                platforms: mockData.platforms
+            };
+            downloadFile(JSON.stringify(data, null, 2), 'podcast-clip-analytics.json', 'application/json');
+            showNotification('JSON exported successfully!', 'success');
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function showNotification(message, type = 'info') {
+            const container = document.createElement('div');
+            container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 1001;';
+            container.innerHTML = `
+                <div class="notification ${type}" style="padding: 16px 20px; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s ease; min-width: 300px; border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

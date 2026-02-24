@@ -1,0 +1,18 @@
+{
+  "task": {
+    "name": "AI-Powered Content Suggestions",
+    "description": "Use OpenAI to suggest improvements to sakslista items",
+    "priority": "high",
+    "estimated_hours": 4
+  },
+  "steps": [
+    "Research OpenAI API capabilities",
+    "Design UI components",
+    "Implement backend integration",
+    "Add frontend interface",
+    "Test with real data"
+  ],
+  "files_to_modify": [],
+  "tests_needed": [],
+  "deployment_steps": []
+}

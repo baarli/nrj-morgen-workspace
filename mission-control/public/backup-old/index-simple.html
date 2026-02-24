@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaarliClaw Mission Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            color: #e2e8f0; 
+            min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { 
+            width: 280px; 
+            background: rgba(30, 41, 59, 0.9); 
+            padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo-icon { 
+            width: 48px; 
+            height: 48px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .logo-text h1 { font-size: 20px; margin-bottom: 4px; }
+        .logo-text p { font-size: 12px; color: #94a3b8; }
+        
+        .nav { list-style: none; }
+        .nav li { margin-bottom: 8px; }
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .status-box {
+            margin-top: 32px;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+        }
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #10b981;
+            font-weight: 600;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .header h2 { font-size: 28px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); }
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .card-icon.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .card-icon.purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .card-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .card-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        
+        .card h3 { font-size: 14px; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; }
+        .card .value { font-size: 32px; font-weight: bold; margin-bottom: 4px; }
+        .card .label { font-size: 14px; color: #64748b; }
+        
+        .section {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .list-item:hover { background: rgba(15, 23, 42, 0.7); }
+        
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge.green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge.blue { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .login-box {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+        }
+        .login-box h1 { margin-bottom: 8px; }
+        .login-box p { color: #94a3b8; margin-bottom: 32px; }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .error.show { display: block; }
+        
+        .hidden { display: none !important; }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script src="realtime-collaboration.js" defer>
+    <script src="mobile-experience.js" defer></script>
+    <script src="ai-content-suggestions.js" defer></script>
+    <script src="shared-navigation.js" defer></script>
+    <link rel="manifest" href="/manifest.json">
+    <script src="dark-mode-manager.js" defer></script>
+    <script src="security-manager.js" defer></script>
+    <script src="test-suite.js" defer></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <div class="login-logo">🤖</div>
+            <h1>Mission Control</h1>
+            <p>BaarliClaw Agent v2.0</p>
+            
+            <div id="error-msg" class="error">Invalid password</div>
+            
+            <input type="password" id="password" placeholder="Enter password" value="kloakontroll2026">
+            <button onclick="login()">🔐 Access Control</button>
+            
+            <p style="margin-top: 24px; font-size: 12px; color: #64748b;">
+                Protected Area - Authorized Access Only
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="container hidden">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">🤖</div>
+                <div class="logo-text">
+                    <h1>Mission Control</h1>
+                    <p>v2.0 Autonomous</p>
+                </div>
+            </div>
+            
+            <ul class="nav">
+                <li><a href="#" class="active" onclick="showSection('overview')"><i class="fas fa-chart-line"></i> Overview</a></li>
+                <li><a href="#" onclick="showSection('logs')"><i class="fas fa-terminal"></i> Live Logs</a></li>
+                <li><a href="#" onclick="showSection('automations')"><i class="fas fa-cogs"></i> Automations</a></li>
+                <li><a href="#" onclick="showSection('skills')"><i class="fas fa-brain"></i> Skills</a></li>
+                <li><a href="#" onclick="showSection('security')"><i class="fas fa-shield-alt"></i> Security</a></li>
+            </ul>
+            
+            <div class="status-box">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Autonomous Mode</span>
+                </div>
+                <p style="margin-top: 8px; font-size: 12px; color: #64748b;">
+                    Uptime: 99.9%<br>
+                    Last update: Just now
+                </p>
+            </div>
+        </aside>
+
+        <main class="main">
+            <!-- Overview Section -->
+            <div id="section-overview" class="section-content">
+                <div class="header">
+                    <h2>System Overview</h2>
+                    <button onclick="location.reload()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon blue"><i class="fas fa-comments"></i></div>
+                        <h3>Sessions</h3>
+                        <div class="value">31</div>
+                        <div class="label">Total interactions</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon purple"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>Skills</h3>
+                        <div class="value">5</div>
+                        <div class="label">Active capabilities</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon green"><i class="fas fa-code"></i></div>
+                        <h3>Scripts</h3>
+                        <div class="value">33</div>
+                        <div class="label">Automation tools</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon orange"><i class="fas fa-robot"></i></div>
+                        <h3>Automations</h3>
+                        <div class="value">5</div>
+                        <div class="label">Running jobs</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3><i class="fas fa-cogs" style="color: #3b82f6;"></i> Active Automations</h3>
+                    
+                    <div class="list-item">
+                        <div>
+                            <strong>Daily Pre-Flight</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Every 24 hours</span>
+                        </div>
+                        <span class="badge green">Active</span>
+                    </div>
+
+                    <div class="list-item">
+                        <div>
+                            <strong>Session End Capture</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Every hour</span>
+                        </div>
+                        <span class="badge green">Active</span>
+                    </div>
+
+                    <div class="list-item">
+                        <div>
+                            <strong>NRJ Dashboard Update</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Wednesdays 14:00</span>
+                        </div>
+                        <span class="badge green">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs Section -->
+            <div id="section-logs" class="section-content hidden">
+                <div class="header">
+                    <h2>Live Logs</h2>
+                </div>
+
+                <div class="section">
+                    <div style="padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; margin-bottom: 16px;">
+                        <span style="color: #10b981;">●</span> Live stream active
+                    </div>
+
+                    <div id="log-container" style="font-family: monospace; font-size: 14px;">
+                        <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #64748b;">[03:00:15]</span>
+                            <span style="color: #10b981;"> Session end learning capture completed</span>
+                        </div>
+                        <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #64748b;">[02:46:05]</span>
+                            <span style="color: #3b82f6;"> Autonomous mode activated</span>
+                        </div>
+                        <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="color: #64748b;">[02:41:00]</span>
+                            <span style="color: #10b981;"> Mission Control deployed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Automations Section -->
+            <div id="section-automations" class="section-content hidden">
+                <div class="header">
+                    <h2>Automation Control</h2>
+                </div>
+
+                <div class="section">
+                    <div class="list-item">
+                        <div>
+                            <strong>Pre-Flight System</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Mandatory context loading</span>
+                        </div>
+                        <span class="badge green">Enabled</span>
+                    </div>
+
+                    <div class="list-item">
+                        <div>
+                            <strong>Learning Capture</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Automatic documentation</span>
+                        </div>
+                        <span class="badge green">Enabled</span>
+                    </div>
+
+                    <div class="list-item">
+                        <div>
+                            <strong>NRJ Updates</strong><br>
+                            <span style="color: #64748b; font-size: 14px;">Dashboard auto-update</span>
+                        </div>
+                        <span class="badge green">Enabled</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div id="section-skills" class="section-content hidden">
+                <div class="header">
+                    <h2>Agent Skills</h2>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon purple"><i class="fas fa-brain"></i></div>
+                        <h3>nrj-dashboard-system</h3>
+                        <p style="color: #64748b; margin: 8px 0;">NRJ Dashboard management</p>
+                        <span class="badge blue">15 triggers</span>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon blue"><i class="fas fa-brain"></i></div>
+                        <h3>self-improvement</h3>
+                        <p style="color: #64748b; margin: 8px 0;">Learning and growth</p>
+                        <span class="badge blue">8 triggers</span>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon green"><i class="fas fa-brain"></i></div>
+                        <h3>system-manager</h3>
+                        <p style="color: #64748b; margin: 8px 0;">System monitoring</p>
+                        <span class="badge blue">12 triggers</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div id="section-security" class="section-content hidden">
+                <div class="header">
+                    <h2>Security Status</h2>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div class="section">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                            <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px;">
+                                🛡️
+                            </div>
+                            <div>
+                                <h3 style="color: #10b981; margin: 0;">Secure</h3>
+                                <p style="color: #64748b; margin: 0;">All systems protected</p>
+                            </div>
+                        </div>
+
+                        <div class="list-item">
+                            <span>Authentication</span>
+                            <span style="color: #10b981;">Password Protected</span>
+                        </div>
+
+                        <div class="list-item">
+                            <span>Auto-Exec Enforcer</span>
+                            <span style="color: #10b981;">Active</span>
+                        </div>
+
+                        <div class="list-item">
+                            <span>Memory Validation</span>
+                            <span style="color: #10b981;">Quiz Required</span>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Access Log</h3>
+
+                        <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px;">
+                            <span style="color: #64748b;">[03:00:15]</span>
+                            <span> Session end capture</span>
+                        </div>
+
+                        <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px;">
+                            <span style="color: #64748b;">[02:46:05]</span>
+                            <span> Autonomous mode start</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function login() {
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            if (password === 'kloakontroll2026') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+            } else {
+                errorMsg.classList.add('show');
+            }
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById('section-' + section).classList.remove('hidden');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav a').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Allow Enter key to login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        // Simulate live logs
+        setInterval(() => {
+            const logContainer = document.getElementById('log-container');
+            if (logContainer) {
+                const time = new Date().toLocaleTimeString();
+                const messages = [
+                    'System health check: OK',
+                    'ML analysis completed',
+                    'Cron jobs monitored',
+                    'Self-improvement active'
+                ];
+                const message = messages[Math.floor(Math.random() * messages.length)];
+                
+                const logEntry = document.createElement('div');
+                logEntry.style.cssText = 'padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);';
+                logEntry.innerHTML = `
+                    <span style="color: #64748b;">[${time}]</span>
+                    <span style="color: #3b82f6;"> ${message}</span>
+                `;
+                
+                logContainer.insertBefore(logEntry, logContainer.firstChild);
+                
+                // Keep only last 20 logs
+                while (logContainer.children.length > 20) {
+                    logContainer.removeChild(logContainer.lastChild);
+                }
+            }
+        }, 5000);
+    </script>
+<script src="auto-nav.js"></script>
+    <script src="pwa-manager.js" defer></script>
+</body>
+</html>

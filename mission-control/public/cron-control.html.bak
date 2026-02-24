@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Control - Mission Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            color: #e2e8f0; 
+            min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { 
+            width: 280px; 
+            background: rgba(30, 41, 59, 0.95); 
+            padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo-icon { 
+            width: 48px; 
+            height: 48px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .logo-text h1 { font-size: 20px; margin-bottom: 4px; }
+        .logo-text p { font-size: 12px; color: #94a3b8; }
+        
+        .nav { list-style: none; }
+        .nav li { margin-bottom: 8px; }
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav a:hover, .nav a.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .main { flex: 1; padding: 32px; overflow-y: auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .header h2 { font-size: 28px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); }
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        .card-icon.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .card-icon.purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .card-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+        .card-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .card-icon.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        
+        .card h3 { font-size: 14px; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; }
+        .card .value { font-size: 32px; font-weight: bold; margin-bottom: 4px; }
+        .card .label { font-size: 14px; color: #64748b; }
+        
+        .section {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.8; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; }
+        
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge.green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .badge.red { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .badge.blue { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .badge.orange { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .badge.gray { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .status-dot.active { background: #10b981; animation: pulse 2s infinite; }
+        .status-dot.inactive { background: #ef4444; }
+        .status-dot.idle { background: #94a3b8; }
+        .status-dot.error { background: #ef4444; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .cron-job {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid;
+            transition: all 0.2s;
+        }
+        .cron-job:hover { background: rgba(15, 23, 42, 0.7); }
+        .cron-job.ok { border-left-color: #10b981; }
+        .cron-job.error { border-left-color: #ef4444; }
+        .cron-job.idle { border-left-color: #94a3b8; }
+        .cron-job.running { border-left-color: #3b82f6; }
+        
+        .cron-job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .cron-job-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .cron-job-id {
+            font-size: 11px;
+            color: #64748b;
+            font-family: monospace;
+        }
+        .cron-job-schedule {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .cron-job-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+        }
+        .cron-job-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .cron-job-meta-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .cron-job-meta-value {
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+        
+        .cron-job-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #475569;
+            transition: .3s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: #10b981;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-header h3 { margin: 0; }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .close-btn:hover { color: white; }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .error-log {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #fca5a5;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1001;
+        }
+        .notification.show { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .logs-container {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .log-entry {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            gap: 12px;
+        }
+        .log-time { color: #64748b; min-width: 80px; }
+        .log-level { min-width: 60px; font-weight: 600; }
+        .log-level.error { color: #ef4444; }
+        .log-level.warn { color: #f59e0b; }
+        .log-level.info { color: #3b82f6; }
+        .log-level.success { color: #10b981; }
+        .log-message { color: #e2e8f0; }
+        
+        .hidden { display: none !important; }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .grid { grid-template-columns: 1fr; }
+            .cron-job-header { flex-direction: column; gap: 12px; }
+            .cron-job-actions { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Standard Navigation Template - Copy this to all HTML files -->
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">🚀</div>
+        <div>
+            <h1 style="font-size: 18px; margin: 0;">Mission Control</h1>
+            <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 0 0;">v3.0</p>
+        </div>
+    </div>
+    <ul class="nav">
+        <li><a href="total-control.html"><i class="fas fa-home"></i> Oversikt</a></li>
+        <li><a href="sakslista-pro.html"><i class="fas fa-list"></i> Saker</a></li>
+        <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analyse</a></li>
+        <li><a href="ai-assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+        <li><a href="widget-dashboard.html"><i class="fas fa-th-large"></i> Widgets</a></li>
+        <li><a href="podkast-control.html"><i class="fas fa-podcast"></i> Podkast</a></li>
+        <li><a href="cron-control.html" class="active"><i class="fas fa-clock"></i> Cron</a></li>
+        <li><a href="agent-control.html"><i class="fas fa-robot"></i> Agent</a></li>
+        <li><a href="notifications.html"><i class="fas fa-bell"></i> Varsler</a></li>
+        <li><a href="system-monitor.html"><i class="fas fa-heartbeat"></i> System</a></li>
+        <li><a href="database-admin.html"><i class="fas fa-database"></i> Database</a></li>
+        <li><a href="git-control.html"><i class="fas fa-code-branch"></i> Git</a></li>
+        <li><a href="api-docs.html"><i class="fas fa-book"></i> API Docs</a></li>
+        <li><a href="innstillinger.html"><i class="fas fa-cog"></i> Innstillinger</a></li>
+    </ul>
+</aside>
+
+        <main class="main">
+            <!-- Notification -->
+            <div id="notification" class="notification"></div>
+
+            <div class="header">
+                <h2><i class="fas fa-clock" style="color: #667eea;"></i> Cron & Automation Control</h2>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary" onclick="refreshCronJobs()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-success" onclick="showAddModal()">
+                        <i class="fas fa-plus"></i> Add Job
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon blue"><i class="fas fa-tasks"></i></div>
+                    <h3>Total Jobs</h3>
+                    <div class="value" id="total-jobs">0</div>
+                    <div class="label">Scheduled tasks</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon green"><i class="fas fa-check-circle"></i></div>
+                    <h3>Active</h3>
+                    <div class="value" id="active-jobs">0</div>
+                    <div class="label">Running normally</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h3>Errors</h3>
+                    <div class="value" id="error-jobs">0</div>
+                    <div class="label">Need attention</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon orange"><i class="fas fa-pause-circle"></i></div>
+                    <h3>Idle</h3>
+                    <div class="value" id="idle-jobs">0</div>
+                    <div class="label">Waiting to run</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterJobs('all')">All Jobs</button>
+                <button class="filter-btn" onclick="filterJobs('ok')">Active</button>
+                <button class="filter-btn" onclick="filterJobs('error')">Errors</button>
+                <button class="filter-btn" onclick="filterJobs('idle')">Idle</button>
+                <button class="filter-btn" onclick="filterJobs('nrj')">NRJ</button>
+                <button class="filter-btn" onclick="filterJobs('podcast')">Podcast</button>
+                <button class="filter-btn" onclick="filterJobs('maintenance')">Maintenance</button>
+            </div>
+
+            <!-- Cron Jobs List -->
+            <div class="section">
+                <h3><i class="fas fa-list" style="color: #667eea;"></i> Scheduled Jobs</h3>
+                <div id="cron-jobs-list">
+                    <!-- Jobs loaded dynamically -->
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 12px;"></i>
+                        <p>Loading cron jobs...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Logs -->
+            <div class="section">
+                <h3><i class="fas fa-history" style="color: #10b981;"></i> Recent Activity</h3>
+                <div class="logs-container" id="activity-logs">
+                    <!-- Logs loaded dynamically -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Cron Job</h3>
+                <button class="close-btn" onclick="closeModal('edit-modal')">&times;</button>
+            </div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-job-id">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="edit-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Schedule (Cron Expression)</label>
+                    <input type="text" id="edit-schedule" placeholder="e.g., 0 6 * * 1-5">
+                    <small style="color: #64748b;">Format: minute hour day month weekday</small>
+                </div>
+                <div class="form-group">
+                    <label>Target</label>
+                    <select id="edit-target">
+                        <option value="main">Main Agent</option>
+                        <option value="isolated">Isolated Agent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Command/Action</label>
+                    <textarea id="edit-command" rows="3" placeholder="Command or action to execute..."></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('edit-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div id="add-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> Add New Cron Job</h3>
+                <button class="close-btn" onclick="closeModal('add-modal')">&times;</button>
+            </div>
+            <form id="add-form">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="add-name" placeholder="Job name..." required>
+                </div>
+                <div class="form-group">
+                    <label>Schedule (Cron Expression)</label>
+                    <input type="text" id="add-schedule" placeholder="e.g., 0 6 * * 1-5" required>
+                    <small style="color: #64748b;">Format: minute hour day month weekday @ timezone</small>
+                </div>
+                <div class="form-group">
+                    <label>Target</label>
+                    <select id="add-target">
+                        <option value="main">Main Agent</option>
+                        <option value="isolated">Isolated Agent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Command/Action</label>
+                    <textarea id="add-command" rows="3" placeholder="Command or action to execute..."></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('add-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Create Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Run Modal -->
+    <div id="run-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-play"></i> Run Job</h3>
+                <button class="close-btn" onclick="closeModal('run-modal')">&times;</button>
+            </div>
+            <div id="run-modal-content">
+                <p>Are you sure you want to manually trigger this job?</p>
+                <div id="run-job-details" style="background: rgba(15, 23, 42, 0.5); padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <!-- Job details -->
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('run-modal')">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="confirmRunJob()">Run Now</button>
+                </div>
+            </div>
+            <div id="run-modal-loading" class="hidden" style="text-align: center; padding: 40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: #667eea; margin-bottom: 16px;"></i>
+                <p>Running job...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Embedded cron data (updated at deploy time)
+        let cronJobs = [
+            {id: 'ae89eac3-b21c-4118-99e9-65d5dff1c2a5', name: 'AGENT - Session End Learning Capture', schedule: 'every 1h', next: 'in 9m', last: '51m ago', status: 'ok', target: 'main', agent: 'main', category: 'maintenance', enabled: true, error: null},
+            {id: '2853a10b-a07f-4776-8101-0db9f7e5367c', name: 'SELVUTVIKLING – Daglig Refleksjon', schedule: 'cron 0 23 * * * @ Europe/Oslo', next: 'in 1h', last: '23h ago', status: 'error', target: 'isolated', agent: 'main', category: 'maintenance', enabled: true, error: 'Connection timeout'},
+            {id: '0aed9698-5753-4d3a-9601-62adf44808b2', name: 'AGENT - Daily Pre-Flight Check', schedule: 'every 1d', next: 'in 3h', last: '-', status: 'idle', target: 'main', agent: 'main', category: 'maintenance', enabled: true, error: null},
+            {id: 'd3158cd6-ebca-4214-9840-25d70ee59ada', name: 'NRJ MORGEN – Konsolidering', schedule: 'cron 50 4 * * 1-5 @ Europe/Oslo', next: 'in 7h', last: '17h ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'API rate limit exceeded'},
+            {id: '9fbc6f36-74bd-426e-ba8d-3685b37b7741', name: 'NRJ MORGEN – Konkurrentovervåking', schedule: 'cron 0 6 * * 1-5 @ Europe/Oslo', next: 'in 8h', last: '16h ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'Failed to fetch data'},
+            {id: 'b69094e4-4368-486c-b8e2-3db74b261fd4', name: 'NRJ MORGEN – Daglig Oppdatering', schedule: 'cron 0 6 * * 1-5 @ Europe/Oslo', next: 'in 8h', last: '16h ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'Database connection failed'},
+            {id: '561e16fd-6201-4465-a3ba-40d14156d449', name: 'NRJ Sakslista - Morning Routine v2.1', schedule: 'cron 0 6 * * 1-5 @ Europe/Oslo', next: 'in 8h', last: '-', status: 'idle', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: null, description: '15 saker, 5 kategorier, maks 3 per kategori'},
+            {id: 'fd473b6c-d41c-454b-9f02-3963d5a11bea', name: 'PODKAST – Daglig klipp-posting', schedule: 'cron 0 7 * * * @ Europe/Oslo', next: 'in 9h', last: '15h ago', status: 'error', target: 'isolated', agent: 'main', category: 'podcast', enabled: true, error: 'RSS feed unavailable'},
+            {id: '8488e609-f7cf-4675-bcf8-72b240595c2b', name: 'Podkast - Auto Clip Download', schedule: 'cron 0 7 * * * @ Europe/Oslo', next: 'in 9h', last: '-', status: 'idle', target: 'isolated', agent: 'main', category: 'podcast', enabled: true, error: null},
+            {id: 'fea8054f-0e6f-4778-9d19-1389ebafc6a3', name: 'PODKAST – Daglig klipp #2', schedule: 'cron 0 8 * * * @ Europe/Oslo', next: 'in 10h', last: '14h ago', status: 'error', target: 'isolated', agent: 'main', category: 'podcast', enabled: true, error: 'File not found'},
+            {id: '57763cd6-f4db-480f-8b4f-96f4911f3730', name: 'NRJ MORGEN – Trending Topics', schedule: 'cron 0 12 * * 1-5 @ Europe/Oslo', next: 'in 14h', last: '10h ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'News API error'},
+            {id: '74ae4b35-3b3f-427e-acf5-447e3b8361a3', name: '🎧 PODTOPPEN – Hent NRJ Stats', schedule: 'cron 3 12 * * 3 @ Europe/Oslo', next: 'in 2d', last: '-', status: 'idle', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: null},
+            {id: 'da464d2e-48f2-4d3c-9f1f-e740f0370eeb', name: 'NRJ Dashboard - Auto Update', schedule: 'cron 0 14 * * 3 @ Europe/Oslo', next: 'in 2d', last: '-', status: 'idle', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: null},
+            {id: '67e1de35-dd17-430e-bab5-1f78bca406cd', name: 'SELVUTVIKLING – Månedlig Rapport', schedule: 'cron 0 22 28-31 * * @ Europe/Oslo', next: 'in 5d', last: '-', status: 'idle', target: 'isolated', agent: 'main', category: 'maintenance', enabled: true, error: null},
+            {id: '94153643-47fa-4cf0-af4f-cc550a626b85', name: 'NRJ MORGEN – Ukentlig Rapport', schedule: 'cron 0 20 * * 0 @ Europe/Oslo', next: 'in 6d', last: '1d ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'Report generation failed'},
+            {id: '1d139374-d4e4-4227-b472-a6a9dce8413a', name: 'NRJ MORGEN – Podkast-Rapport', schedule: 'cron 0 21 * * 0 @ Europe/Oslo', next: 'in 6d', last: '1d ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'Stats unavailable'},
+            {id: '7876542c-3da8-43bb-a6e7-4d31d0abd479', name: 'SELVUTVIKLING – Ukentlig Review', schedule: 'cron 30 21 * * 0 @ Europe/Oslo', next: 'in 6d', last: '1d ago', status: 'error', target: 'isolated', agent: 'main', category: 'maintenance', enabled: true, error: 'Timeout'},
+            {id: 'e53cd352-60db-445a-99f6-a0e55c8c520e', name: 'VEDLIKEHOLD – Ukentlig Restart', schedule: 'cron 0 23 * * 0 @ Europe/Oslo', next: 'in 6d', last: '23h ago', status: 'error', target: 'isolated', agent: 'main', category: 'maintenance', enabled: true, error: 'Service restart failed'},
+            {id: 'e47b4600-d510-453a-8722-7f7c4cb2acaf', name: '📻 NIELSEN – Hent NRJ Data', schedule: 'cron 0 14 * * 1 @ Europe/Oslo', next: 'in 7d', last: '8h ago', status: 'error', target: 'isolated', agent: 'main', category: 'nrj', enabled: true, error: 'Nielsen API error'}
+        ];
+
+        let activityLogs = [
+            {time: '04:51', level: 'info', message: 'Cron Control panel loaded'},
+            {time: '04:45', level: 'error', message: 'NRJ MORGEN – Konsolidering failed: API rate limit'},
+            {time: '04:30', level: 'success', message: 'AGENT - Session End Learning Capture completed'},
+            {time: '04:15', level: 'warn', message: 'Podkast RSS feed slow response (3.2s)'},
+            {time: '04:00', level: 'success', message: 'Daily pre-flight check passed'},
+            {time: '03:45', level: 'info', message: 'System health check: OK'},
+            {time: '03:30', level: 'error', message: 'Nielsen data import failed'},
+            {time: '03:00', level: 'success', message: 'Auto-backup completed'},
+            {time: '02:45', level: 'info', message: 'Memory validator ran successfully'},
+            {time: '02:30', level: 'success', message: 'NRJ Dashboard updated'}
+        ];
+
+        let currentFilter = 'all';
+        let selectedJobId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            renderCronJobs();
+            renderActivityLogs();
+            // Auto-refresh every 30 seconds
+            setInterval(refreshCronJobs, 30000);
+        });
+
+        function updateStats() {
+            const total = cronJobs.length;
+            const active = cronJobs.filter(j => j.status === 'ok').length;
+            const errors = cronJobs.filter(j => j.status === 'error').length;
+            const idle = cronJobs.filter(j => j.status === 'idle').length;
+
+            document.getElementById('total-jobs').textContent = total;
+            document.getElementById('active-jobs').textContent = active;
+            document.getElementById('error-jobs').textContent = errors;
+            document.getElementById('idle-jobs').textContent = idle;
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'ok': '<span class="badge green"><i class="fas fa-check"></i> OK</span>',
+                'error': '<span class="badge red"><i class="fas fa-exclamation"></i> Error</span>',
+                'idle': '<span class="badge gray"><i class="fas fa-pause"></i> Idle</span>',
+                'running': '<span class="badge blue"><i class="fas fa-spinner fa-spin"></i> Running</span>'
+            };
+            return badges[status] || badges['idle'];
+        }
+
+        function getStatusDot(status) {
+            const dots = {
+                'ok': '<span class="status-dot active"></span>',
+                'error': '<span class="status-dot error"></span>',
+                'idle': '<span class="status-dot idle"></span>',
+                'running': '<span class="status-dot active"></span>'
+            };
+            return dots[status] || dots['idle'];
+        }
+
+        function renderCronJobs() {
+            const container = document.getElementById('cron-jobs-list');
+            let filtered = cronJobs;
+
+            if (currentFilter !== 'all') {
+                if (['ok', 'error', 'idle'].includes(currentFilter)) {
+                    filtered = cronJobs.filter(j => j.status === currentFilter);
+                } else {
+                    filtered = cronJobs.filter(j => j.category === currentFilter);
+                }
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <i class="fas fa-inbox" style="font-size: 32px; margin-bottom: 12px;"></i>
+                        <p>No jobs found for this filter</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(job => `
+                <div class="cron-job ${job.status}" data-id="${job.id}">
+                    <div class="cron-job-header">
+                        <div>
+                            <div class="cron-job-title">
+                                ${getStatusDot(job.status)} ${job.name}
+                            </div>
+                            <div class="cron-job-id">${job.id}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            ${getStatusBadge(job.status)}
+                            <label class="toggle-switch" title="${job.enabled ? 'Disable' : 'Enable'} job">
+                                <input type="checkbox" ${job.enabled ? 'checked' : ''} onchange="toggleJob('${job.id}')">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="cron-job-schedule">
+                        <i class="fas fa-clock"></i>
+                        <code style="background: rgba(102, 126, 234, 0.2); padding: 4px 8px; border-radius: 4px;">${job.schedule}</code>
+                    </div>
+                    
+                    <div class="cron-job-meta">
+                        <div class="cron-job-meta-item">
+                            <span class="cron-job-meta-label">Next Run</span>
+                            <span class="cron-job-meta-value"><i class="fas fa-hourglass-half" style="color: #667eea;"></i> ${job.next}</span>
+                        </div>
+                        <div class="cron-job-meta-item">
+                            <span class="cron-job-meta-label">Last Run</span>
+                            <span class="cron-job-meta-value"><i class="fas fa-history" style="color: #10b981;"></i> ${job.last}</span>
+                        </div>
+                        <div class="cron-job-meta-item">
+                            <span class="cron-job-meta-label">Target</span>
+                            <span class="cron-job-meta-value">
+                                <span class="badge ${job.target === 'main' ? 'blue' : 'purple'}">${job.target}</span>
+                            </span>
+                        </div>
+                        <div class="cron-job-meta-item">
+                            <span class="cron-job-meta-label">Agent</span>
+                            <span class="cron-job-meta-value">${job.agent}</span>
+                        </div>
+                    </div>
+                    
+                    ${job.error ? `
+                        <div class="error-log">
+                            <i class="fas fa-bug"></i> ${job.error}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="cron-job-actions">
+                        <button class="btn btn-success" onclick="showRunModal('${job.id}')" ${!job.enabled ? 'disabled' : ''}>
+                            <i class="fas fa-play"></i> Run Now
+                        </button>
+                        <button class="btn btn-primary" onclick="showEditModal('${job.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-secondary" onclick="viewLogs('${job.id}')">
+                            <i class="fas fa-file-alt"></i> Logs
+                        </button>
+                        <button class="btn btn-warning" onclick="showErrorDetails('${job.id}')" ${job.status !== 'error' ? 'style="display:none"' : ''}>
+                            <i class="fas fa-info-circle"></i> Details
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteJob('${job.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderActivityLogs() {
+            const container = document.getElementById('activity-logs');
+            container.innerHTML = activityLogs.map(log => `
+                <div class="log-entry">
+                    <span class="log-time">${log.time}</span>
+                    <span class="log-level ${log.level}">${log.level.toUpperCase()}</span>
+                    <span class="log-message">${log.message}</span>
+                </div>
+            `).join('');
+        }
+
+        function filterJobs(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderCronJobs();
+        }
+
+        function toggleJob(id) {
+            const job = cronJobs.find(j => j.id === id);
+            if (job) {
+                job.enabled = !job.enabled;
+                const action = job.enabled ? 'enabled' : 'disabled';
+                showNotification(`${job.enabled ? '✅' : '⏸️'} Job "${job.name}" ${action}`);
+                addLog(job.enabled ? 'success' : 'warn', `Job "${job.name}" ${action}`);
+                renderCronJobs();
+            }
+        }
+
+        function showRunModal(id) {
+            selectedJobId = id;
+            const job = cronJobs.find(j => j.id === id);
+            if (!job) return;
+
+            document.getElementById('run-job-details').innerHTML = `
+                <strong>${job.name}</strong><br>
+                <span style="color: #94a3b8; font-size: 14px;">
+                    Schedule: ${job.schedule}<br>
+                    Target: ${job.target} | Agent: ${job.agent}
+                </span>
+            `;
+            document.getElementById('run-modal-content').classList.remove('hidden');
+            document.getElementById('run-modal-loading').classList.add('hidden');
+            document.getElementById('run-modal').classList.add('show');
+        }
+
+        function confirmRunJob() {
+            const job = cronJobs.find(j => j.id === selectedJobId);
+            if (!job) return;
+
+            document.getElementById('run-modal-content').classList.add('hidden');
+            document.getElementById('run-modal-loading').classList.remove('hidden');
+
+            // Simulate API call
+            setTimeout(() => {
+                closeModal('run-modal');
+                showNotification(`🚀 Job "${job.name}" started successfully!`);
+                addLog('success', `Manually triggered: ${job.name}`);
+                job.status = 'running';
+                job.last = 'Just now';
+                renderCronJobs();
+                updateStats();
+
+                // Simulate completion after 3 seconds
+                setTimeout(() => {
+                    job.status = 'ok';
+                    job.error = null;
+                    renderCronJobs();
+                    updateStats();
+                    showNotification(`✅ Job "${job.name}" completed!`);
+                    addLog('success', `Job completed: ${job.name}`);
+                }, 3000);
+            }, 1500);
+        }
+
+        function showEditModal(id) {
+            selectedJobId = id;
+            const job = cronJobs.find(j => j.id === id);
+            if (!job) return;
+
+            document.getElementById('edit-job-id').value = job.id;
+            document.getElementById('edit-name').value = job.name;
+            document.getElementById('edit-schedule').value = job.schedule;
+            document.getElementById('edit-target').value = job.target;
+            document.getElementById('edit-command').value = '';
+
+            document.getElementById('edit-modal').classList.add('show');
+        }
+
+        function showAddModal() {
+            document.getElementById('add-form').reset();
+            document.getElementById('add-modal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function deleteJob(id) {
+            const job = cronJobs.find(j => j.id === id);
+            if (!job) return;
+
+            if (confirm(`Are you sure you want to delete "${job.name}"?`)) {
+                cronJobs = cronJobs.filter(j => j.id !== id);
+                showNotification(`🗑️ Job "${job.name}" deleted`);
+                addLog('warn', `Deleted job: ${job.name}`);
+                updateStats();
+                renderCronJobs();
+            }
+        }
+
+        function viewLogs(id) {
+            const job = cronJobs.find(j => j.id === id);
+            if (!job) return;
+            showNotification(`📄 Viewing logs for "${job.name}"`);
+            // Would open a logs view in a real implementation
+        }
+
+        function showErrorDetails(id) {
+            const job = cronJobs.find(j => j.id === id);
+            if (!job || !job.error) return;
+            alert(`Error Details for "${job.name}":\n\n${job.error}\n\nCheck system logs for more information.`);
+        }
+
+        function refreshCronJobs() {
+            showNotification('🔄 Refreshing cron jobs...');
+            // In a real implementation, this would fetch from the API
+            setTimeout(() => {
+                showNotification('✅ Cron jobs refreshed');
+                renderCronJobs();
+            }, 1000);
+        }
+
+        function addLog(level, message) {
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + 
+                        now.getMinutes().toString().padStart(2, '0');
+            activityLogs.unshift({time, level, message});
+            if (activityLogs.length > 50) activityLogs.pop();
+            renderActivityLogs();
+        }
+
+        function showNotification(message) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        // Form submissions
+        document.getElementById('edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const job = cronJobs.find(j => j.id === selectedJobId);
+            if (job) {
+                job.schedule = document.getElementById('edit-schedule').value;
+                job.target = document.getElementById('edit-target').value;
+                showNotification(`✅ Job "${job.name}" updated`);
+                addLog('success', `Updated job: ${job.name}`);
+                renderCronJobs();
+            }
+            closeModal('edit-modal');
+        });
+
+        document.getElementById('add-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newJob = {
+                id: 'new-' + Date.now(),
+                name: document.getElementById('add-name').value,
+                schedule: document.getElementById('add-schedule').value,
+                target: document.getElementById('add-target').value,
+                next: 'Pending',
+                last: '-',
+                status: 'idle',
+                agent: 'main',
+                category: 'maintenance',
+                enabled: true,
+                error: null
+            };
+            cronJobs.push(newJob);
+            showNotification(`✅ New job "${newJob.name}" created`);
+            addLog('success', `Created new job: ${newJob.name}`);
+            updateStats();
+            renderCronJobs();
+            closeModal('add-modal');
+        });
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        }
+    </script>
+<script src="auto-nav.js"></script>
+</body>
+</html>

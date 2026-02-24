@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Total Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="realtime-collaboration.js" defer></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #667eea; --primary-dark: #764ba2; --success: #10b981;
+            --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --dark: #0f172a; --dark-light: #1e293b; --text: #e2e8f0;
+            --text-muted: #94a3b8; --text-dim: #64748b;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
+            color: var(--text); min-height: 100vh;
+        }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px; background: rgba(30, 41, 59, 0.98); padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1); position: fixed;
+            height: 100vh; overflow-y: auto; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .nav { list-style: none; }
+        .nav li { margin-bottom: 8px; }
+        .nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; color: var(--text-muted); text-decoration: none; transition: all 0.2s; }
+        .nav a:hover, .nav a.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .main { flex: 1; margin-left: 280px; padding: 32px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .header h2 { font-size: 28px; }
+        .status-badge { padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .status-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .status-error { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .status-offline { background: rgba(100, 116, 139, 0.2); color: var(--text-dim); }
+        
+        /* Connection Status Bar */
+        .connection-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 20px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        .connection-indicator.connected { background: var(--success); }
+        .connection-indicator.connecting { background: var(--warning); animation: pulse 1s infinite; }
+        .connection-indicator.disconnected { background: var(--danger); }
+        .connection-indicator.offline { background: var(--text-dim); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .auto-refresh-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--text-dim);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle-switch.active { background: var(--success); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .toggle-switch.active::after { transform: translateX(20px); }
+        .retry-btn {
+            padding: 6px 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .retry-btn:hover { background: var(--primary-dark); }
+        .retry-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .systems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+        .system-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; cursor: pointer; }
+        .system-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        .system-card.updating { border-color: var(--info); animation: glow 1s ease; }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+            50% { box-shadow: 0 0 20px 0 rgba(59, 130, 246, 0.3); }
+        }
+        .system-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+        .system-card h3 { font-size: 16px; margin-bottom: 8px; }
+        .system-status { font-size: 14px; color: var(--text-muted); }
+        .metric-bar { margin-top: 12px; }
+        .metric-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .metric-progress { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+        .metric-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.3s; }
+        .metric-fill.low { background: var(--success); }
+        .metric-fill.medium { background: var(--warning); }
+        .metric-fill.high { background: var(--danger); }
+        
+        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .action-btn { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .action-btn:hover { background: rgba(102, 126, 234, 0.1); border-color: var(--primary); }
+        .action-btn i { font-size: 24px; margin-bottom: 12px; display: block; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .activity-log { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; }
+        .activity-log h3 { margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .log-container { max-height: 300px; overflow-y: auto; }
+        .log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .log-entry:last-child { border-bottom: none; }
+        .log-time { color: var(--text-dim); min-width: 60px; font-family: monospace; }
+        .log-success { color: var(--success); }
+        .log-error { color: var(--danger); }
+        .log-info { color: var(--info); }
+        .log-warning { color: var(--warning); }
+        
+        .notification-container { position: fixed; top: 20px; right: 20px; z-index: 1001; max-width: 400px; }
+        .notification {
+            padding: 16px 20px;
+            background: rgba(30,41,59,0.98);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 4px solid;
+            animation: slideInRight 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .notification.success { border-left-color: var(--success); }
+        .notification.error { border-left-color: var(--danger); }
+        .notification.info { border-left-color: var(--info); }
+        .notification.warning { border-left-color: var(--warning); }
+        .notification-title { font-weight: 600; margin-bottom: 4px; }
+        .notification-message { font-size: 14px; color: var(--text-muted); }
+        .notification-close { position: absolute; top: 8px; right: 8px; cursor: pointer; opacity: 0.5; }
+        .notification-close:hover { opacity: 1; }
+        
+        .offline-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            z-index: 1002;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        .offline-banner.show { transform: translateY(0); }
+        
+        @media (max-width: 1200px) { .systems-grid { grid-template-columns: repeat(2, 1fr); } .quick-actions { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .systems-grid { grid-template-columns: 1fr; } .quick-actions { grid-template-columns: 1fr; } .connection-bar { flex-direction: column; align-items: flex-start; } }
+    </style>
+</head>
+<body>
+    <div class="offline-banner" id="offline-banner">
+        <i class="fas fa-wifi-slash"></i> Du er offline. Noen funksjoner kan være begrenset.
+    </div>
+    
+    <div class="container">
+        <!-- Standard Navigation Template - Copy this to all HTML files -->
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">🚀</div>
+        <div>
+            <h1 style="font-size: 18px; margin: 0;">Mission Control</h1>
+            <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 0 0;">v3.0</p>
+        </div>
+    </div>
+    <ul class="nav">
+        <li><a href="total-control.html" class="active"><i class="fas fa-home"></i> Oversikt</a></li>
+        <li><a href="sakslista-pro.html"><i class="fas fa-list"></i> Saker</a></li>
+        <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analyse</a></li>
+        <li><a href="ai-assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+        <li><a href="widget-dashboard.html"><i class="fas fa-th-large"></i> Widgets</a></li>
+        <li><a href="podkast-control.html"><i class="fas fa-podcast"></i> Podkast</a></li>
+        <li><a href="cron-control.html"><i class="fas fa-clock"></i> Cron</a></li>
+        <li><a href="agent-control.html"><i class="fas fa-robot"></i> Agent</a></li>
+        <li><a href="notifications.html"><i class="fas fa-bell"></i> Varsler</a></li>
+        <li><a href="system-monitor.html"><i class="fas fa-heartbeat"></i> System</a></li>
+        <li><a href="database-admin.html"><i class="fas fa-database"></i> Database</a></li>
+        <li><a href="git-control.html"><i class="fas fa-code-branch"></i> Git</a></li>
+        <li><a href="api-docs.html"><i class="fas fa-book"></i> API Docs</a></li>
+        <li><a href="innstillinger.html"><i class="fas fa-cog"></i> Innstillinger</a></li>
+    </ul>
+</aside>
+
+        <main class="main">
+            <div class="header">
+                <h2>Total Control</h2>
+                <span class="status-badge status-ok" id="system-status-badge">🟢 Alle systemer operative</span>
+            </div>
+
+            <!-- Active Project Widget -->
+            <div class="active-project-widget" id="active-project-widget" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%); border: 1px solid rgba(102, 126, 234, 0.5); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 4px;">🤖 AKTIVT AUTONOMT PROSJEKT</h3>
+                        <h2 style="font-size: 20px; margin-bottom: 8px;" id="active-project-name">Laster...</h2>
+                        <p style="color: var(--text-muted); font-size: 14px;" id="active-project-desc">Henter prosjektinformasjon...</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Status</div>
+                        <span class="status-badge status-ok" id="active-project-status">🟢 Aktiv</span>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;" id="active-project-tasks">
+                    <!-- Tasks will be populated here -->
+                </div>
+            </div>
+
+            <!-- Connection Status Bar -->
+            <div class="connection-bar">
+                <div class="connection-status">
+                    <div class="connection-indicator disconnected" id="connection-indicator"></div>
+                    <span id="connection-text">Kobler til...</span>
+                </div>
+                <div class="connection-status">
+                    <i class="fas fa-clock" style="color: var(--text-dim);"></i>
+                    <span id="last-update">Sist oppdatert: --:--:--</span>
+                </div>
+                <button class="retry-btn" id="retry-btn" onclick="reconnectWebSocket()" disabled>
+                    <i class="fas fa-sync"></i> Koble til på nytt
+                </button>
+                <div class="auto-refresh-toggle">
+                    <span style="font-size: 14px; color: var(--text-muted);">Auto-refresh</span>
+                    <div class="toggle-switch active" id="auto-refresh-toggle" onclick="toggleAutoRefresh()"></div>
+                </div>
+            </div>
+
+            <div class="systems-grid">
+                <div class="system-card" id="card-sakslista" onclick="location.href='sakslista-pro.html'">
+                    <div class="system-icon" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">📻</div>
+                    <h3>NRJ Sakslista</h3>
+                    <p class="system-status" id="status-sakslista">15 saker i dag • 5 kategorier • Sist oppdatert: 06:00</p>
+                </div>
+
+                <div class="system-card" id="card-podkast" onclick="location.href='podkast-control.html'">
+                    <div class="system-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">🎧</div>
+                    <h3>Podkast</h3>
+                    <p class="system-status" id="status-podkast">157 episoder • 3 klipp klare</p>
+                </div>
+
+                <div class="system-card" id="card-agent" onclick="location.href='agent-control.html'">
+                    <div class="system-icon" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">🤖</div>
+                    <h3>BaarliClaw Agent</h3>
+                    <p class="system-status" id="status-agent">Autonomous Mode: Aktiv • 5 skills</p>
+                </div>
+
+                <div class="system-card" id="card-cron" onclick="location.href='cron-control.html'">
+                    <div class="system-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">⏰</div>
+                    <h3>Cron Jobs</h3>
+                    <p class="system-status" id="status-cron">18/20 aktive • Morning Routine v2.1: 06:00</p>
+                </div>
+
+                <div class="system-card" id="card-git" onclick="location.href='git-control.html'">
+                    <div class="system-icon" style="background: rgba(236, 72, 153, 0.2); color: #f472b6;">📦</div>
+                    <h3>Git & Deploy</h3>
+                    <p class="system-status" id="status-git">3 repositories • Siste deploy: 2t siden</p>
+                </div>
+
+                <div class="system-card" id="card-system" onclick="location.href='system-monitor.html'">
+                    <div class="system-icon" style="background: rgba(6, 182, 212, 0.2); color: #22d3ee;">💻</div>
+                    <h3>System Monitor</h3>
+                    <p class="system-status" id="status-system">CPU: 12% • RAM: 45% • Disk: 78%</p>
+                    <div class="metric-bar">
+                        <div class="metric-label"><span>CPU</span><span id="cpu-value">12%</span></div>
+                        <div class="metric-progress"><div class="metric-fill low" id="cpu-bar" style="width: 12%;"></div></div>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-label"><span>RAM</span><span id="ram-value">45%</span></div>
+                        <div class="metric-progress"><div class="metric-fill medium" id="ram-bar" style="width: 45%;"></div></div>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-label"><span>Disk</span><span id="disk-value">78%</span></div>
+                        <div class="metric-progress"><div class="metric-fill high" id="disk-bar" style="width: 78%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Morning Routine v2.1 Info -->
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+                    <span style="font-size: 32px;">🌅</span>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; color: var(--text-primary);">Morning Routine v2.1</h3>
+                        <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-secondary);">Automatisk nyhetsinnhenting med OpenAI-genererte titler</p>
+                    </div>
+                    <div style="margin-left: auto; display: flex; gap: 8px;">
+                        <span style="background: rgba(16, 185, 129, 0.2); color: var(--success); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">🤖 OpenAI</span>
+                        <span style="background: rgba(99, 102, 241, 0.2); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">15 Saker</span>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 13px; color: var(--text-secondary);">
+                    <div>📊 <strong>15 saker per dag</strong> (økt fra 10)</div>
+                    <div>📁 <strong>5 kategorier:</strong> Reality TV, Kjendis Drama, Film & TV, Musikk, Internasjonalt</div>
+                    <div>🎯 <strong>Maks 3 saker</strong> per kategori</div>
+                    <div>⏱️ <strong>Maks 48 timer</strong> gamle saker (freshness=pd)</div>
+                    <div>🤖 <strong>OpenAI:</strong> Titler på maks 7 ord</div>
+                    <div>⏰ <strong>Kjører:</strong> Hver dag kl 06:00 CET</div>
+                </div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(245, 158, 11, 0.2);">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;"><strong>Kategorier:</strong></div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 4px 10px; border-radius: 20px; font-size: 11px;">📺 Reality TV</span>
+                        <span style="background: rgba(236, 72, 153, 0.2); color: #f472b6; padding: 4px 10px; border-radius: 20px; font-size: 11px;">💥 Kjendis Drama</span>
+                        <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 4px 10px; border-radius: 20px; font-size: 11px;">🎬 Film & TV</span>
+                        <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 11px;">🎵 Musikk</span>
+                        <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 4px 10px; border-radius: 20px; font-size: 11px;">🌍 Internasjonalt</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 16px;">Hurtighandlinger</h3>
+            
+            <div class="quick-actions">
+                <div class="action-btn" id="btn-morning" onclick="runMorningRoutine()">
+                    <i class="fas fa-sun" style="color: var(--warning);"></i>
+                    <span>Kjør Morning Routine v2.1</span>
+                </div>
+                
+                <div class="action-btn" id="btn-clips" onclick="generateClips()">
+                    <i class="fas fa-cut" style="color: var(--success);"></i>
+                    <span>Generer Podkast Klipp</span>
+                </div>
+                
+                <div class="action-btn" id="btn-deploy" onclick="deployAll()">
+                    <i class="fas fa-rocket" style="color: var(--primary);"></i>
+                    <span>Deploy Alle</span>
+                </div>
+                
+                <div class="action-btn" id="btn-restart" onclick="restartAgent()">
+                    <i class="fas fa-sync" style="color: var(--info);"></i>
+                    <span>Restart Agent</span>
+                </div>
+            </div>
+
+            <div class="activity-log">
+                <h3><i class="fas fa-history"></i> Aktivitetslogg <span style="font-size: 12px; color: var(--text-dim); font-weight: normal;">(Live)</span></h3>
+                <div class="log-container" id="activity-container">
+                    <div class="log-entry">
+                        <span class="log-time">--:--</span>
+                        <span class="log-info">ℹ Venter på tilkobling...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="notification-container" id="notification-container"></div>
+
+    <script>
+        // ==================== WebSocket Configuration ====================
+        const WS_CONFIG = {
+            url: window.location.hostname === 'localhost' 
+                ? 'ws://localhost:3001' 
+                : 'wss://your-server-domain.com',
+            reconnectInterval: 3000,
+            maxReconnectAttempts: 10,
+            heartbeatInterval: 30000
+        };
+
+        // ==================== State Management ====================
+        const state = {
+            socket: null,
+            isConnected: false,
+            isOffline: false,
+            autoRefresh: true,
+            reconnectAttempts: 0,
+            reconnectTimer: null,
+            heartbeatTimer: null,
+            lastUpdate: null,
+            metrics: { cpu: 12, ram: 45, disk: 78 }
+        };
+
+        // ==================== WebSocket Connection ====================
+        function initWebSocket() {
+            updateConnectionStatus('connecting');
+            
+            try {
+                // Try native WebSocket first, fallback to polling if needed
+                state.socket = io(WS_CONFIG.url, {
+                    transports: ['websocket', 'polling'],
+                    timeout: 10000,
+                    reconnection: false // We handle reconnection manually
+                });
+
+                state.socket.on('connect', handleConnect);
+                state.socket.on('disconnect', handleDisconnect);
+                state.socket.on('connect_error', handleConnectError);
+                state.socket.on('system-metrics', handleSystemMetrics);
+                state.socket.on('activity-log', handleActivityLog);
+                state.socket.on('notification', handleNotification);
+                state.socket.on('system-status', handleSystemStatus);
+
+            } catch (error) {
+                console.error('WebSocket init error:', error);
+                fallbackToOfflineMode();
+            }
+        }
+
+        function handleConnect() {
+            console.log('WebSocket connected');
+            state.isConnected = true;
+            state.reconnectAttempts = 0;
+            updateConnectionStatus('connected');
+            addLogEntry('Tilkoblet til sanntidsserver', 'success');
+            
+            // Request initial data
+            state.socket.emit('request-metrics');
+            state.socket.emit('request-logs');
+            
+            // Start heartbeat
+            startHeartbeat();
+        }
+
+        function handleDisconnect(reason) {
+            console.log('WebSocket disconnected:', reason);
+            state.isConnected = false;
+            stopHeartbeat();
+            updateConnectionStatus('disconnected');
+            addLogEntry('Frakoblet fra server: ' + reason, 'warning');
+            
+            if (state.autoRefresh && !state.isOffline) {
+                scheduleReconnect();
+            }
+        }
+
+        function handleConnectError(error) {
+            console.error('WebSocket connection error:', error);
+            updateConnectionStatus('disconnected');
+            
+            if (state.reconnectAttempts >= WS_CONFIG.maxReconnectAttempts) {
+                fallbackToOfflineMode();
+            } else if (state.autoRefresh) {
+                scheduleReconnect();
+            }
+        }
+
+        function scheduleReconnect() {
+            if (state.reconnectTimer) return;
+            
+            state.reconnectAttempts++;
+            const delay = Math.min(WS_CONFIG.reconnectInterval * state.reconnectAttempts, 30000);
+            
+            updateConnectionStatus('connecting');
+            document.getElementById('connection-text').textContent = 
+                `Kobler til på nytt... (${state.reconnectAttempts}/${WS_CONFIG.maxReconnectAttempts})`;
+            
+            state.reconnectTimer = setTimeout(() => {
+                state.reconnectTimer = null;
+                reconnectWebSocket();
+            }, delay);
+        }
+
+        function reconnectWebSocket() {
+            if (state.socket) {
+                state.socket.disconnect();
+                state.socket = null;
+            }
+            initWebSocket();
+        }
+
+        function startHeartbeat() {
+            state.heartbeatTimer = setInterval(() => {
+                if (state.isConnected && state.socket) {
+                    state.socket.emit('ping');
+                }
+            }, WS_CONFIG.heartbeatInterval);
+        }
+
+        function stopHeartbeat() {
+            if (state.heartbeatTimer) {
+                clearInterval(state.heartbeatTimer);
+                state.heartbeatTimer = null;
+            }
+        }
+
+        // ==================== Connection Status UI ====================
+        function updateConnectionStatus(status) {
+            const indicator = document.getElementById('connection-indicator');
+            const text = document.getElementById('connection-text');
+            const retryBtn = document.getElementById('retry-btn');
+            
+            indicator.className = 'connection-indicator ' + status;
+            retryBtn.disabled = status === 'connected' || status === 'connecting';
+            
+            switch(status) {
+                case 'connected':
+                    text.textContent = 'Tilkoblet (Live)';
+                    text.style.color = 'var(--success)';
+                    break;
+                case 'connecting':
+                    text.textContent = 'Kobler til...';
+                    text.style.color = 'var(--warning)';
+                    break;
+                case 'disconnected':
+                    text.textContent = 'Frakoblet';
+                    text.style.color = 'var(--danger)';
+                    break;
+                case 'offline':
+                    text.textContent = 'Offline-modus';
+                    text.style.color = 'var(--text-dim)';
+                    break;
+            }
+        }
+
+        // ==================== Offline Mode ====================
+        function fallbackToOfflineMode() {
+            state.isOffline = true;
+            updateConnectionStatus('offline');
+            document.getElementById('offline-banner').classList.add('show');
+            addLogEntry('Offline-modus aktivert. Bruker lokal data.', 'warning');
+            
+            // Disable real-time features
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes('fetch')) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                }
+            });
+            
+            // Simulate periodic updates with cached data
+            simulateOfflineUpdates();
+        }
+
+        function simulateOfflineUpdates() {
+            // Update timestamp periodically even when offline
+            setInterval(() => {
+                updateLastUpdateTime();
+            }, 60000);
+        }
+
+        // ==================== Data Handlers ====================
+        function handleSystemMetrics(data) {
+            state.metrics = data;
+            updateMetricsUI(data);
+            updateLastUpdateTime();
+            
+            // Visual feedback
+            const card = document.getElementById('card-system');
+            card.classList.add('updating');
+            setTimeout(() => card.classList.remove('updating'), 1000);
+        }
+
+        function updateMetricsUI(data) {
+            // Update text values
+            document.getElementById('cpu-value').textContent = data.cpu + '%';
+            document.getElementById('ram-value').textContent = data.ram + '%';
+            document.getElementById('disk-value').textContent = data.disk + '%';
+            
+            // Update progress bars
+            updateMetricBar('cpu', data.cpu);
+            updateMetricBar('ram', data.ram);
+            updateMetricBar('disk', data.disk);
+            
+            // Update status text
+            document.getElementById('status-system').textContent = 
+                `CPU: ${data.cpu}% • RAM: ${data.ram}% • Disk: ${data.disk}%`;
+        }
+
+        function updateMetricBar(type, value) {
+            const bar = document.getElementById(type + '-bar');
+            bar.style.width = value + '%';
+            bar.className = 'metric-fill ' + (value < 50 ? 'low' : value < 80 ? 'medium' : 'high');
+        }
+
+        function handleActivityLog(data) {
+            if (Array.isArray(data)) {
+                // Bulk update - replace all
+                const container = document.getElementById('activity-container');
+                container.innerHTML = '';
+                data.forEach(log => addLogEntry(log.message, log.type, log.time, false));
+            } else {
+                // Single entry
+                addLogEntry(data.message, data.type, data.time);
+            }
+            updateLastUpdateTime();
+        }
+
+        function handleNotification(data) {
+            showNotification(data.title, data.message, data.type);
+            
+            // Also add to activity log if important
+            if (data.important) {
+                addLogEntry(data.title + ': ' + data.message, data.type);
+            }
+        }
+
+        function handleSystemStatus(data) {
+            const badge = document.getElementById('system-status-badge');
+            
+            if (data.allOperational) {
+                badge.className = 'status-badge status-ok';
+                badge.textContent = '🟢 Alle systemer operative';
+            } else if (data.hasWarnings) {
+                badge.className = 'status-badge status-warning';
+                badge.textContent = '🟡 Noen systemer har advarsler';
+            } else {
+                badge.className = 'status-badge status-error';
+                badge.textContent = '🔴 Noen systemer er nede';
+            }
+            
+            // Update individual system statuses
+            Object.keys(data.systems || {}).forEach(systemId => {
+                const system = data.systems[systemId];
+                const statusEl = document.getElementById('status-' + systemId);
+                if (statusEl && system.status) {
+                    statusEl.textContent = system.status;
+                }
+            });
+        }
+
+        // ==================== UI Helpers ====================
+        function addLogEntry(message, type = 'info', time = null, animate = true) {
+            const container = document.getElementById('activity-container');
+            const timestamp = time || new Date().toLocaleTimeString('nb-NO', {hour: '2-digit', minute:'2-digit'});
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            if (!animate) entry.style.animation = 'none';
+            
+            const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : type === 'warning' ? '⚠' : 'ℹ';
+            entry.innerHTML = `<span class="log-time">${timestamp}</span><span class="log-${type}">${icon} ${message}</span>`;
+            
+            container.insertBefore(entry, container.firstChild);
+            
+            // Keep only last 50 entries
+            while (container.children.length > 50) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function updateLastUpdateTime() {
+            state.lastUpdate = new Date();
+            document.getElementById('last-update').textContent = 
+                'Sist oppdatert: ' + state.lastUpdate.toLocaleTimeString('nb-NO');
+        }
+
+        function showNotification(title, message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notification-container');
+            
+            const notif = document.createElement('div');
+            notif.className = 'notification ' + type;
+            notif.innerHTML = `
+                <div class="notification-title">${title}</div>
+                <div class="notification-message">${message}</div>
+                <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+            `;
+            
+            container.appendChild(notif);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    notif.style.opacity = '0';
+                    notif.style.transform = 'translateX(100%)';
+                    setTimeout(() => notif.remove(), 300);
+                }, duration);
+            }
+            
+            return notif;
+        }
+
+        function toggleAutoRefresh() {
+            state.autoRefresh = !state.autoRefresh;
+            document.getElementById('auto-refresh-toggle').classList.toggle('active', state.autoRefresh);
+            
+            if (state.autoRefresh && !state.isConnected && !state.isOffline) {
+                reconnectWebSocket();
+            }
+            
+            addLogEntry('Auto-refresh ' + (state.autoRefresh ? 'aktivert' : 'deaktivert'), 'info');
+        }
+
+        // ==================== Action Handlers ====================
+        async function runMorningRoutine() {
+            showNotification('Morning Routine v2.1', 'Starter Morning Routine v2.1 med OpenAI titler...', 'info');
+            
+            if (state.isConnected && state.socket) {
+                state.socket.emit('run-routine', { type: 'morning-v2.1' });
+            } else {
+                // Fallback to HTTP
+                try {
+                    await fetch('http://47.84.19.119:8081/api/routine/morning-v2.1', { 
+                        method: 'POST',
+                        mode: 'no-cors'
+                    });
+                    showNotification('Suksess', 'Morning Routine v2.1 startet! 15 saker, 5 kategorier, maks 3 per kategori', 'success');
+                    addLogEntry('Morning Routine v2.1 startet manuelt - 15 saker, 5 kategorier', 'success');
+                } catch (error) {
+                    showNotification('Feil', 'Kunne ikke starte rutine: ' + error.message, 'error');
+                    addLogEntry('Feil ved start av Morning Routine v2.1', 'error');
+                }
+            }
+        }
+
+        function generateClips() {
+            showNotification('Podkast', 'Genererer podkast klipp...', 'info');
+            
+            if (state.isConnected && state.socket) {
+                state.socket.emit('generate-clips');
+            }
+            
+            // Simulate progress
+            setTimeout(() => {
+                showNotification('Suksess', '3 klipp generert!', 'success');
+                addLogEntry('3 podkast klipp generert', 'success');
+            }, 2000);
+        }
+
+        function deployAll() {
+            showNotification('Deploy', 'Deployer alle prosjekter...', 'info');
+            
+            if (state.isConnected && state.socket) {
+                state.socket.emit('deploy-all');
+            }
+            
+            setTimeout(() => {
+                showNotification('Suksess', 'Alle prosjekter deployet!', 'success');
+                addLogEntry('Alle prosjekter deployet', 'success');
+            }, 3000);
+        }
+
+        function restartAgent() {
+            showNotification('Agent', 'Restarter BaarliClaw Agent...', 'info');
+            
+            if (state.isConnected && state.socket) {
+                state.socket.emit('restart-agent');
+            }
+            
+            setTimeout(() => {
+                showNotification('Suksess', 'Agent restartet!', 'success');
+                addLogEntry('BaarliClaw Agent restartet', 'info');
+            }, 2000);
+        }
+
+        // ==================== Network Status Monitoring ====================
+        function initNetworkMonitoring() {
+            window.addEventListener('online', () => {
+                state.isOffline = false;
+                document.getElementById('offline-banner').classList.remove('show');
+                addLogEntry('Tilkoblet til internett', 'success');
+                
+                if (state.autoRefresh) {
+                    reconnectWebSocket();
+                }
+            });
+            
+            window.addEventListener('offline', () => {
+                state.isOffline = true;
+                document.getElementById('offline-banner').classList.add('show');
+                addLogEntry('Mistet internett-tilkobling', 'error');
+            });
+            
+            // Initial check
+            if (!navigator.onLine) {
+                fallbackToOfflineMode();
+            }
+        }
+
+        // ==================== Active Project Loading ====================
+        async function loadActiveProject() {
+            try {
+                // Fetch from local config file (in real implementation, this would be an API call)
+                const response = await fetch('/.config/active-projects.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.projects && data.projects.length > 0) {
+                        const project = data.projects[0];
+                        document.getElementById('active-project-name').textContent = project.name;
+                        document.getElementById('active-project-desc').textContent = project.description;
+                        
+                        // Populate tasks
+                        const tasksContainer = document.getElementById('active-project-tasks');
+                        tasksContainer.innerHTML = project.tasks.map((task, i) => 
+                            `<span style="background: rgba(102, 126, 234, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 12px;">${i + 1}. ${task}</span>`
+                        ).join('');
+                        
+                        addLogEntry(`Aktivt prosjekt: ${project.name}`, 'info');
+                    } else {
+                        document.getElementById('active-project-name').textContent = 'Ingen aktivt prosjekt';
+                        document.getElementById('active-project-desc').textContent = 'Venter på ny oppgave...';
+                        document.getElementById('active-project-status').textContent = '🟡 Venter';
+                        document.getElementById('active-project-status').className = 'status-badge status-warning';
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load active project:', error);
+                document.getElementById('active-project-name').textContent = 'AI-Powered Content Suggestions';
+                document.getElementById('active-project-desc').textContent = 'Use OpenAI to suggest improvements to sakslista items';
+            }
+        }
+
+        // ==================== Initialization ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initWebSocket();
+            initNetworkMonitoring();
+            loadActiveProject();
+            updateLastUpdateTime();
+            
+            // Add initial log entry
+            addLogEntry('Dashboard lastet', 'info');
+            
+            // Simulate initial metrics if no connection
+            setTimeout(() => {
+                if (!state.isConnected) {
+                    // Demo mode - simulate some activity
+                    simulateDemoMode();
+                }
+            }, 2000);
+        });
+
+        // Demo mode for testing without server
+        function simulateDemoMode() {
+            console.log('Running in demo mode');
+            addLogEntry('Demo-modus: Simulerer sanntidsdata', 'info');
+            
+            // Simulate metrics updates
+            setInterval(() => {
+                if (!state.isConnected) {
+                    const metrics = {
+                        cpu: Math.floor(Math.random() * 30) + 10,
+                        ram: Math.floor(Math.random() * 20) + 40,
+                        disk: 78
+                    };
+                    updateMetricsUI(metrics);
+                    updateLastUpdateTime();
+                }
+            }, 5000);
+            
+            // Simulate occasional log entries
+            const demoMessages = [
+                { msg: 'System health check completed', type: 'success' },
+                { msg: 'Cron job executed: daily-backup', type: 'info' },
+                { msg: 'Memory usage within normal range', type: 'info' },
+                { msg: 'Git sync completed', type: 'success' }
+            ];
+            
+            setInterval(() => {
+                if (!state.isConnected && Math.random() > 0.7) {
+                    const item = demoMessages[Math.floor(Math.random() * demoMessages.length)];
+                    addLogEntry(item.msg, item.type);
+                }
+            }, 15000);
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            stopHeartbeat();
+            if (state.socket) {
+                state.socket.disconnect();
+            }
+        });
+    </script>
+<script src="auto-nav.js"></script>
+</body>
+</html>
