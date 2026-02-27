@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # AUTO-SYNC TRIGGER - Runs automatically after every change
 # This ensures Mission Control is ALWAYS consistent
 

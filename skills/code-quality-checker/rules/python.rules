@@ -1,0 +1,38 @@
+# Python Quality Rules
+
+## Syntax Requirements
+- Must pass `python -m py_compile`
+- No syntax errors allowed
+
+## Documentation
+- All functions must have docstrings
+- Module should have module-level docstring
+- Complex algorithms need inline comments
+
+## Code Style
+- Maximum line length: 100 characters
+- Maximum function length: 50 lines
+- Maximum file length: 500 lines
+- Use 4 spaces for indentation
+
+## Naming Conventions
+- Variables: snake_case
+- Functions: snake_case
+- Classes: PascalCase
+- Constants: UPPER_SNAKE_CASE
+- Private: _leading_underscore
+
+## Best Practices
+- No unused imports
+- No wildcard imports
+- Use type hints where appropriate
+- Handle exceptions explicitly
+- Use context managers (with statements)
+- Avoid global variables
+
+## Scoring
+- Missing docstring: -5 points per function
+- Line too long: -1 point per line
+- File too long: -10 points
+- Unused import: -3 points
+- Syntax error: -30 points (critical)

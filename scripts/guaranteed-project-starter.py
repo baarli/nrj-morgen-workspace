@@ -298,7 +298,9 @@ print(f'Working on: {project['name']}')
     def ensure_minimum_projects(self):
         """Ensure minimum number of active projects"""
         active = self.get_active_projects()
-        num_active = len(active["projects"])
+        # Only count projects with status "active" (not "completed")
+        truly_active = [p for p in active["projects"] if p.get("status") == "active"]
+        num_active = len(truly_active)
         
         self.log(f"📊 Active projects: {num_active} (minimum: {self.min_active_projects})")
         

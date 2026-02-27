@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/skill-master.sh
 # Master control for alle skills
 

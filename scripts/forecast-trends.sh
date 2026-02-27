@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/forecast-trends.sh
 # Forutsi kommende trender
 

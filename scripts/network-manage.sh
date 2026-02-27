@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/network-manage.sh
 # Håndtere kontakter og nettverk
 

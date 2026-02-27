@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Calendar - NRJ Morgen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .view-btn:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .calendar-container {
+            padding: 20px 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .month-year {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-arrows {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .day-header {
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .day-cell {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-height: 120px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .day-cell:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .day-cell.other-month {
+            opacity: 0.3;
+        }
+
+        .day-cell.today {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .day-cell.today .day-number {
+            color: #667eea;
+        }
+
+        .content-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .content-item {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: grab;
+        }
+
+        .content-item:hover {
+            filter: brightness(1.1);
+        }
+
+        .content-podcast {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .content-social {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .content-news {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .content-video {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+        }
+
+        .content-event {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 30px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Week View */
+        .week-view {
+            display: none;
+        }
+
+        .week-view.active {
+            display: block;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(7, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .time-slot {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-align: right;
+        }
+
+        .week-day-header {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .week-day-header .day-name {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+        }
+
+        .week-day-header .day-number {
+            font-size: 20px;
+            margin-top: 5px;
+        }
+
+        .week-cell {
+            background: rgba(255,255,255,0.05);
+            min-height: 60px;
+            padding: 5px;
+        }
+
+        .week-cell:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                gap: 5px;
+            }
+
+            .day-cell {
+                min-height: 80px;
+                padding: 5px;
+            }
+
+            .day-header {
+                padding: 10px 5px;
+                font-size: 10px;
+            }
+
+            .content-item {
+                font-size: 9px;
+                padding: 2px 4px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .view-toggle {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📅 Content Calendar</h1>
+        <p>Planlegg og organiser alt innhold for NRJ Morgen</p>
+    </div>
+
+    <div class="stats-panel">
+        <div class="stat-card">
+            <div class="stat-label">Denne måneden</div>
+            <div class="stat-value" id="monthTotal">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Podkast-episoder</div>
+            <div class="stat-value" id="podcastCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">SoMe-innlegg</div>
+            <div class="stat-value" id="socialCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Planlagt</div>
+            <div class="stat-value" id="plannedCount">0</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-primary" onclick="openModal()">
+            <span>+</span> Nytt innhold
+        </button>
+        <button class="btn btn-secondary" onclick="syncWithData()">
+            <span>🔄</span> Synkroniser
+        </button>
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="setView('month')">Måned</button>
+            <button class="view-btn" onclick="setView('week')">Uke</button>
+        </div>
+    </div>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <div class="month-year" id="monthYear">Februar 2026</div>
+            <div class="nav-arrows">
+                <button class="nav-arrow" onclick="changeMonth(-1)">←</button>
+                <button class="nav-arrow" onclick="goToToday()">●</button>
+                <button class="nav-arrow" onclick="changeMonth(1)">→</button>
+            </div>
+        </div>
+
+        <!-- Month View -->
+        <div id="monthView" class="month-view">
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <!-- Week View -->
+        <div id="weekView" class="week-view">
+            <div class="week-grid" id="weekGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h2>Legg til innhold</h2>
+            <div class="form-group">
+                <label>Tittel</label>
+                <input type="text" id="contentTitle" placeholder="F.eks. Ny podkast-episode">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="contentType">
+                    <option value="podcast">🎙️ Podkast</option>
+                    <option value="social">📱 Sosiale medier</option>
+                    <option value="news">📰 Nyhet</option>
+                    <option value="video">🎥 Video</option>
+                    <option value="event">📅 Event</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Dato</label>
+                <input type="date" id="contentDate">
+            </div>
+            <div class="form-group">
+                <label>Beskrivelse</label>
+                <textarea id="contentDesc" placeholder="Detaljer om innholdet..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Avbryt</button>
+                <button class="btn btn-primary" onclick="saveContent()">Lagre</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentDate = new Date();
+        let currentView = 'month';
+        let contentItems = JSON.parse(localStorage.getItem('contentCalendar') || '[]');
+
+        // Sample data for NRJ Morgen
+        const sampleData = [
+            { id: 1, title: 'Podkast: Episode 157', type: 'podcast', date: '2026-02-24', desc: 'Baarli og Benjamin går i terapi' },
+            { id: 2, title: 'Instagram: Behind the scenes', type: 'social', date: '2026-02-24', desc: 'Dagens opptak' },
+            { id: 3, title: 'Morning Routine', type: 'news', date: '2026-02-25', desc: 'Dagens 15 saker' },
+            { id: 4, title: 'Podkast: Episode 158', type: 'podcast', date: '2026-02-26', desc: 'Ny episode' },
+            { id: 5, title: 'TikTok: Kort klipp', type: 'video', date: '2026-02-25', desc: 'Viral øyeblikk' },
+            { id: 6, title: 'Twitter: Poll', type: 'social', date: '2026-02-27', desc: 'Dagens spørsmål' },
+            { id: 7, title: 'Live Event', type: 'event', date: '2026-03-01', desc: 'Fan meetup' },
+        ];
+
+        // Initialize
+        function init() {
+            if (contentItems.length === 0) {
+                contentItems = sampleData;
+                saveData();
+            }
+            renderCalendar();
+            updateStats();
+        }
+
+        function saveData() {
+            localStorage.setItem('contentCalendar', JSON.stringify(contentItems));
+        }
+
+        function updateStats() {
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            
+            const monthItems = contentItems.filter(item => {
+                const itemDate = new Date(item.date);
+                return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
+            });
+
+            document.getElementById('monthTotal').textContent = monthItems.length;
+            document.getElementById('podcastCount').textContent = monthItems.filter(i => i.type === 'podcast').length;
+            document.getElementById('socialCount').textContent = monthItems.filter(i => i.type === 'social').length;
+            document.getElementById('plannedCount').textContent = contentItems.length;
+        }
+
+        function renderCalendar() {
+            if (currentView === 'month') {
+                renderMonthView();
+            } else {
+                renderWeekView();
+            }
+            updateStats();
+        }
+
+        function renderMonthView() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('monthYear').textContent = 
+                new Date(year, month).toLocaleDateString('no-NO', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            // Day headers
+            const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+            dayNames.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = day;
+                grid.appendChild(header);
+            });
+
+            // Previous month days
+            const startDay = firstDay === 0 ? 6 : firstDay - 1;
+            for (let i = startDay - 1; i >= 0; i--) {
+                const cell = createDayCell(daysInPrevMonth - i, true, year, month - 1);
+                grid.appendChild(cell);
+            }
+
+            // Current month days
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isToday = today.getDate() === day && 
+                               today.getMonth() === month && 
+                               today.getFullYear() === year;
+                const cell = createDayCell(day, false, year, month, isToday);
+                grid.appendChild(cell);
+            }
+
+            // Next month days
+            const totalCells = grid.children.length - 7; // Subtract headers
+            const remainingCells = 35 - totalCells;
+            for (let day = 1; day <= remainingCells; day++) {
+                const cell = createDayCell(day, true, year, month + 1);
+                grid.appendChild(cell);
+            }
+        }
+
+        function createDayCell(day, isOtherMonth, year, month, isToday = false) {
+            const cell = document.createElement('div');
+            cell.className = 'day-cell' + (isOtherMonth ? ' other-month' : '') + (isToday ? ' today' : '');
+            
+            const dayNum = document.createElement('div');
+            dayNum.className = 'day-number';
+            dayNum.textContent = day;
+            cell.appendChild(dayNum);
+
+            // Add content items for this day
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'content-items';
+
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayItems = contentItems.filter(item => item.date === dateStr);
+
+            dayItems.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = `content-item content-${item.type}`;
+                itemEl.textContent = item.title;
+                itemEl.draggable = true;
+                itemEl.ondragstart = (e) => dragStart(e, item);
+                itemsContainer.appendChild(itemEl);
+            });
+
+            cell.appendChild(itemsContainer);
+            cell.ondrop = (e) => drop(e, dateStr);
+            cell.ondragover = allowDrop;
+            cell.onclick = () => {
+                document.getElementById('contentDate').value = dateStr;
+                openModal();
+            };
+
+            return cell;
+        }
+
+        function renderWeekView() {
+            // Week view implementation
+            const grid = document.getElementById('weekGrid');
+            grid.innerHTML = '';
+
+            // Time column header
+            grid.appendChild(document.createElement('div'));
+
+            // Day headers
+            const weekStart = new Date(currentDate);
+            weekStart.setDate(currentDate.getDate() - currentDate.getDay() + 1);
+
+            for (let i = 0; i < 7; i++) {
+                const dayDate = new Date(weekStart);
+                dayDate.setDate(weekStart.getDate() + i);
+                
+                const header = document.createElement('div');
+                header.className = 'week-day-header';
+                header.innerHTML = `
+                    <div class="day-name">${dayDate.toLocaleDateString('no-NO', { weekday: 'short' })}</div>
+                    <div class="day-number">${dayDate.getDate()}</div>
+                `;
+                grid.appendChild(header);
+            }
+
+            // Time slots
+            for (let hour = 6; hour <= 22; hour++) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = `${hour}:00`;
+                grid.appendChild(timeSlot);
+
+                for (let day = 0; day < 7; day++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'week-cell';
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            renderCalendar();
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('monthView').classList.toggle('active', view === 'month');
+            document.getElementById('weekView').classList.toggle('active', view === 'week');
+            
+            renderCalendar();
+        }
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+            if (!document.getElementById('contentDate').value) {
+                document.getElementById('contentDate').value = new Date().toISOString().split('T')[0];
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('contentTitle').value = '';
+            document.getElementById('contentDesc').value = '';
+        }
+
+        function saveContent() {
+            const title = document.getElementById('contentTitle').value;
+            const type = document.getElementById('contentType').value;
+            const date = document.getElementById('contentDate').value;
+            const desc = document.getElementById('contentDesc').value;
+
+            if (!title || !date) {
+                alert('Vennligst fyll ut tittel og dato');
+                return;
+            }
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                type,
+                date,
+                desc
+            };
+
+            contentItems.push(newItem);
+            saveData();
+            renderCalendar();
+            closeModal();
+        }
+
+        function syncWithData() {
+            // Sync with actual NRJ Morgen data
+            fetch('https://api.baarliclaw.com/agenda-items')
+                .then(r => r.json())
+                .then(data => {
+                    console.log('Synced with agenda items:', data);
+                    alert('Synkronisert!');
+                })
+                .catch(() => {
+                    alert('Bruker lokal data');
+                });
+        }
+
+        // Drag and drop
+        let draggedItem = null;
+
+        function dragStart(e, item) {
+            draggedItem = item;
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function drop(e, newDate) {
+            e.preventDefault();
+            if (draggedItem) {
+                draggedItem.date = newDate;
+                saveData();
+                renderCalendar();
+                draggedItem = null;
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

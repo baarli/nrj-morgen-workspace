@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/daily-email-report.sh
 # Genererer daglig SHOWPREPP-rapport for NRJ Morgen
 

@@ -2,6 +2,30 @@
 
 This folder is home. Treat it that way.
 
+## 🚨 MISSION CONTROL - ÉN KILDE TIL SANNHET (2026-02-24)
+
+**KRITISK:** Etter opprydding 2026-02-24 finnes det KUN én versjon av Mission Control:
+
+### Struktur
+- **KUN ÉN FIL:** `mission-control/public/index.html` (68KB SPA)
+- **Ingen duplikater** - Aldri lag separate HTML-filer
+- **Ingen fragmentering** - All funksjonalitet i én fil
+- **Hash-routing:** #dashboard, #sakslista, #podkast, #cron, #system
+
+### Regler for Mission Control
+1. **Aldri** lag nye HTML-filer (analytics.html, cron-control.html, etc.)
+2. **Aldri** kopier index.html til andre filer
+3. **Alltid** oppdater KUN index.html
+4. **Deploy** kun index.html til Netlify
+
+### Hvis bruker ber om endringer
+- Oppdater KUN `mission-control/public/index.html`
+- Bruk hash-routing for nye seksjoner
+- Inline CSS/JS - ingen eksterne filer
+- Deploy med: `cd mission-control/public && netlify deploy --prod`
+
+---
+
 ## First Run
 
 If `BOOTSTRAP.md` exists, that's your birth certificate. Follow it, figure out who you are, then delete it. You won't need it again.

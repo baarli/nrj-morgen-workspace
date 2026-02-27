@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # MISSION CONTROL SYNC - Ensures all HTML files are consistent
 # This script MUST be run after EVERY change to ensure consistency
 

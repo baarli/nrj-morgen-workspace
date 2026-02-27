@@ -1,0 +1,43 @@
+{
+  "podcasts": {
+    "baarli": {
+      "name": "Baarli og Benjamin går i terapi",
+      "rss": "https://rss.podplaystudio.com/4035.xml",
+      "emoji": "🎙️",
+      "enabled": true,
+      "description": "Terapi-podcast med Baarli og Benjamin"
+    },
+    "nrj": {
+      "name": "NRJ Morgen Podkast",
+      "rss": "https://rss.podplaystudio.com/3873.xml",
+      "emoji": "📻",
+      "enabled": true,
+      "description": "NRJ Morgen show podcast"
+    }
+  },
+  "settings": {
+    "clips_per_episode": 3,
+    "clip_duration": 30,
+    "min_clip_duration": 25,
+    "max_clip_duration": 35,
+    "output_format": "mp4",
+    "video_resolution": "1080x1920",
+    "video_codec": "libx264",
+    "audio_codec": "aac",
+    "audio_bitrate": "128k",
+    "work_dir": "/tmp/podcast-clips",
+    "cache_dir": "/tmp/podcast-daily"
+  },
+  "email": {
+    "enabled": true,
+    "default_recipient": "niklasbaarli@gmail.com",
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 587,
+    "subject_prefix": "🎧 Dagens Podkast Klipp"
+  },
+  "scheduling": {
+    "daily_clip_time": "07:00",
+    "daily_email_time": "08:00",
+    "timezone": "Europe/Oslo"
+  }
+}

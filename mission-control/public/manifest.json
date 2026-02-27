@@ -2,12 +2,13 @@
   "name": "Mission Control - NRJ Morgen",
   "short_name": "Mission Control",
   "description": "Total control dashboard for NRJ Morgen radio show management",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#667eea",
-  "orientation": "portrait-primary",
+  "theme_color": "#6366f1",
+  "orientation": "any",
   "scope": "/",
+  "id": "/",
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -61,6 +62,7 @@
   "categories": ["productivity", "business"],
   "lang": "no",
   "dir": "ltr",
+  "prefer_related_applications": false,
   "screenshots": [
     {
       "src": "/screenshots/dashboard.png",
@@ -79,18 +81,25 @@
   ],
   "shortcuts": [
     {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Åpne hoveddashboard",
+      "url": "/#dashboard",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
       "name": "Sakslista",
       "short_name": "Saker",
       "description": "Åpne sakslista",
-      "url": "/sakslista-pro.html",
-      "icons": [{ "src": "/icons/shortcut-saker.png", "sizes": "96x96" }]
+      "url": "/#sakslista",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     },
     {
-      "name": "Analytics",
-      "short_name": "Analyse",
-      "description": "Åpne analytics dashboard",
-      "url": "/analytics.html",
-      "icons": [{ "src": "/icons/shortcut-analytics.png", "sizes": "96x96" }]
+      "name": "Podkast",
+      "short_name": "Podkast",
+      "description": "Åpne podkast-seksjonen",
+      "url": "/#podkast",
+      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ]
 }

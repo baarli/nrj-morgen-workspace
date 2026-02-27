@@ -44,13 +44,222 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================== REALTIME UPDATES ====================
 
 function initRealtimeUpdates() {
-    // Poll for updates every 10 seconds as fallback
+    // Initialize Supabase Realtime for live updates
+    initSupabaseRealtime();
+    
+    // Poll for updates every 30 seconds as fallback (reduced from 10s)
     setInterval(() => {
         checkForUpdates();
-    }, 10000);
+    }, 30000);
     
     // Update routine time every minute
     setInterval(updateNextRoutineTime, 60000);
+}
+
+// Initialize Supabase Realtime subscription
+function initSupabaseRealtime() {
+    try {
+        // Check if Supabase client is available
+        if (typeof supabase === 'undefined') {
+            console.log('⚠️ Supabase client not available, loading from CDN...');
+            loadSupabaseClient();
+            return;
+        }
+        
+        setupRealtimeSubscription();
+    } catch (error) {
+        console.error('Error initializing realtime:', error);
+    }
+}
+
+// Load Supabase client from CDN
+function loadSupabaseClient() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
+    script.onload = () => {
+        console.log('✅ Supabase client loaded');
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        setupRealtimeSubscription();
+    };
+    script.onerror = () => {
+        console.error('❌ Failed to load Supabase client');
+    };
+    document.head.appendChild(script);
+}
+
+// Setup realtime subscription to agenda_items
+function setupRealtimeSubscription() {
+    const client = window.supabaseClient || (typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null);
+    
+    if (!client) {
+        console.error('❌ Supabase client not available');
+        return;
+    }
+    
+    console.log('🔌 Setting up Supabase Realtime subscription...');
+    
+    // Subscribe to changes on agenda_items table
+    const subscription = client
+        .channel('agenda_items_changes')
+        .on(
+            'postgres_changes',
+            {
+                event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+                schema: 'public',
+                table: 'agenda_items',
+                filter: `tenant_id=eq.${TENANT_ID}`
+            },
+            (payload) => {
+                handleRealtimeChange(payload);
+            }
+        )
+        .subscribe((status) => {
+            console.log('📡 Realtime subscription status:', status);
+            updateRealtimeStatus(status === 'SUBSCRIBED' ? 'connected' : 'disconnected');
+        });
+    
+    realtimeSubscription = subscription;
+    
+    // Also setup WebSocket for cross-user notifications
+    setupWebSocketConnection();
+}
+
+// Handle realtime changes from Supabase
+function handleRealtimeChange(payload) {
+    const { eventType, new: newRecord, old: oldRecord } = payload;
+    
+    console.log('🔄 Realtime change detected:', eventType, newRecord?.id || oldRecord?.id);
+    
+    switch (eventType) {
+        case 'INSERT':
+            handleRealtimeInsert(newRecord);
+            break;
+        case 'UPDATE':
+            handleRealtimeUpdate(newRecord);
+            break;
+        case 'DELETE':
+            handleRealtimeDelete(oldRecord);
+            break;
+    }
+    
+    // Show notification for changes made by other users
+    if (newRecord && newRecord.created_by !== CREATED_BY) {
+        showRealtimeNotification(eventType, newRecord);
+    }
+}
+
+// Handle INSERT event
+function handleRealtimeInsert(record) {
+    // Check if already exists (avoid duplicates)
+    const exists = allSaker.find(s => s.id === record.id);
+    if (!exists) {
+        allSaker.push(record);
+        saker = [...allSaker];
+        renderSaker();
+        updateStats();
+        console.log('➕ New item added via realtime:', record.title);
+    }
+}
+
+// Handle UPDATE event
+function handleRealtimeUpdate(record) {
+    const index = allSaker.findIndex(s => s.id === record.id);
+    if (index !== -1) {
+        // Don't update if currently editing this item
+        if (editingId !== record.id) {
+            allSaker[index] = { ...allSaker[index], ...record };
+            saker = [...allSaker];
+            renderSaker();
+            updateStats();
+            console.log('✏️ Item updated via realtime:', record.title);
+        }
+    }
+}
+
+// Handle DELETE event
+function handleRealtimeDelete(record) {
+    allSaker = allSaker.filter(s => s.id !== record.id);
+    saker = [...allSaker];
+    renderSaker();
+    updateStats();
+    console.log('🗑️ Item deleted via realtime:', record.id);
+}
+
+// Show notification for realtime changes
+function showRealtimeNotification(eventType, record) {
+    const messages = {
+        'INSERT': `🆕 Ny sak lagt til: "${record.title?.substring(0, 40)}..."`,
+        'UPDATE': `✏️ Sak oppdatert: "${record.title?.substring(0, 40)}..."`,
+        'DELETE': `🗑️ Sak slettet`
+    };
+    
+    showNotification('🔄 Live', messages[eventType] || 'Data oppdatert', 'info');
+}
+
+// Update realtime connection status UI
+function updateRealtimeStatus(status) {
+    const indicator = document.getElementById('realtime-status');
+    if (indicator) {
+        indicator.className = `status-indicator status-${status}`;
+        indicator.title = status === 'connected' ? 'Live oppdateringer aktiv' : 'Live oppdateringer frakoblet';
+    }
+}
+
+// Setup WebSocket for additional real-time features
+function setupWebSocketConnection() {
+    try {
+        const wsUrl = 'ws://47.84.19.119:8082';
+        const ws = new WebSocket(wsUrl);
+        
+        ws.onopen = () => {
+            console.log('✅ WebSocket connected for live updates');
+            // Send identification
+            ws.send(JSON.stringify({
+                type: 'identify',
+                userId: CREATED_BY,
+                tenantId: TENANT_ID
+            }));
+        };
+        
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            handleWebSocketMessage(data);
+        };
+        
+        ws.onclose = () => {
+            console.log('❌ WebSocket disconnected');
+            // Attempt reconnect after 5 seconds
+            setTimeout(setupWebSocketConnection, 5000);
+        };
+        
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        
+        window.liveUpdateSocket = ws;
+    } catch (error) {
+        console.error('Failed to setup WebSocket:', error);
+    }
+}
+
+// Handle WebSocket messages
+function handleWebSocketMessage(data) {
+    switch (data.type) {
+        case 'broadcast':
+            // Handle broadcast messages from other users
+            if (data.userId !== CREATED_BY) {
+                showNotification('📢', data.message, 'info');
+            }
+            break;
+        case 'refresh':
+            // Force refresh data
+            loadSaker();
+            break;
+        case 'user_activity':
+            // Show user activity
+            console.log('👤 User activity:', data);
+            break;
+    }
 }
 
 async function checkForUpdates() {

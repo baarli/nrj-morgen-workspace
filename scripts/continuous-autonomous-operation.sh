@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Continuous Autonomous Operation - Ensures 24/7 autonomous operation
 # This script runs continuously and ensures I never stop working
 

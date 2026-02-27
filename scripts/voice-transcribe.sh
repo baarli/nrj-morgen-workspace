@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/voice-transcribe.sh
 # Transkriber talememoer til tekst
 

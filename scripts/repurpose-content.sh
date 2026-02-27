@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/repurpose-content.sh
 # Gjenbruke innhold på tvers av plattformer
 

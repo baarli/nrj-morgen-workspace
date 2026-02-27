@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # MEMORY VALIDATOR - Non-interactive version for cron
 # Validates memory without requiring user input
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # User Notification System for Autonomous Tasks
 # Sends notification when starting new tasks
 

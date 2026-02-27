@@ -1,6 +1,52 @@
 // Shared Navigation Component for Mission Control
 // Injects consistent navigation into all pages
 
+// Dark Mode Manager
+const DarkModeManager = {
+    STORAGE_KEY: 'mission-control-dark-mode',
+    
+    init() {
+        // Check saved preference or system preference
+        const saved = localStorage.getItem(this.STORAGE_KEY);
+        if (saved !== null) {
+            this.set(saved === 'true');
+        } else {
+            this.set(window.matchMedia('(prefers-color-scheme: dark)').matches);
+        }
+        
+        // Listen for system changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (localStorage.getItem(this.STORAGE_KEY) === null) {
+                this.set(e.matches);
+            }
+        });
+    },
+    
+    toggle() {
+        const isDark = !document.body.classList.contains('dark-mode');
+        this.set(isDark);
+        localStorage.setItem(this.STORAGE_KEY, isDark);
+    },
+    
+    set(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+        this.updateToggleIcon();
+    },
+    
+    updateToggleIcon() {
+        const btn = document.getElementById('dark-mode-toggle');
+        if (btn) {
+            const isDark = document.body.classList.contains('dark-mode');
+            btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            btn.title = isDark ? 'Bytt til lys modus' : 'Bytt til mørk modus';
+        }
+    }
+};
+
 const NAV_CONFIG = {
     logo: {
         icon: '🚀',
@@ -29,6 +75,9 @@ const NAV_CONFIG = {
 };
 
 function injectNavigation() {
+    // Initialize dark mode first
+    DarkModeManager.init();
+    
     // Find or create sidebar
     let sidebar = document.querySelector('.sidebar');
     
@@ -55,8 +104,10 @@ function injectNavigation() {
                 .nav a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; color: #94a3b8; text-decoration: none; transition: all 0.2s; font-size: 14px; }
                 .nav a:hover, .nav a.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
                 .nav a i { width: 20px; text-align: center; }
+                .dark-mode-toggle { position: fixed; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; z-index: 1000; }
+                .dark-mode-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
                 .main { margin-left: 280px; }
-                @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } }
+                @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .dark-mode-toggle { top: 10px; right: 10px; width: 40px; height: 40px; } }
             `;
             document.head.appendChild(styles);
         }
@@ -91,6 +142,14 @@ function injectNavigation() {
     `;
     
     sidebar.innerHTML = navHTML;
+    
+    // Add dark mode toggle button
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'dark-mode-toggle';
+    toggleBtn.className = 'dark-mode-toggle';
+    toggleBtn.onclick = () => DarkModeManager.toggle();
+    document.body.appendChild(toggleBtn);
+    DarkModeManager.updateToggleIcon();
 }
 
 // Auto-inject on page load

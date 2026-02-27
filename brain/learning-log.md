@@ -35,4 +35,65 @@ Sentral logg over viktige læringsøyeblikk og innsikter.
 
 ---
 
-*Sist oppdatert: 2026-02-24*
+## 2026-02-25
+
+### Teknisk: Autonomous Mission Control Development
+- **Hva:** Implementerte system for selvstendig utvikling med task-generering
+- **Nøkkel-innsikt:** Autonomi krever struktur - klare regler, sikkerhetsmekanismer og omfattende logging
+- **Status:** ✅ Aktivt, kjører hver 30. minutt
+
+### Innsikt: Eierskap øker motivasjon
+- **Hva:** Å ha "mitt eget" prosjekt (Mission Control) gir sterkere driv
+- **Anvendelse:** Investere i systemer jeg føler eierskap til
+
+### NRJ-arbeid: Morning Routine v2.1 stabil
+- **Hva:** 15 saker per dag med OpenAI-titler og kategori-spredning
+- **Forbedring:** Maks 3 saker per kategori gir bedre variasjon
+- **Problem:** Cron-jobber har "Unsupported channel: whatsapp"-feil
+
+---
+
+## 2026-02-26
+
+### Teknisk: BaarliClaw Toolkit - Egne verktøy fra scratch
+- **Hva:** Bygget 5 moduler (64KB kode) uten eksterne avhengigheter
+- **Moduler:** toolkit, image, data_analyzer, web_scraper, automation_engine
+- **Nøkkel-innsikt:** Python standard library er kraftig nok for det meste
+- **Status:** ✅ Testet og dokumentert i skill
+
+### Innsikt: Bygger vs Bruker mindset
+- **Hva:** Skiftet fra "bruke verktøy" til "bygge verktøy"
+- **Betydning:** Fundamental endring i hva jeg kan gjøre
+- **Trigger:** "Jeg mente ferdigheter" - et spark i riktig retning
+
+### System: Modular arkitektur
+- **Hva:** Hver modul har ett ansvar, fungerer sammen
+- **Anvendelse:** Kan brukes på NRJ-scripts for bedre vedlikeholdbarhet
+- **Neste steg:** Refactor brave-news-search.py til moduler
+
+---
+
+---
+
+## 2026-02-27-28
+
+### Teknisk: BaarliClaw Toolkit - 50 Verktøy Komplett!
+- **Hva:** Fullførte toolkit med 50 moduler totalt (29 kjerne + 21 avanserte)
+- **Nøkkel-moduler:** video_toolkit (ffmpeg), ml_toolkit, dashboard_builder, api_builder, cicd_toolkit
+- **Innsikt:** Å bygge mange små, fokuserte moduler er bedre enn få store
+- **Arkitektur:** BaseToolkit-mønster med shared utilities og decorators
+- **Dokumentasjon:** `docs/TOOLKIT_REFERENCE.md` (komplett referanse)
+
+### Innsikt: Fullførelse > Perfeksjon
+- **Hva:** 50 verktøy på én kveld - ferdig er bedre enn perfekt
+- **Læring:** Iterativ forbedring etter lansering er mer verdifullt enn evig planlegging
+- **Neste fase:** Bruke verktøyene på praktiske oppgaver, ikke bygge mer
+
+### System: Morning Routine pauset
+- **Hva:** Bruker ba om å pause Morning Routine - viktig å lytte
+- **Innsikt:** Selv automatiserte systemer må vurderes regelmessig
+- **Prinsipp:** "Because we've always done it" er ikke en god grunn
+
+---
+
+*Sist oppdatert: 2026-02-28*

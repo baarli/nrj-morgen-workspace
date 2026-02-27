@@ -1,0 +1,24 @@
+#!/bin/bash
+# MORNING ROUTINE - PAUSED
+# Dato: 2026-02-27
+# Årsak: Bruker har bedt om pause
+# 
+# INSTRUKSJONER FOR Å GJENOPPTA:
+# 1. Slett denne filen: rm /root/.openclaw/workspace/.morning-routine-paused
+# 2. Morning Routine vil kjøre som normalt ved neste anledning
+#
+# ORIGINAL SCRIPT: /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
+# BACKUP: Ingen endringer gjort på original
+
+echo "⏸️  MORNING ROUTINE - PAUSET"
+echo "============================"
+echo ""
+echo "Morning Routine er midlertidig stoppet på brukers forespørsel."
+echo ""
+echo "Dato satt på pause: 2026-02-27 21:24 CET"
+echo "Sist kjørt: Se logger i /root/.openclaw/workspace/logs/"
+echo ""
+echo "For å gjenoppta:"
+echo "  rm /root/.openclaw/workspace/.morning-routine-paused"
+echo ""
+exit 0

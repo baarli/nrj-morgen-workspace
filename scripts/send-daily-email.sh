@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/send-daily-email.sh
 # Sender daglig rapport via Gmail
 

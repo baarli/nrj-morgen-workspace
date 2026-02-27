@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # AUTO-UPDATE ALL KNOWLEDGE
 # Updates ALL files, prompts, scripts and documentation with new information
 
@@ -73,3 +74,6 @@ fi
 log ""
 log "Updated: MEMORY.md, system-status.json"
 log "Next auto-update: $(date -d '+1 hour' '+%H:%M')"
+
+# Exit with success code for cron
+exit 0

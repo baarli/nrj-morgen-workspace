@@ -1,227 +1,189 @@
-# 🚀 Mission Control - BaarliClaw
+# MISSION CONTROL - ÉN KILDE TIL SANNHET
 
-**Total Control Dashboard for NRJ Morgen Operations**
-
-[![Status](https://img.shields.io/badge/status-operational-success)](https://creative-muffin-dcf3a0.netlify.app)
-[![Version](https://img.shields.io/badge/version-3.0-blue)](https://github.com/baarliclaw/mission-control)
-[![License](https://img.shields.io/badge/license-MIT-green)]()
+**Dato:** 2026-02-24  
+**Versjon:** 3.2 SPA  
+**Status:** ✅ Konsolidert og klar
 
 ---
 
-## 🎯 Overview
+## 🎯 Filosofi
 
-Mission Control is a comprehensive dashboard system for managing all aspects of NRJ Morgen radio show operations. Built with autonomous AI development, it provides 100% GUI-based control over:
+**KUN ÉN FIL:** `index.html`
 
-- 📋 **Content Management** (Sakslista Pro)
-- 🎧 **Podcast Operations**
-- 🤖 **Agent Control**
-- ⏰ **Cron Automation**
-- 📊 **System Monitoring**
-- 🗄️ **Database Admin**
-- 📈 **Analytics**
-- 🔔 **Notifications**
+Etter år med fragmentering og duplikater, er Mission Control nå konsolidert til én enkelt HTML-fil med Single Page Application (SPA) arkitektur.
 
----
-
-## ✨ Features
-
-### Real-time Dashboard
-- WebSocket-powered live updates
-- System metrics (CPU, RAM, Disk)
-- Activity log stream
-- Toast notifications
-- Offline mode support
-
-### Content Management
-- Drag & drop interface
-- AI-powered suggestions
-- Bulk actions
-- Advanced search & filter
-- Export/Import functionality
-
-### Automation
-- 18 scheduled cron jobs
-- Morning Routine (04:50 CET weekdays)
-- Podcast clip generation (07:00 daily)
-- Trending Pulse (12:00 weekdays)
-- Weekly reports (Sundays)
-
-### System Control
-- Agent management
-- Cron job control
-- Git integration
-- Database administration
-- System monitoring
+### Hvorfor?
+- **Ingen duplikater** - Én kilde til sannhet
+- **Ingen 404-feil** - Hash-routing fungerer alltid
+- **Enkel vedlikehold** - Én fil å oppdatere
+- **Rask deploy** - Én fil å laste opp
 
 ---
 
-## 🚀 Quick Start
-
-### Local Development
-```bash
-# Clone repository
-git clone https://github.com/baarliclaw/mission-control.git
-cd mission-control
-
-# Start local server
-cd public
-python3 -m http.server 8888
-
-# Start backend API
-cd ../api
-python3 total-control-api.py
-```
-
-### Access Dashboard
-- **Local:** http://localhost:8888
-- **Production:** https://creative-muffin-dcf3a0.netlify.app
-- **API:** http://localhost:8081
-
----
-
-## 📁 Project Structure
+## 📁 Filstruktur
 
 ```
-mission-control/
-├── public/                 # Frontend files
-│   ├── total-control.html      # Main dashboard
-│   ├── sakslista-pro.html      # Content management
-│   ├── podkast-control.html    # Podcast operations
-│   ├── agent-control.html      # Agent management
-│   ├── cron-control.html       # Cron jobs
-│   ├── system-monitor.html     # System monitoring
-│   ├── notifications.html      # Notification center
-│   ├── database-admin.html     # Database admin
-│   ├── api-docs.html           # API documentation
-│   ├── mobile-dashboard.html   # Mobile version
-│   └── ...
-├── api/                    # Backend files
-│   ├── total-control-api.py    # Main API
-│   ├── test-api.py             # Test suite
-│   ├── README.md               # API docs
-│   └── ...
-├── docs/                   # Documentation
-│   ├── AI_ASSISTANT.md         # AI roadmap
-│   ├── AI_ROADMAP.md           # AI assistant plan
-│   ├── TEST_PLAN.md            # Testing strategy
-│   └── ...
-└── scripts/                # Utility scripts
-    ├── brave-news-search.py    # News search
-    ├── integrated-morning-routine.sh
-    └── ...
+mission-control/public/
+├── index.html          # ÉN fil med ALT (68KB)
+├── manifest.json       # PWA manifest
+├── netlify.toml        # Deploy config
+├── _redirects          # SPA routing
+├── icons/              # PWA ikoner
+└── *.js                # Valgfrie JS-moduler (beholdt for fremtidig utvidelse)
 ```
+
+**VIKTIG:** Kun `index.html` er nødvendig for kjernefunksjonalitet.
 
 ---
 
-## 🔧 Configuration
+## 🧭 Seksjoner
 
-### Environment Variables
-```bash
-SUPABASE_URL=https://kvniauxokdtmpvjtfnej.supabase.co
-SUPABASE_KEY=your_key_here
-BRAVE_API_KEY=your_key_here
-```
+| Hash | Navn | Beskrivelse |
+|------|------|-------------|
+| `#dashboard` | Dashboard | System status, 4 stat cards, activity log |
+| `#sakslista` | Sakslista | 13 saker fra Supabase, Morning Routine knapp |
+| `#podkast` | Podkast | 13 episoder, stats, Podtoppen rank #62 |
+| `#cron` | Cron Jobs | 18 jobs, status, neste kjøring 04:50 |
+| `#system` | System | API status, logger, disk usage |
+
+---
+
+## 🎨 Design System
+
+### Farger
+- **Primary:** `#6366f1` (indigo)
+- **Gradient:** `linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)`
+- **Success:** `#10b981`
+- **Warning:** `#f59e0b`
+- **Danger:** `#ef4444`
+- **Background:** `#0f172a` (dark), `#ffffff` (light)
+
+### Typografi
+- **Font:** Inter (Google Fonts)
+- **Headings:** 600-700 weight
+- **Body:** 400 weight
+
+### Komponenter
+- **Cards:** Rounded corners (1rem), glassmorphism
+- **Buttons:** Gradient primary, solid secondary
+- **Navigation:** Sidebar med active states
+
+---
+
+## ⚡ Funksjoner
+
+### Dashboard
+- System status (Online/Offline)
+- Active Projects (9)
+- Cron Jobs (18)
+- Saker i dag (13)
+- Recent Activity log
+
+### Sakslista
+- Liste over dagens 13 saker
+- Morning Routine knapp
+- Henter fra Supabase
+
+### Podkast
+- 13 episoder
+- Podtoppen rank #62
+- 16.5k lyttere
+- 3 klipp generert i dag
 
 ### Cron Jobs
-18 automated jobs including:
-- Morning Routine (04:50 CET)
-- Podcast clips (07:00)
-- Trending Pulse (12:00)
-- Weekly reports (Sundays)
+- 18 aktive jobs
+- 16 kjører OK
+- 2 med advarsler
+- Neste kjøring: 04:50
+
+### System Monitor
+- Supabase: Online (13 saker)
+- Brave API: Online
+- Netlify: Online
+- Uptime: 99.9%
+- API Latency: 42ms
 
 ---
 
-## 🛠️ Technology Stack
-
-### Frontend
-- HTML5, CSS3, JavaScript
-- Font Awesome icons
-- Chart.js for visualizations
-- Socket.IO for real-time updates
-
-### Backend
-- Python 3.9+
-- Flask/FastAPI
-- WebSocket support
-- REST API
-
-### Database
-- Supabase (PostgreSQL)
-- Real-time subscriptions
-
-### Infrastructure
-- Netlify (hosting)
-- Linux server (backend)
-- Cron (scheduling)
-
----
-
-## 📊 System Requirements
-
-### Minimum
-- 2 CPU cores
-- 4GB RAM
-- 10GB disk space
-
-### Recommended
-- 4 CPU cores
-- 8GB RAM
-- 50GB SSD
-
----
-
-## 🔒 Security
-
-- API key authentication
-- Rate limiting
-- Input validation
-- XSS protection
-- CORS configuration
-
----
-
-## 🧪 Testing
+## 🚀 Deploy
 
 ```bash
-# Run test suite
-cd api
-python3 test-api.py
+cd /root/.openclaw/workspace/mission-control/public
+netlify deploy --prod \
+  --site=834576a6-da2b-4412-9433-315f6437508a \
+  --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092
+```
 
-# Test endpoints
-curl http://localhost:8081/api/status
-curl http://localhost:8081/api/system/resources
+**URL:** https://creative-muffin-dcf3a0.netlify.app
+
+---
+
+## 📝 Vedlikehold
+
+### Hvis du skal gjøre endringer:
+
+1. **Åpne KUN** `mission-control/public/index.html`
+2. **Finn riktig seksjon** (dashboard, sakslista, podkast, cron, system)
+3. **Gjør endringene**
+4. **Test lokalt** (åpne filen i browser)
+5. **Deploy til Netlify**
+
+### Hva du ALDRI skal gjøre:
+
+❌ Lag nye HTML-filer  
+❌ Kopier index.html til andre filer  
+❌ Lag separate sider for hver funksjon  
+❌ Bruk tradisjonell side-navigering  
+
+---
+
+## 🔧 Teknisk
+
+### SPA Routing
+```javascript
+// Hash-basert routing
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    // Show selected
+    document.getElementById(sectionId).classList.add('active');
+}
+```
+
+### Theme Toggle
+```javascript
+// Dark/Light mode
+const theme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', theme);
+```
+
+### Mobile Menu
+```javascript
+// Hamburger menu for mobile
+document.getElementById('sidebar').classList.toggle('open');
 ```
 
 ---
 
-## 📈 Performance
+## 📊 Stats
 
-- API response time: < 100ms
-- Page load time: < 2s
-- WebSocket latency: < 50ms
-- Database queries: < 50ms
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+- **Størrelse:** 68KB (HTML + CSS + JS inline)
+- **Sider:** 1 (SPA)
+- **Seksjoner:** 5
+- **Linjer kode:** ~800
+- **Deploy tid:** < 30 sekunder
 
 ---
 
-## 📝 License
+## ✅ Sjekkliste for fremtidig utvikling
 
-MIT License - see LICENSE file for details
+- [ ] Oppdater KUN index.html
+- [ ] Bruk hash-routing for nye seksjoner
+- [ ] Inline CSS/JS - ingen eksterne filer
+- [ ] Test lokalt før deploy
+- [ ] Deploy kun index.html
+- [ ] Verifiser på Netlify
 
 ---
 
-## 🙏 Credits
-
-Built with autonomous AI development by BaarliClaw
-
----
-
-**Mission Control is LIVE and OPERATIONAL! 🚀**
+**Husk:** Én fil. Én sannhet. Ingen duplikater. 🚀

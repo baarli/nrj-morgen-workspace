@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # NEVER STOP MECHANISM
 # This script ensures I NEVER stop working - it restarts me if I stop
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Autonomous Mission Control Development Script
 # Runs continuously to improve Mission Control without human oversight
 

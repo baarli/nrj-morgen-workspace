@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # summarize.sh - Lokal summarize funksjon
 # Bruker kimi_fetch + OpenAI/Anthropic API
 

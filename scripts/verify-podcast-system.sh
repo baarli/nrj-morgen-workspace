@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Verifiser at podcast-klippe-systemet fungerer
 # Bruk: bash verify-podcast-system.sh
 

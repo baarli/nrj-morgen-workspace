@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/brainstorm-ideas.sh
 # Generere kreative ideer
 

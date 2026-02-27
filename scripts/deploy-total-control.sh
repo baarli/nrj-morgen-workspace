@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Deploy Total Control Dashboard to Netlify
 
 cd /root/.openclaw/workspace/mission-control/public

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Sjekker at alle skills er klare til bruk
 
 echo "🏥 Skill Health Check"

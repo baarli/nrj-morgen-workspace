@@ -45,6 +45,17 @@ try:
 except ImportError:
     WEBSOCKET_AVAILABLE = False
 
+# Import security hardening module
+try:
+    from security_hardening import (
+        InputValidator, RateLimiter, rate_limiter, rate_limit,
+        SecurityHeaders, DependencyAuditor, apply_security_hardening
+    )
+    SECURITY_HARDENING_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Security hardening module not available: {e}")
+    SECURITY_HARDENING_AVAILABLE = False
+
 # Configuration
 WORKSPACE = "/root/.openclaw/workspace"
 SCRIPTS_DIR = f"{WORKSPACE}/scripts"
@@ -88,7 +99,7 @@ logger = logging.getLogger('MissionControlAPI')
 
 class MetricsCollector:
     """Collects and stores API metrics"""
-    
+
     def __init__(self):
         self.request_count = 0
         self.request_errors = 0
@@ -97,30 +108,30 @@ class MetricsCollector:
         self.status_codes = {}
         self.start_time = time.time()
         self._lock = threading.Lock()
-    
+
     def record_request(self, endpoint: str, method: str, status_code: int, duration_ms: float):
         """Record a request metric"""
         with self._lock:
             self.request_count += 1
             self.response_times.append(duration_ms)
-            
+
             # Keep only last 1000 response times
             if len(self.response_times) > 1000:
                 self.response_times = self.response_times[-1000:]
-            
+
             key = f"{method} {endpoint}"
             self.endpoint_counts[key] = self.endpoint_counts.get(key, 0) + 1
             self.status_codes[status_code] = self.status_codes.get(status_code, 0) + 1
-            
+
             if status_code >= 400:
                 self.request_errors += 1
-    
+
     def get_stats(self) -> Dict[str, Any]:
         """Get current metrics statistics"""
         with self._lock:
             uptime = time.time() - self.start_time
             avg_response_time = sum(self.response_times) / len(self.response_times) if self.response_times else 0
-            
+
             return {
                 'uptime_seconds': uptime,
                 'uptime_formatted': self._format_duration(uptime),
@@ -132,7 +143,7 @@ class MetricsCollector:
                 'endpoint_breakdown': dict(self.endpoint_counts),
                 'status_code_distribution': dict(self.status_codes)
             }
-    
+
     @staticmethod
     def _format_duration(seconds: float) -> str:
         """Format duration in human readable format"""
@@ -147,14 +158,14 @@ metrics = MetricsCollector()
 
 class AuthManager:
     """Handles authentication and authorization"""
-    
+
     def __init__(self):
         self.active_tokens = {}  # token -> expiry
         self.api_keys = set([API_KEY])
         self._lock = threading.Lock()
         self._cleanup_thread = threading.Thread(target=self._cleanup_expired_tokens, daemon=True)
         self._cleanup_thread.start()
-    
+
     def generate_token(self, user_id: str, roles: List[str] = None) -> str:
         """Generate a new JWT token"""
         if not JWT_AVAILABLE:
@@ -168,7 +179,7 @@ class AuthManager:
                     'roles': roles or ['user']
                 }
             return token
-        
+
         payload = {
             'user_id': user_id,
             'roles': roles or ['user'],
@@ -177,12 +188,12 @@ class AuthManager:
             'jti': str(uuid.uuid4())
         }
         return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
-    
+
     def verify_token(self, token: str) -> Optional[Dict[str, Any]]:
         """Verify a token and return user info"""
         if not token:
             return None
-        
+
         if JWT_AVAILABLE:
             try:
                 payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
@@ -210,11 +221,11 @@ class AuthManager:
                         del self.active_tokens[token]
                         return {'valid': False, 'error': 'Token expired'}
             return {'valid': False, 'error': 'Invalid token'}
-    
+
     def verify_api_key(self, api_key: str) -> bool:
         """Verify an API key"""
         return api_key in self.api_keys
-    
+
     def revoke_token(self, token: str) -> bool:
         """Revoke a token"""
         with self._lock:
@@ -222,7 +233,7 @@ class AuthManager:
                 del self.active_tokens[token]
                 return True
         return False
-    
+
     def _cleanup_expired_tokens(self):
         """Background thread to clean up expired tokens"""
         while True:
@@ -241,28 +252,28 @@ auth_manager = AuthManager()
 
 class WebSocketManager:
     """Manages WebSocket connections and broadcasts"""
-    
+
     def __init__(self):
         self.server = None
         self.clients = []
         self._lock = threading.Lock()
         self.message_history = []
-    
+
     def start(self, port: int):
         """Start the WebSocket server"""
         if not WEBSOCKET_AVAILABLE:
             logger.warning("WebSocket server not available. Install websocket-server package.")
             return
-        
+
         self.server = WebsocketServer(port=port, host='0.0.0.0')
         self.server.set_fn_new_client(self._on_connect)
         self.server.set_fn_client_left(self._on_disconnect)
         self.server.set_fn_message_received(self._on_message)
-        
+
         thread = threading.Thread(target=self.server.run_forever, daemon=True)
         thread.start()
         logger.info(f"WebSocket server started on port {port}")
-    
+
     def _on_connect(self, client, server):
         """Handle new client connection"""
         with self._lock:
@@ -273,52 +284,112 @@ class WebSocketManager:
             'type': 'history',
             'data': self.message_history[-50:]
         })
-    
+
     def _on_disconnect(self, client, server):
         """Handle client disconnection"""
         with self._lock:
             if client in self.clients:
                 self.clients.remove(client)
         logger.info(f"WebSocket client disconnected: {client['id']}")
-    
+
     def _on_message(self, client, server, message):
         """Handle incoming message"""
         try:
             data = json.loads(message)
-            # Echo back for now, could implement commands
+            msg_type = data.get('type', 'unknown')
+
+            # Store client metadata
+            if msg_type == 'identify':
+                client['user_id'] = data.get('userId')
+                client['tenant_id'] = data.get('tenantId')
+                self.send_to_client(client, {
+                    'type': 'identified',
+                    'client_id': client['id'],
+                    'message': 'Connected to Mission Control Live Updates'
+                })
+                logger.info(f"Client {client['id']} identified as user {client.get('user_id')}")
+                return
+
+            # Handle broadcast requests
+            if msg_type == 'broadcast':
+                self.broadcast('broadcast', {
+                    'userId': client.get('user_id'),
+                    'message': data.get('message'),
+                    'timestamp': datetime.now().isoformat()
+                })
+                return
+
+            # Handle refresh requests
+            if msg_type == 'request_refresh':
+                self.broadcast('refresh', {
+                    'requested_by': client.get('user_id'),
+                    'timestamp': datetime.now().isoformat()
+                })
+                return
+
+            # Handle user activity
+            if msg_type == 'activity':
+                self.broadcast('user_activity', {
+                    'userId': client.get('user_id'),
+                    'action': data.get('action'),
+                    'timestamp': datetime.now().isoformat()
+                })
+                return
+
+            # Echo back for other messages
             self.send_to_client(client, {
                 'type': 'echo',
                 'data': data
             })
+
         except json.JSONDecodeError:
             self.send_to_client(client, {
                 'type': 'error',
                 'message': 'Invalid JSON'
             })
-    
-    def broadcast(self, message_type: str, data: Any):
-        """Broadcast message to all connected clients"""
+
+    def broadcast_to_tenant(self, tenant_id: str, message_type: str, data: Any):
+        """Broadcast message only to clients in specific tenant"""
         if not self.server:
             return
-        
+
         message = {
             'type': message_type,
             'timestamp': datetime.now().isoformat(),
             'data': data
         }
-        
+
+        with self._lock:
+            for client in self.clients:
+                if client.get('tenant_id') == tenant_id:
+                    try:
+                        self.server.send_message(client, json.dumps(message))
+                    except Exception as e:
+                        logger.error(f"Error sending to client {client['id']}: {e}")
+
+    def broadcast(self, message_type: str, data: Any):
+        """Broadcast message to all connected clients"""
+        if not self.server:
+            return
+
+        message = {
+            'type': message_type,
+            'timestamp': datetime.now().isoformat(),
+            'data': data
+        }
+
         # Store in history
         self.message_history.append(message)
         if len(self.message_history) > 1000:
             self.message_history = self.message_history[-1000:]
-        
+
         with self._lock:
             for client in self.clients:
                 try:
                     self.server.send_message(client, json.dumps(message))
                 except Exception as e:
                     logger.error(f"Error sending to client {client['id']}: {e}")
-    
+
     def send_to_client(self, client, data: Dict):
         """Send message to specific client"""
         if self.server:
@@ -328,7 +399,7 @@ class WebSocketManager:
                 logger.error(f"Error sending to client: {e}")
 
     # ==================== REAL-TIME COLLABORATION ====================
-    
+
     def broadcast_cursor_position(self, user_id: str, username: str, x: float, y: float, page: str):
         """Broadcast cursor position for real-time collaboration"""
         self.broadcast('cursor_move', {
@@ -338,7 +409,7 @@ class WebSocketManager:
             'y': y,
             'page': page
         })
-    
+
     def broadcast_user_joined(self, user_id: str, username: str, avatar: str):
         """Broadcast when a user joins collaboration"""
         self.broadcast('user_joined', {
@@ -347,7 +418,7 @@ class WebSocketManager:
             'avatar': avatar,
             'timestamp': datetime.now().isoformat()
         })
-    
+
     def broadcast_user_left(self, user_id: str, username: str):
         """Broadcast when a user leaves collaboration"""
         self.broadcast('user_left', {
@@ -355,7 +426,7 @@ class WebSocketManager:
             'username': username,
             'timestamp': datetime.now().isoformat()
         })
-    
+
     def broadcast_item_editing(self, item_id: str, user_id: str, username: str, is_editing: bool):
         """Broadcast when a user starts/stops editing an item"""
         self.broadcast('item_editing', {
@@ -364,7 +435,7 @@ class WebSocketManager:
             'username': username,
             'is_editing': is_editing
         })
-    
+
     def get_active_users(self) -> List[Dict]:
         """Get list of currently connected users"""
         # This would be populated from client registrations
@@ -412,17 +483,17 @@ def fetch_podcast_episodes_real() -> List[Dict[str, Any]]:
     try:
         with urllib.request.urlopen(PODCAST_RSS, timeout=30) as response:
             xml_content = response.read()
-        
+
         root = ET.fromstring(xml_content)
         episodes = []
-        
+
         for item in root.findall('.//item'):
             title = item.find('title')
             description = item.find('description')
             pub_date = item.find('pubDate')
             enclosure = item.find('enclosure')
             duration = item.find('.//{http://www.itunes.com/dtds/podcast-1.0.dtd}duration')
-            
+
             episode = {
                 'id': str(uuid.uuid4())[:8],
                 'title': title.text.strip() if title is not None and title.text else 'Ukjent tittel',
@@ -433,7 +504,7 @@ def fetch_podcast_episodes_real() -> List[Dict[str, Any]]:
                 'clips_generated': 0  # Would be fetched from database
             }
             episodes.append(episode)
-        
+
         return episodes[:20]  # Return max 20 episodes
     except Exception as e:
         logger.error(f"Error fetching podcast episodes: {e}")
@@ -460,7 +531,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
         'podcast': None,
         'timestamp': datetime.now().isoformat()
     }
-    
+
     # Fetch Nielsen radio data
     try:
         req = urllib.request.Request(
@@ -471,7 +542,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
             data = json.loads(response.read().decode('utf-8'))
             series_data = data['seriesMDData'][0]
             data2d = series_data['data2D']
-            
+
             for row in data2d:
                 if row[0] == "NRJ":
                     weekly_data = {
@@ -487,7 +558,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
                     latest = values[-1]
                     previous = values[-2]
                     trend = ((latest - previous) / previous) * 100
-                    
+
                     stats['radio'] = {
                         'week': 7,
                         'year': 2026,
@@ -500,7 +571,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Error fetching Nielsen data: {e}")
         stats['radio_error'] = str(e)
-    
+
     # Fetch Podtoppen data
     try:
         req = urllib.request.Request(
@@ -511,7 +582,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
             raw_data = response.read()
             csv_data = raw_data.decode('latin-1')
             lines = csv_data.strip().split('\n')
-            
+
             for i, line in enumerate(lines[1:], 1):
                 if 'nrj morgen' in line.lower():
                     parts = line.split(';')
@@ -527,7 +598,7 @@ def fetch_nrj_stats_real() -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Error fetching Podtoppen data: {e}")
         stats['podcast_error'] = str(e)
-    
+
     return stats
 
 def fetch_cron_jobs_real() -> List[Dict[str, Any]]:
@@ -564,28 +635,28 @@ def fetch_system_metrics_real() -> Dict[str, Any]:
     """Fetch real system metrics"""
     if not PSUTIL_AVAILABLE:
         return fetch_system_metrics_fallback()
-    
+
     try:
         # CPU
         cpu_percent = psutil.cpu_percent(interval=0.5)
         cpu_count = psutil.cpu_count()
         cpu_freq = psutil.cpu_freq()
-        
+
         # Memory
         mem = psutil.virtual_memory()
-        
+
         # Disk
         disk = psutil.disk_usage('/')
-        
+
         # Network
         net = psutil.net_io_counters()
-        
+
         # Boot time
         boot_time = datetime.fromtimestamp(psutil.boot_time()).isoformat()
-        
+
         # Process count
         process_count = len(psutil.pids())
-        
+
         return {
             'timestamp': datetime.now().isoformat(),
             'cpu': {
@@ -628,7 +699,7 @@ def fetch_system_metrics_real() -> Dict[str, Any]:
 def fetch_system_metrics_fallback() -> Dict[str, Any]:
     """Fallback system metrics using basic commands"""
     metrics = {'timestamp': datetime.now().isoformat()}
-    
+
     # Try to get basic info from /proc
     try:
         # Memory from /proc/meminfo
@@ -639,19 +710,19 @@ def fetch_system_metrics_fallback() -> Dict[str, Any]:
                     metrics['memory_total_kb'] = int(line.split()[1])
                 elif line.startswith('MemAvailable:'):
                     metrics['memory_available_kb'] = int(line.split()[1])
-        
+
         # Load average
         with open('/proc/loadavg', 'r') as f:
             load = f.read().split()
             metrics['load_average'] = [float(load[0]), float(load[1]), float(load[2])]
-        
+
         # Uptime
         with open('/proc/uptime', 'r') as f:
             uptime = float(f.read().split()[0])
             metrics['uptime_seconds'] = uptime
     except Exception as e:
         metrics['error'] = str(e)
-    
+
     return metrics
 
 # ==================== MORNING ROUTINE STATUS ====================
@@ -674,60 +745,71 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 class APIHandler(BaseHTTPRequestHandler):
     """Enhanced API request handler"""
-    
+
     protocol_version = 'HTTP/1.1'
-    
+
     def log_message(self, format, *args):
         """Override to use our logger"""
         logger.info(f"{self.address_string()} - {format % args}")
-    
+
     def log_error(self, format, *args):
         """Override to use our logger"""
         logger.error(f"{self.address_string()} - {format % args}")
-    
+
     def send_json_response(self, data, status=200, headers=None):
-        """Send JSON response with proper headers"""
+        """Send JSON response with proper headers and security headers"""
         self.send_response(status)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key')
         self.send_header('X-Request-ID', str(uuid.uuid4()))
-        
+
+        # Apply security headers
+        if SECURITY_HARDENING_AVAILABLE:
+            for header, value in SecurityHeaders.HEADERS.items():
+                self.send_header(header, value)
+
         if headers:
             for key, value in headers.items():
                 self.send_header(key, value)
         
+        # Add rate limit headers if available
+        if hasattr(self, '_rate_limit_headers'):
+            for key, value in self._rate_limit_headers.items():
+                self.send_header(key, value)
+            delattr(self, '_rate_limit_headers')
+        
         self.end_headers()
-        
+
         response_body = json.dumps(data, default=str).encode()
-        
+
         # Support gzip compression
         accept_encoding = self.headers.get('Accept-Encoding', '')
         if 'gzip' in accept_encoding and len(response_body) > 1024:
             self.send_header('Content-Encoding', 'gzip')
             response_body = gzip.compress(response_body)
-        
+
         self.wfile.write(response_body)
-    
+
     def get_auth_token(self) -> Optional[str]:
         """Extract auth token from request"""
         auth_header = self.headers.get('Authorization', '')
         if auth_header.startswith('Bearer '):
             return auth_header[7:]
         return None
-    
+
     def get_api_key(self) -> Optional[str]:
         """Extract API key from request"""
         return self.headers.get('X-API-Key')
-    
+
     def check_auth(self, required_roles: List[str] = None) -> Optional[Dict[str, Any]]:
         """Check if request is authenticated"""
         # Check API key first
         api_key = self.get_api_key()
         if api_key and auth_manager.verify_api_key(api_key):
             return {'user_id': 'api_key', 'roles': ['admin'], 'valid': True}
-        
+
         # Check JWT token
         token = self.get_auth_token()
         if token:
@@ -740,14 +822,14 @@ class APIHandler(BaseHTTPRequestHandler):
                 return result
             elif result:
                 raise APIError(result.get('error', 'Invalid token'), 401)
-        
+
         # For development, allow some endpoints without auth
         public_endpoints = ['/api/health', '/api/status', '/api/auth/login']
         if self.path in public_endpoints:
             return {'user_id': 'anonymous', 'roles': ['user'], 'valid': True}
-        
+
         raise APIError('Authentication required', 401)
-    
+
     def read_body(self) -> Dict[str, Any]:
         """Read and parse request body"""
         try:
@@ -760,26 +842,55 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             logger.warning(f"Error reading body: {e}")
         return {}
-    
+
     def do_OPTIONS(self):
         """Handle CORS preflight"""
         self.send_json_response({'status': 'ok'})
-    
+
     def _route_request(self, method: str):
-        """Route request to appropriate handler with metrics"""
+        """Route request to appropriate handler with metrics and rate limiting"""
         start_time = time.time()
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         status_code = 200
-        
+
         try:
+            # Apply rate limiting
+            if SECURITY_HARDENING_AVAILABLE:
+                client_id = rate_limiter.get_client_identifier(self)
+                
+                # Stricter limits for auth endpoints
+                if path == '/api/auth/login':
+                    limit_type = 'auth'
+                elif path.startswith('/api/'):
+                    limit_type = 'api'
+                else:
+                    limit_type = 'default'
+                
+                allowed, limit_headers = rate_limiter.is_allowed(client_id, limit_type)
+                
+                if not allowed:
+                    self.send_json_response({
+                        'error': 'Rate limit exceeded',
+                        'message': 'Too many requests. Please try again later.',
+                        'retry_after': limit_headers.get('retry_after', 60)
+                    }, 429)
+                    return
+                
+                # Store headers for response
+                self._rate_limit_headers = {
+                    'X-RateLimit-Limit': str(limit_headers['limit']),
+                    'X-RateLimit-Remaining': str(limit_headers['remaining']),
+                    'X-RateLimit-Reset': str(int(limit_headers['reset']))
+                }
+
             # Public routes (no auth required)
             public_routes = {
                 '/api/health': self.get_health,
                 '/api/status': self.get_status,
                 '/api/auth/login': self.auth_login,
             }
-            
+
             # Protected routes
             protected_routes = {
                 'GET': {
@@ -794,6 +905,8 @@ class APIHandler(BaseHTTPRequestHandler):
                     '/api/logs': self.get_logs,
                     '/api/metrics': self.get_metrics,
                     '/api/auth/verify': self.auth_verify,
+                    '/api/realtime/status': self.get_realtime_status,
+                    '/api/security/audit': self.get_security_audit,
                 },
                 'POST': {
                     '/api/routine/morning': self.run_morning_routine,
@@ -803,26 +916,28 @@ class APIHandler(BaseHTTPRequestHandler):
                     '/api/podcast/fetch': self.fetch_podcast_episodes,
                     '/api/nrj/saker': self.create_sak,
                     '/api/auth/logout': self.auth_logout,
+                    '/api/realtime/broadcast': self.broadcast_realtime_message,
+                    '/api/realtime/refresh': self.trigger_refresh,
                 },
                 'PATCH': {
                 },
                 'DELETE': {
                 }
             }
-            
+
             # Check public routes first
             if path in public_routes:
                 result = public_routes[path]()
                 self.send_json_response(result)
                 return
-            
+
             # Check protected routes
             if method in protected_routes:
                 handler = protected_routes[method].get(path)
                 if handler:
                     self.check_auth()
                     data = self.read_body() if method in ['POST', 'PATCH'] else {}
-                    
+
                     # Handle PATCH for specific resources
                     if method == 'PATCH' and not handler:
                         if path.startswith('/api/nrj/saker/'):
@@ -830,7 +945,7 @@ class APIHandler(BaseHTTPRequestHandler):
                             result = self.update_sak(sak_id, data)
                             self.send_json_response(result)
                             return
-                    
+
                     # Handle DELETE for specific resources
                     if method == 'DELETE' and not handler:
                         if path.startswith('/api/nrj/saker/'):
@@ -838,7 +953,7 @@ class APIHandler(BaseHTTPRequestHandler):
                             result = self.delete_sak(sak_id)
                             self.send_json_response(result)
                             return
-                    
+
                     if handler:
                         if method in ['POST', 'PATCH']:
                             result = handler(data)
@@ -846,10 +961,10 @@ class APIHandler(BaseHTTPRequestHandler):
                             result = handler()
                         self.send_json_response(result)
                         return
-            
+
             # Route not found
             raise APIError('Not found', 404)
-            
+
         except APIError as e:
             status_code = e.status_code
             raise
@@ -862,31 +977,37 @@ class APIHandler(BaseHTTPRequestHandler):
             # Record metrics
             duration_ms = (time.time() - start_time) * 1000
             metrics.record_request(path, method, status_code, duration_ms)
-    
+
     @handle_errors
     def do_GET(self):
         self._route_request('GET')
-    
+
     @handle_errors
     def do_POST(self):
         self._route_request('POST')
-    
+
     @handle_errors
     def do_PATCH(self):
         self._route_request('PATCH')
-    
+
     @handle_errors
     def do_DELETE(self):
         self._route_request('DELETE')
-    
+
     # ==================== AUTHENTICATION ENDPOINTS ====================
-    
+
     def auth_login(self, data: Dict = None) -> Dict[str, Any]:
-        """Authenticate and get token"""
+        """Authenticate and get token with input validation"""
         data = data or self.read_body()
-        username = data.get('username')
-        password = data.get('password')
-        
+        username = data.get('username', '')
+        password = data.get('password', '')
+
+        # Validate input
+        if SECURITY_HARDENING_AVAILABLE:
+            is_valid, errors = InputValidator.validate_auth_data(data)
+            if not is_valid:
+                raise APIError(f'Validation failed: {"; ".join(errors)}', 400)
+
         # Simple auth for demo - in production use proper password hashing
         if username == 'admin' and password == os.environ.get('ADMIN_PASSWORD', 'kloakontroll2026'):
             token = auth_manager.generate_token(
@@ -898,34 +1019,34 @@ class APIHandler(BaseHTTPRequestHandler):
                 'expires_in': JWT_EXPIRY_HOURS * 3600,
                 'user': {'id': username, 'roles': ['admin', 'user']}
             }
-        
+
         raise APIError('Invalid credentials', 401)
-    
+
     def auth_verify(self) -> Dict[str, Any]:
         """Verify current token"""
         token = self.get_auth_token()
         if not token:
             raise APIError('No token provided', 401)
-        
+
         result = auth_manager.verify_token(token)
         if not result or not result.get('valid'):
             raise APIError(result.get('error', 'Invalid token'), 401)
-        
+
         return {
             'valid': True,
             'user_id': result.get('user_id'),
             'roles': result.get('roles')
         }
-    
+
     def auth_logout(self, data: Dict = None) -> Dict[str, Any]:
         """Logout and invalidate token"""
         token = self.get_auth_token()
         if token:
             auth_manager.revoke_token(token)
         return {'success': True, 'message': 'Logged out'}
-    
+
     # ==================== HEALTH & STATUS ====================
-    
+
     def get_health(self) -> Dict[str, Any]:
         """Get detailed health status"""
         health = {
@@ -934,7 +1055,7 @@ class APIHandler(BaseHTTPRequestHandler):
             'version': '3.0.0',
             'checks': {}
         }
-        
+
         # Check agent status
         try:
             auto_exec = os.path.exists(f"{WORKSPACE}/.auto-exec-log")
@@ -946,7 +1067,7 @@ class APIHandler(BaseHTTPRequestHandler):
             }
         except Exception as e:
             health['checks']['agent'] = {'status': 'error', 'error': str(e)}
-        
+
         # Check database
         try:
             req = urllib.request.Request(
@@ -959,7 +1080,7 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             health['checks']['database'] = {'status': 'error', 'error': str(e)}
             health['status'] = 'degraded'
-        
+
         # Check disk space
         try:
             if PSUTIL_AVAILABLE:
@@ -976,7 +1097,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 health['checks']['disk'] = {'status': 'unknown'}
         except Exception as e:
             health['checks']['disk'] = {'status': 'error', 'error': str(e)}
-        
+
         # Check memory
         try:
             if PSUTIL_AVAILABLE:
@@ -990,15 +1111,15 @@ class APIHandler(BaseHTTPRequestHandler):
                 health['checks']['memory'] = {'status': 'unknown'}
         except Exception as e:
             health['checks']['memory'] = {'status': 'error', 'error': str(e)}
-        
+
         # Check WebSocket
         health['checks']['websocket'] = {
             'status': 'healthy' if ws_manager.server else 'disabled',
             'connected_clients': len(ws_manager.clients) if ws_manager.server else 0
         }
-        
+
         return health
-    
+
     def get_status(self) -> Dict[str, Any]:
         """Get API status"""
         return {
@@ -1013,7 +1134,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 'websocket': 'active' if ws_manager.server else 'disabled'
             }
         }
-    
+
     def check_agent_status(self) -> Dict[str, str]:
         """Check agent status"""
         auto_exec = os.path.exists(f"{WORKSPACE}/.auto-exec-log")
@@ -1022,7 +1143,7 @@ class APIHandler(BaseHTTPRequestHandler):
             'auto_exec': 'active' if auto_exec else 'inactive',
             'autonomous_mode': 'active' if autonomous else 'inactive'
         }
-    
+
     def check_db_status(self) -> str:
         """Check database status"""
         try:
@@ -1035,42 +1156,135 @@ class APIHandler(BaseHTTPRequestHandler):
                 return 'connected'
         except:
             return 'disconnected'
-    
+
+    # ==================== REALTIME ENDPOINTS ====================
+
+    def get_realtime_status(self) -> Dict[str, Any]:
+        """Get realtime/WebSocket status"""
+        return {
+            'websocket': {
+                'enabled': ws_manager.server is not None,
+                'connected_clients': len(ws_manager.clients) if ws_manager.server else 0,
+                'port': WS_PORT
+            },
+            'supabase_realtime': {
+                'available': True,
+                'url': SUPABASE_URL
+            },
+            'timestamp': datetime.now().isoformat()
+        }
+
+    def broadcast_realtime_message(self, data: Dict = None) -> Dict[str, Any]:
+        """Broadcast a message to all connected clients"""
+        data = data or self.read_body()
+        message = data.get('message', '')
+        message_type = data.get('type', 'broadcast')
+        tenant_id = data.get('tenantId', TENANT_ID)
+
+        if not message:
+            raise APIError('Message is required', 400)
+
+        # Broadcast via WebSocket
+        ws_manager.broadcast_to_tenant(tenant_id, message_type, {
+            'message': message,
+            'sender': data.get('sender', 'system'),
+            'timestamp': datetime.now().isoformat()
+        })
+
+        return {
+            'success': True,
+            'message': 'Broadcast sent',
+            'clients_notified': len(ws_manager.clients)
+        }
+
+    def trigger_refresh(self, data: Dict = None) -> Dict[str, Any]:
+        """Trigger a refresh on all connected clients"""
+        data = data or self.read_body()
+        tenant_id = data.get('tenantId', TENANT_ID)
+
+        # Broadcast refresh command
+        ws_manager.broadcast_to_tenant(tenant_id, 'refresh', {
+            'triggered_by': data.get('userId', 'system'),
+            'timestamp': datetime.now().isoformat(),
+            'reason': data.get('reason', 'manual_refresh')
+        })
+
+        return {
+            'success': True,
+            'message': 'Refresh triggered',
+            'clients_notified': len(ws_manager.clients)
+        }
+
+    # ==================== SECURITY AUDIT ====================
+
+    def get_security_audit(self) -> Dict[str, Any]:
+        """Get security audit report"""
+        audit = {
+            'timestamp': datetime.now().isoformat(),
+            'security_hardening_available': SECURITY_HARDENING_AVAILABLE,
+        }
+
+        if SECURITY_HARDENING_AVAILABLE:
+            # Dependency audit
+            audit['dependencies'] = DependencyAuditor.generate_report()
+
+            # Rate limiter status
+            audit['rate_limiter'] = {
+                'active': True,
+                'limits': rate_limiter.limits,
+            }
+
+            # Security headers
+            audit['security_headers'] = {
+                'enabled': True,
+                'headers_applied': list(SecurityHeaders.HEADERS.keys())
+            }
+
+            # Input validation
+            audit['input_validation'] = {
+                'enabled': True,
+                'validators': ['email', 'uuid', 'safe_string', 'url', 'sak_data', 'auth_data']
+            }
+        else:
+            audit['status'] = 'Security hardening module not available'
+
+        return audit
+
     # ==================== METRICS ====================
-    
+
     def get_metrics(self) -> Dict[str, Any]:
         """Get API metrics"""
         return metrics.get_stats()
-    
+
     # ==================== SYSTEM RESOURCES ====================
-    
+
     def get_system_resources(self) -> Dict[str, Any]:
         """Get system resource usage (legacy endpoint)"""
         return self.get_system_metrics()
-    
+
     def get_system_metrics(self) -> Dict[str, Any]:
         """Get real system metrics"""
         return fetch_system_metrics_real()
-    
+
     # ==================== CRON JOBS ====================
-    
+
     def get_cron_jobs(self) -> List[Dict[str, Any]]:
         """Get real cron jobs"""
         return fetch_cron_jobs_real()
-    
+
     def run_cron_job(self, data: Dict) -> Dict[str, Any]:
         """Run a cron job"""
         job_id = data.get('id')
         logger.info(f"Running cron job: {job_id}")
         ws_manager.broadcast('cron_job_started', {'job_id': job_id})
-        
+
         # Map job IDs to actual scripts
         job_scripts = {
             'morning-routine': f'{SCRIPTS_DIR}/morning-routine-v2.1.py',
             'podcast-download': f'{SCRIPTS_DIR}/podcast-clipper.py',
             'nrj-stats': f'{SCRIPTS_DIR}/update_nrj_dashboard.py',
         }
-        
+
         if job_id in job_scripts:
             script_path = job_scripts[job_id]
             if os.path.exists(script_path):
@@ -1083,9 +1297,9 @@ class APIHandler(BaseHTTPRequestHandler):
                 return {'status': 'started', 'job': job_id, 'script': script_path}
             else:
                 raise APIError(f'Script not found: {script_path}', 404)
-        
+
         return {'status': 'started', 'job': job_id}
-    
+
     def _execute_script(self, script_path: str, job_id: str):
         """Execute a script in background"""
         try:
@@ -1100,25 +1314,25 @@ class APIHandler(BaseHTTPRequestHandler):
             })
         except Exception as e:
             ws_manager.broadcast('cron_job_error', {'job_id': job_id, 'error': str(e)})
-    
+
     def toggle_cron_job(self, data: Dict) -> Dict[str, Any]:
         """Toggle cron job enabled state"""
         job_id = data.get('id')
         enabled = data.get('enabled')
         logger.info(f"Toggling cron job {job_id} to {enabled}")
         return {'status': 'updated', 'job': job_id, 'enabled': enabled}
-    
+
     # ==================== PODCAST ====================
-    
+
     def get_podcast_episodes(self) -> List[Dict[str, Any]]:
         """Get real podcast episodes from RSS"""
         return fetch_podcast_episodes_real()
-    
+
     def fetch_podcast_episodes(self, data: Dict = None) -> Dict[str, Any]:
         """Fetch and refresh podcast episodes"""
         logger.info("Fetching podcast episodes")
         ws_manager.broadcast('podcast_fetch_started', {})
-        
+
         try:
             episodes = fetch_podcast_episodes_real()
             ws_manager.broadcast('podcast_fetch_completed', {'count': len(episodes)})
@@ -1126,19 +1340,25 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             ws_manager.broadcast('podcast_fetch_error', {'error': str(e)})
             raise APIError(f'Failed to fetch episodes: {str(e)}', 500)
-    
+
     # ==================== NRJ SAKSLISTA ====================
-    
+
     def get_nrj_saker(self) -> List[Dict[str, Any]]:
         """Get real NRJ saker from Supabase"""
         return fetch_nrj_saker_real()
-    
+
     def get_nrj_stats(self) -> Dict[str, Any]:
         """Get real NRJ statistics"""
         return fetch_nrj_stats_real()
-    
+
     def create_sak(self, data: Dict) -> Dict[str, Any]:
-        """Create a new sak"""
+        """Create a new sak with input validation"""
+        # Validate input data
+        if SECURITY_HARDENING_AVAILABLE:
+            is_valid, errors = InputValidator.validate_sak_data(data)
+            if not is_valid:
+                raise APIError(f'Validation failed: {"; ".join(errors)}', 400)
+
         try:
             today = datetime.now().strftime('%Y-%m-%d')
             payload = {
@@ -1163,9 +1383,18 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             logger.error(f"Error creating sak: {e}")
             raise APIError(f'Failed to create sak: {str(e)}', 500)
-    
+
     def update_sak(self, sak_id: str, data: Dict) -> Dict[str, Any]:
-        """Update a sak"""
+        """Update a sak with input validation"""
+        # Validate sak_id format
+        if SECURITY_HARDENING_AVAILABLE:
+            if not InputValidator.validate_uuid(sak_id):
+                raise APIError('Invalid sak_id format', 400)
+
+            is_valid, errors = InputValidator.validate_sak_data(data)
+            if not is_valid:
+                raise APIError(f'Validation failed: {"; ".join(errors)}', 400)
+
         try:
             req = urllib.request.Request(
                 f"{SUPABASE_URL}/rest/v1/agenda_items?id=eq.{sak_id}",
@@ -1183,7 +1412,7 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             logger.error(f"Error updating sak: {e}")
             raise APIError(f'Failed to update sak: {str(e)}', 500)
-    
+
     def delete_sak(self, sak_id: str) -> Dict[str, Any]:
         """Delete a sak"""
         try:
@@ -1198,13 +1427,13 @@ class APIHandler(BaseHTTPRequestHandler):
         except Exception as e:
             logger.error(f"Error deleting sak: {e}")
             raise APIError(f'Failed to delete sak: {str(e)}', 500)
-    
+
     # ==================== MORNING ROUTINE ====================
-    
+
     def get_morning_status(self) -> Dict[str, Any]:
         """Get morning routine status"""
         return morning_routine_status
-    
+
     def get_morning_v2_info(self) -> Dict[str, Any]:
         """Get morning routine v2 info"""
         return {
@@ -1219,47 +1448,47 @@ class APIHandler(BaseHTTPRequestHandler):
             },
             'status': morning_routine_status
         }
-    
+
     def run_morning_routine(self, data: Dict = None) -> Dict[str, Any]:
         """Run the morning routine"""
         global morning_routine_status
-        
+
         if morning_routine_status['running']:
             return {'status': 'already_running'}
-        
+
         thread = threading.Thread(target=self._execute_morning_routine)
         thread.daemon = True
         thread.start()
-        
+
         ws_manager.broadcast('morning_routine_started', {})
         return {'status': 'started'}
-    
+
     def run_morning_routine_v2(self, data: Dict = None) -> Dict[str, Any]:
         """Run the morning routine v2.1 with OpenAI titles"""
         global morning_routine_status
-        
+
         if morning_routine_status['running']:
             return {'status': 'already_running', 'message': 'Morning routine is already running'}
-        
+
         thread = threading.Thread(target=self._execute_morning_routine_v2)
         thread.daemon = True
         thread.start()
-        
+
         ws_manager.broadcast('morning_routine_started', {'version': '2.1'})
         return {'status': 'started', 'version': '2.1', 'message': 'Morning Routine v2.1 started'}
-    
+
     def _execute_morning_routine_v2(self):
         """Execute morning routine v2.1 in background"""
         global morning_routine_status
-        
+
         morning_routine_status['running'] = True
         morning_routine_status['started_at'] = datetime.now().isoformat()
         morning_routine_status['progress'] = 0
         morning_routine_status['message'] = 'Starting v2.1...'
         morning_routine_status['version'] = '2.1'
-        
+
         ws_manager.broadcast('morning_routine_progress', morning_routine_status)
-        
+
         try:
             # Check if script exists
             script_path = f'{SCRIPTS_DIR}/morning-routine-v2.1.py'
@@ -1268,24 +1497,24 @@ class APIHandler(BaseHTTPRequestHandler):
                 morning_routine_status['last_result'] = {'error': f'Script not found: {script_path}'}
                 ws_manager.broadcast('morning_routine_error', {'error': 'Script not found'})
                 return
-            
+
             # Run morning routine v2.1
             morning_routine_status['progress'] = 10
             morning_routine_status['message'] = 'Running Morning Routine v2.1 (15 articles, OpenAI titles)...'
             ws_manager.broadcast('morning_routine_progress', morning_routine_status)
-            
+
             result = subprocess.run(
                 ['python3', script_path],
                 capture_output=True, text=True, timeout=600
             )
-            
+
             # Check for result file
             result_file = '/tmp/morning-routine-v2-result.json'
             if os.path.exists(result_file):
                 with open(result_file, 'r') as f:
                     routine_result = json.load(f)
                 morning_routine_status['result_data'] = routine_result
-            
+
             morning_routine_status['progress'] = 100
             morning_routine_status['message'] = 'Complete! Generated 15 articles with OpenAI titles'
             morning_routine_status['last_result'] = {
@@ -1293,10 +1522,10 @@ class APIHandler(BaseHTTPRequestHandler):
                 'output': result.stdout[-1000:] if len(result.stdout) > 1000 else result.stdout,
                 'errors': result.stderr[-500:] if result.stderr else None
             }
-            
+
             ws_manager.broadcast('morning_routine_complete', morning_routine_status)
             logger.info("Morning routine v2.1 completed successfully")
-            
+
         except subprocess.TimeoutExpired:
             logger.error("Morning routine v2.1 timed out")
             morning_routine_status['last_result'] = {'error': 'Timeout after 10 minutes'}
@@ -1307,48 +1536,48 @@ class APIHandler(BaseHTTPRequestHandler):
             ws_manager.broadcast('morning_routine_error', {'error': str(e)})
         finally:
             morning_routine_status['running'] = False
-    
+
     def _execute_morning_routine(self):
         """Execute legacy morning routine in background"""
         global morning_routine_status
-        
+
         morning_routine_status['running'] = True
         morning_routine_status['started_at'] = datetime.now().isoformat()
         morning_routine_status['progress'] = 0
         morning_routine_status['message'] = 'Starting...'
-        
+
         ws_manager.broadcast('morning_routine_progress', morning_routine_status)
-        
+
         try:
             # Run news search
             morning_routine_status['progress'] = 30
             morning_routine_status['message'] = 'Searching for news...'
             ws_manager.broadcast('morning_routine_progress', morning_routine_status)
-            
+
             result = subprocess.run(
                 ['python3', f'{SCRIPTS_DIR}/brave-news-search.py', '15'],
                 capture_output=True, text=True, timeout=180
             )
-            
+
             morning_routine_status['progress'] = 100
             morning_routine_status['message'] = 'Complete!'
             morning_routine_status['last_result'] = {
                 'success': result.returncode == 0,
                 'output': result.stdout[-500:] if len(result.stdout) > 500 else result.stdout
             }
-            
+
             ws_manager.broadcast('morning_routine_complete', morning_routine_status)
             logger.info("Morning routine completed successfully")
-            
+
         except Exception as e:
             logger.error(f"Morning routine failed: {e}")
             morning_routine_status['last_result'] = {'error': str(e)}
             ws_manager.broadcast('morning_routine_error', {'error': str(e)})
         finally:
             morning_routine_status['running'] = False
-    
+
     # ==================== LOGS ====================
-    
+
     def get_logs(self) -> List[Dict[str, Any]]:
         """Get API logs"""
         logs = []
@@ -1387,7 +1616,7 @@ def run_server():
         ws_manager.start(WS_PORT)
     else:
         logger.warning("WebSocket server not available. Install websocket-server package: pip3 install websocket-server")
-    
+
     # Start HTTP server
     server = ThreadedHTTPServer(('0.0.0.0', API_PORT), APIHandler)
     logger.info(f"=" * 60)
@@ -1405,7 +1634,7 @@ def run_server():
     logger.info(f"  POST /api/routine/morning-v2  - Run Morning Routine v2.1")
     logger.info(f"  GET  /api/metrics             - API metrics")
     logger.info(f"=" * 60)
-    
+
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # /root/.openclaw/workspace/scripts/visualize-data.sh
 # Lage enkle visualiseringer
 

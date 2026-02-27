@@ -9,6 +9,12 @@
 
 set -e
 
+# SJEKK OM MORNING ROUTINE ER PAUSET
+if [ -f "/root/.openclaw/workspace/.morning-routine-paused" ]; then
+    cat /root/.openclaw/workspace/.morning-routine-paused
+    exit 0
+fi
+
 echo "🎙️  NRJ MORGEN - INTEGRERT MORGENRUTINE"
 echo "======================================="
 echo "Startet: $(date '+%H:%M:%S')"

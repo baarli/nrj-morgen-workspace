@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Aktiverer alle relevante skills for en oppgave
 
 TASK=$1

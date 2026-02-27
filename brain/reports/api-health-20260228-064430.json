@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-02-28T06:44:30.279207",
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "name": "Supabase",
+      "status": "\u2705",
+      "success": true,
+      "message": "Connected (200)",
+      "timestamp": "2026-02-28T06:44:28.912699"
+    },
+    {
+      "name": "Brave Search",
+      "status": "\u2705",
+      "success": true,
+      "message": "API reachable (200)",
+      "timestamp": "2026-02-28T06:44:29.740755"
+    },
+    {
+      "name": "Nielsen",
+      "status": "\u2705",
+      "success": true,
+      "message": "Domain reachable",
+      "timestamp": "2026-02-28T06:44:29.773591"
+    },
+    {
+      "name": "Podtoppen RSS",
+      "status": "\u2705",
+      "success": true,
+      "message": "RSS feed accessible",
+      "timestamp": "2026-02-28T06:44:30.278877"
+    }
+  ]
+}

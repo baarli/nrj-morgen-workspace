@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # AUTO-EXEC ENFORCER - CRON VERSION
 # Non-interactive version for scheduled execution
 

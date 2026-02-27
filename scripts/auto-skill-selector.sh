@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on error
 # Velger automatisk riktig skills basert på kontekst
 
 echo "🤖 Auto Skill Selector"
