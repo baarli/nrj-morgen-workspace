@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-02-28T06:55:57.465905",
+  "cpu": {
+    "percent": 1.0,
+    "count": 2,
+    "alert": false,
+    "status": "ok"
+  },
+  "memory": {
+    "total": 3669217280,
+    "available": 2389729280,
+    "used": 973692928,
+    "percent": 34.9,
+    "alert": false,
+    "status": "ok"
+  },
+  "disk": {
+    "total": 41882943488,
+    "used": 27888644096,
+    "free": 12058562560,
+    "percent": 69.8,
+    "alert": false,
+    "status": "ok"
+  },
+  "load": {
+    "1min": 0.013671875,
+    "5min": 0.1025390625,
+    "15min": 0.109375,
+    "alert": false,
+    "status": "ok"
+  },
+  "processes": {
+    "count": 116,
+    "top": [
+      {
+        "memory_percent": 16.767488460100132,
+        "cpu_percent": 0.0,
+        "pid": 2127,
+        "name": "openclaw-gateway"
+      }
+    ]
+  }
+}
