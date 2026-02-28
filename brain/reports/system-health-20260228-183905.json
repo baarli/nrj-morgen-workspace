@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-02-28T18:39:03.297195",
+  "summary": {
+    "health_score": 85,
+    "status": "healthy",
+    "issues": [
+      "8 cron errors"
+    ]
+  },
+  "details": {
+    "disk": {
+      "status": "healthy",
+      "used": "2.5G",
+      "available": "12G",
+      "percent": "71%"
+    },
+    "files": {
+      "python": 199,
+      "shell": 98,
+      "markdown": 567,
+      "json": 56,
+      "html": 21,
+      "total": 6759
+    },
+    "git": {
+      "status": "clean",
+      "modified": 0,
+      "added": 0,
+      "deleted": 0,
+      "total_changes": 0
+    },
+    "cron": {
+      "status": "warning",
+      "enabled": 0,
+      "disabled": 0,
+      "errors": 8
+    },
+    "skills": {
+      "status": "healthy",
+      "total": 12,
+      "complete": 12,
+      "incomplete": 0
+    },
+    "memory": {
+      "status": "healthy",
+      "total": 18,
+      "today_exists": true,
+      "latest": 1772274868.1759326
+    }
+  }
+}
