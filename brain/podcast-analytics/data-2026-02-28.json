@@ -1,0 +1,82 @@
+{
+  "current_listeners": 17108,
+  "current_rank": 46,
+  "total_episodes": 157,
+  "weekly_data": [
+    {
+      "week": "2025-W48",
+      "listeners": 15200,
+      "downloads": 31920,
+      "rank": 62
+    },
+    {
+      "week": "2025-W49",
+      "listeners": 18430,
+      "downloads": 38703,
+      "rank": 61
+    },
+    {
+      "week": "2025-W50",
+      "listeners": 16856,
+      "downloads": 35397,
+      "rank": 59
+    },
+    {
+      "week": "2025-W51",
+      "listeners": 15275,
+      "downloads": 32077,
+      "rank": 58
+    },
+    {
+      "week": "2026-W00",
+      "listeners": 18522,
+      "downloads": 38896,
+      "rank": 56
+    },
+    {
+      "week": "2026-W01",
+      "listeners": 16940,
+      "downloads": 35574,
+      "rank": 55
+    },
+    {
+      "week": "2026-W02",
+      "listeners": 15352,
+      "downloads": 32239,
+      "rank": 53
+    },
+    {
+      "week": "2026-W03",
+      "listeners": 18614,
+      "downloads": 39089,
+      "rank": 52
+    },
+    {
+      "week": "2026-W04",
+      "listeners": 17024,
+      "downloads": 35750,
+      "rank": 50
+    },
+    {
+      "week": "2026-W05",
+      "listeners": 15427,
+      "downloads": 32396,
+      "rank": 49
+    },
+    {
+      "week": "2026-W06",
+      "listeners": 18706,
+      "downloads": 39282,
+      "rank": 47
+    },
+    {
+      "week": "2026-W07",
+      "listeners": 17108,
+      "downloads": 35926,
+      "rank": 46
+    }
+  ],
+  "growth_rate": 15.5,
+  "avg_listen_duration": 35.2,
+  "completion_rate": 68.5
+}
