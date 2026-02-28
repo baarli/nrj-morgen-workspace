@@ -995,6 +995,6 @@ netlify deploy --prod
 
 ---
 
-**Sist oppdatert:** 2026-02-28 17:39
+**Sist oppdatert:** 2026-02-28 18:39
 **Opprettet av:** BaarliClaw
 **Formål:** Garantert riktig bruk av alle systemer
