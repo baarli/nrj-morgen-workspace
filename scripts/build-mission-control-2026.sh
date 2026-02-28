@@ -424,7 +424,7 @@ HTMLFOOT
 build_page "total-control.html" "Dashboard" "dashboard" "" "Dashboard med system status, aktiviteter og kontroller"
 
 # Build Sakslista Pro (with full functionality)
-cat > /tmp/sakslista-content.html <> 'SAKSLISTA'
+cat > /tmp/sakslista-content.html << 'SAKSLISTA'
 <div class="flex justify-between items-center mb-lg">
     <div>
         <h3>Dagens Saker</h3>
@@ -456,7 +456,7 @@ build_page "sakslista-pro.html" "Sakslista Pro" "saker" "<script src='https://cd
     <script src='sakslista-pro.js' defer></script>" "Sakslista"
 
 # Build Analytics
-cat > /tmp/analytics-content.html <> 'ANALYTICS'
+cat > /tmp/analytics-content.html << 'ANALYTICS'
 <div class="grid grid-2">
     <div class="card">
         <div class="card-header">
@@ -486,7 +486,7 @@ ANALYTICS
 build_page "analytics.html" "Analytics" "analytics" "" "Analytics"
 
 # Build Podkast
-cat > /tmp/podkast-content.html <> 'PODKAST'
+cat > /tmp/podkast-content.html << 'PODKAST'
 <div class="grid grid-2">
     <div class="card">
         <div class="card-header">
@@ -509,7 +509,7 @@ PODKAST
 build_page "podkast-control.html" "Podkast" "podkast" "" "Podkast"
 
 # Build Cron
-cat > /tmp/cron-content.html <> 'CRON'
+cat > /tmp/cron-content.html << 'CRON'
 <div class="card">
     <div class="card-header">
         <div class="card-title">Scheduled Tasks</div>
@@ -523,7 +523,7 @@ CRON
 build_page "cron-control.html" "Cron Jobs" "cron" "" "Cron Jobs"
 
 # Build System
-cat > /tmp/system-content.html <> 'SYSTEM'
+cat > /tmp/system-content.html << 'SYSTEM'
 <div class="grid grid-3">
     <div class="card">
         <div class="card-header">
@@ -551,7 +551,7 @@ SYSTEM
 build_page "system-monitor.html" "System Monitor" "system" "" "System Monitor"
 
 # Build Settings
-cat > /tmp/settings-content.html <> 'SETTINGS'
+cat > /tmp/settings-content.html << 'SETTINGS'
 <div class="grid grid-2">
     <div class="card">
         <div class="card-header">

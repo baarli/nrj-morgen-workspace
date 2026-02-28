@@ -4,7 +4,7 @@ set -e  # Exit on error
 # Forberede møter
 
 if [ $# -lt 1 ]; then
-  echo "Bruk: meeting-prep <møte-tema> [--participants "navn1,navn2"]")
+  echo "Bruk: meeting-prep <møte-tema> [--participants 'navn1,navn2']"
   exit 1
 fi
 
