@@ -1,0 +1,32 @@
+{
+  "weekly_schedule": {
+    "monday": {
+      "tiktok": "Weekend recap clip",
+      "instagram": "Story: Behind the scenes"
+    },
+    "tuesday": {
+      "tiktok": "Funny moment clip",
+      "instagram": "Reel: Episode highlight"
+    },
+    "wednesday": {
+      "tiktok": "Trending sound clip",
+      "instagram": "Post: Episode announcement"
+    },
+    "thursday": {
+      "tiktok": "Q&A clip",
+      "instagram": "Story: Poll"
+    },
+    "friday": {
+      "tiktok": "Best of week compilation",
+      "instagram": "Reel: Weekend vibes"
+    },
+    "saturday": {
+      "tiktok": "Throwback clip",
+      "instagram": "Story: Listener shoutout"
+    },
+    "sunday": {
+      "tiktok": "Preview of next week",
+      "instagram": "Post: Coming up"
+    }
+  }
+}

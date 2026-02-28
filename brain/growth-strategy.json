@@ -1,0 +1,98 @@
+{
+  "last_updated": "2026-02-28T20:21:09.540307",
+  "opportunities": [
+    {
+      "id": 1,
+      "name": "YouTube Video Podcast",
+      "impact": "high",
+      "effort": "medium",
+      "description": "80% av podcast-video konsumeres p\u00e5 YouTube",
+      "action": "Sette opp YouTube-kanal og laste opp episoder"
+    },
+    {
+      "id": 2,
+      "name": "TikTok Short Clips",
+      "impact": "high",
+      "effort": "low",
+      "description": "TikTok er #1 for 18-35 \u00e5ringer",
+      "action": "Lage 30-sekunders klipp fra hver episode"
+    },
+    {
+      "id": 3,
+      "name": "Instagram Reels",
+      "impact": "medium",
+      "effort": "low",
+      "description": "Reels n\u00e5r flere enn vanlige posts",
+      "action": "Poste daglige Reels med highlights"
+    },
+    {
+      "id": 4,
+      "name": "Email Newsletter",
+      "impact": "medium",
+      "effort": "medium",
+      "description": "Direkte kontakt med lyttere",
+      "action": "Sette opp ukentlig nyhetsbrev"
+    },
+    {
+      "id": 5,
+      "name": "Cross-Promotion",
+      "impact": "high",
+      "effort": "medium",
+      "description": "Samarbeid med andre norske podcaster",
+      "action": "Kontakte 10 relevante podcaster for samarbeid"
+    }
+  ],
+  "action_plan": [
+    {
+      "id": 2,
+      "name": "TikTok Short Clips",
+      "impact": "high",
+      "effort": "low",
+      "description": "TikTok er #1 for 18-35 \u00e5ringer",
+      "action": "Lage 30-sekunders klipp fra hver episode",
+      "score": 3.0
+    },
+    {
+      "id": 3,
+      "name": "Instagram Reels",
+      "impact": "medium",
+      "effort": "low",
+      "description": "Reels n\u00e5r flere enn vanlige posts",
+      "action": "Poste daglige Reels med highlights",
+      "score": 2.0
+    },
+    {
+      "id": 1,
+      "name": "YouTube Video Podcast",
+      "impact": "high",
+      "effort": "medium",
+      "description": "80% av podcast-video konsumeres p\u00e5 YouTube",
+      "action": "Sette opp YouTube-kanal og laste opp episoder",
+      "score": 1.5
+    },
+    {
+      "id": 5,
+      "name": "Cross-Promotion",
+      "impact": "high",
+      "effort": "medium",
+      "description": "Samarbeid med andre norske podcaster",
+      "action": "Kontakte 10 relevante podcaster for samarbeid",
+      "score": 1.5
+    },
+    {
+      "id": 4,
+      "name": "Email Newsletter",
+      "impact": "medium",
+      "effort": "medium",
+      "description": "Direkte kontakt med lyttere",
+      "action": "Sette opp ukentlig nyhetsbrev",
+      "score": 1.0
+    }
+  ],
+  "actions_taken": [
+    "Setup growth tracking",
+    "Generated 3 social media templates",
+    "Created outreach templates",
+    "Setup content calendar"
+  ]
+}
