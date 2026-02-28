@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-02-28T18:40:51.649444",
+  "checks": [
+    {
+      "name": "Critical Files",
+      "status": "\u2705",
+      "success": true,
+      "details": "OK"
+    },
+    {
+      "name": "Directory Structure",
+      "status": "\u2705",
+      "success": true,
+      "details": "OK"
+    },
+    {
+      "name": "Python Syntax",
+      "status": "\u274c",
+      "success": false,
+      "details": "implement_nrj_quick_wins.py: Syntax error"
+    },
+    {
+      "name": "Cron Jobs",
+      "status": "\u2705",
+      "success": true,
+      "details": "All cron jobs healthy"
+    },
+    {
+      "name": "Disk Space",
+      "status": "\u2705",
+      "success": true,
+      "details": "Disk usage: 70.1%"
+    }
+  ],
+  "overall_status": "issues_found"
+}
