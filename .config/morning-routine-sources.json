@@ -1,0 +1,46 @@
+{
+  "new_sources": {
+    "social_trends": {
+      "name": "Sosiale Medier Trends",
+      "platforms": [
+        "twitter",
+        "tiktok",
+        "instagram",
+        "reddit"
+      ],
+      "max_articles": 2,
+      "priority": "high"
+    },
+    "podcast_platforms": {
+      "name": "Podcast Trender",
+      "sources": [
+        "podtoppen",
+        "spotify podcasts",
+        "apple podcasts"
+      ],
+      "max_articles": 1,
+      "priority": "medium"
+    },
+    "youtube_trends": {
+      "name": "YouTube Viralt",
+      "sources": [
+        "trending norge",
+        "viral videos"
+      ],
+      "max_articles": 1,
+      "priority": "medium"
+    }
+  },
+  "international_expansion": [
+    "pagesix.com",
+    "usmagazine.com",
+    "thesun.co.uk/celeb",
+    "hollywoodlife.com"
+  ],
+  "norwegian_expansion": [
+    "p4.no",
+    "radio1.no",
+    "730.no",
+    "dagsavisen.no/kultur"
+  ]
+}
