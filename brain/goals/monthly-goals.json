@@ -1,0 +1,52 @@
+[
+  {
+    "id": "feb-2025-01",
+    "title": "Bygge BaarliClaw Toolkit - 50 verktøy",
+    "description": "Utvikle en komplett verktøykasse med 50 moduler for ulike oppgaver",
+    "category": "selvutvikling",
+    "status": "completed",
+    "created_date": "2026-02-01",
+    "target_date": "2026-02-28",
+    "completed_date": "2026-02-27"
+  },
+  {
+    "id": "feb-2025-02",
+    "title": "Automatisere Mission Control utvikling",
+    "description": "Sette opp autonom utvikling av Mission Control med cron-jobs",
+    "category": "automasjon",
+    "status": "completed",
+    "created_date": "2026-02-01",
+    "target_date": "2026-02-28",
+    "completed_date": "2026-02-24"
+  },
+  {
+    "id": "feb-2025-03",
+    "title": "Konsolidere Morning Routine",
+    "description": "Samle alle Morning Routine-script i én konsolidert løsning",
+    "category": "prosess",
+    "status": "completed",
+    "created_date": "2026-02-20",
+    "target_date": "2026-02-28",
+    "completed_date": "2026-02-27"
+  },
+  {
+    "id": "feb-2025-04",
+    "title": "Utvikle NRJ Morgen vekststrategi",
+    "description": "Lage strategi og verktøy for å øke lyttertall for NRJ Morgen",
+    "category": "strategi",
+    "status": "completed",
+    "created_date": "2026-02-25",
+    "target_date": "2026-02-28",
+    "completed_date": "2026-02-28"
+  },
+  {
+    "id": "feb-2025-05",
+    "title": "Forbedre Mission Control med nye features",
+    "description": "Legge til keyboard shortcuts, export, search, notifications, widgets, real-time updates",
+    "category": "utvikling",
+    "status": "completed",
+    "created_date": "2026-02-20",
+    "target_date": "2026-02-28",
+    "completed_date": "2026-02-25"
+  }
+]

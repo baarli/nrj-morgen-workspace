@@ -8,3 +8,13 @@
 [16:45:45]    Brave API key found: YES
 [16:45:45] ✅ All key facts validated!
 [16:45:45] ✅ MEMORY VALIDATION COMPLETE (auto-validated for cron)
+[08:00:06] ═══════════════════════════════════════════════════════════════════════
+[08:00:06] 🧠 MEMORY VALIDATOR (CRON MODE) - Non-interactive validation
+[08:00:06] ═══════════════════════════════════════════════════════════════════════
+[08:00:06] 📚 Auto-validating MEMORY.md content...
+[08:00:06]    Panel ID found: YES (a0000000-0000-0000-0000-000000000001)
+[08:00:06]    Update script mentioned: YES
+[08:00:06]    Dashboard URL found: YES
+[08:00:06]    Brave API key found: YES
+[08:00:06] ✅ All key facts validated!
+[08:00:06] ✅ MEMORY VALIDATION COMPLETE (auto-validated for cron)

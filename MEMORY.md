@@ -1,5 +1,36 @@
 # MEMORY.md - Viktig informasjon å huske
 
+## 🆕 NYTT: Mission Control System (2026-03-04)
+**Status:** ✅ LIVE og fullt funksjonelt
+
+**URL:** https://baarli.github.io/mission-control-live/  
+**Passord:** `kloakontroll2026`  
+**GitHub Repo:** https://github.com/baarli/mission-control-live
+
+### Funksjoner
+- 📊 Dashboard med live statistikk
+- 📋 Saksliste (vis, legg til, slett)
+- 🎧 Podcast-episoder
+- 📈 Radio- og podcast-statistikk
+- 🛠️ Verktøy (Morning Routine, vedlikehold)
+
+### Teknisk
+- **Frontend:** GitHub Pages (HTML/CSS/JS)
+- **Database:** Supabase (PostgreSQL)
+- **Dato-håndtering:** Sjekker både i dag og i morgen (morgenrutinen bruker neste dag)
+- **Auto-refresh:** Hvert 5. minutt
+
+### Viktig å huske
+- Morgenrutinen lagrer saker med `show_date = neste dag`
+- Mission Control må derfor sjekke begge datoer
+- Anon key brukes for lese-tilgang til Supabase
+- All kode er i én HTML-fil for enkelhet
+
+### Dokumentasjon
+Se: `/root/.openclaw/workspace/memory/mission-control-documentation.md`
+
+---
+
 ## 🆕 NYTT: Code Quality Critical Fixes (2026-02-28)
 **Status:** ✅ 2 kritiske feil fikset
 
@@ -995,6 +1026,34 @@ netlify deploy --prod
 
 ---
 
-**Sist oppdatert:** 2026-02-28 19:35
+## 🆕 NYTT: Evening Reflection - 2026-03-01
+**Status:** ✅ Kveldsrefleksjon fullført
+
+**Hva ble gjort:**
+1. Review av gårsdagens arbeid (2026-02-28)
+2. Dokumentasjon av læring i `memory/self-dev/2026-03-01-evening-reflection.md`
+3. Planlegging av morgendagens fokus
+
+**Nøkkel-innsikter:**
+- Autonome systemer fungerer som designet (3 daglige sjekkpunkter)
+- Dokumentasjon gjør det lett å plukke opp tråden
+- Ikke alle dager trenger intens utvikling - review og planlegging har også verdi
+
+**Plan for 2026-03-02:**
+1. Forbedre `automation_engine.py` (70/100 → 90/100)
+2. Forbedre `content-pipeline-v3.py` (70/100 → 90/100)
+3. Starte utvikling av skill #11
+
+**Metrikker:**
+| Metrikk | Verdi |
+|---------|-------|
+| Skills | 10/12 |
+| Code Quality | 91/100 |
+| Kritiske feil | 0 |
+| Self-dev logger | 5 aktive |
+
+---
+
+**Sist oppdatert:** 2026-03-04 11:35
 **Opprettet av:** BaarliClaw
 **Formål:** Garantert riktig bruk av alle systemer

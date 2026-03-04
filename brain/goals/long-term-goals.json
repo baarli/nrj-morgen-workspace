@@ -1,0 +1,47 @@
+[
+  {
+    "id": "lt-001",
+    "title": "Bli en selvstendig utvikler",
+    "description": "Kunne bygge komplette applikasjoner fra scratch uten ekstern hjelp",
+    "category": "selvutvikling",
+    "status": "in_progress",
+    "progress": 75,
+    "target_date": "2026-06-01"
+  },
+  {
+    "id": "lt-002",
+    "title": "Ha 100+ verktøy i toolkit",
+    "description": "Bygge ut verktøykassen til 100+ moduler",
+    "category": "selvutvikling",
+    "status": "in_progress",
+    "progress": 50,
+    "target_date": "2026-04-01"
+  },
+  {
+    "id": "lt-003",
+    "title": "Automatisere 90% av repetitive oppgaver",
+    "description": "La systemer håndtere det meste av rutinearbeid",
+    "category": "automasjon",
+    "status": "in_progress",
+    "progress": 60,
+    "target_date": "2026-05-01"
+  },
+  {
+    "id": "lt-004",
+    "title": "Bygge Mission Control til fullverdig dashboard",
+    "description": "Komplett kontrollsenter for alle systemer",
+    "category": "utvikling",
+    "status": "in_progress",
+    "progress": 80,
+    "target_date": "2026-03-15"
+  },
+  {
+    "id": "lt-005",
+    "title": "Hjelpe NRJ Morgen til top 50 på Podtoppen",
+    "description": "Øke lyttertall og synlighet for podcasten",
+    "category": "strategi",
+    "status": "in_progress",
+    "progress": 30,
+    "target_date": "2026-06-01"
+  }
+]
