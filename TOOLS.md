@@ -768,6 +768,33 @@ vev-telegram-voice "Hei, dette er Vev som snakker!"
 vev-telegram-voice --test
 ```
 
+### 🤖 Auto-Responder (NY 2026-03-05)
+**Service:** `vev-telegram-responder.service`
+
+Kontinuerlig lytter og svarer på Telegram-meldinger automatisk.
+
+**Status:**
+```bash
+# Sjekk status
+systemctl status vev-telegram-responder.service
+
+# Start/stop/restart
+sudo systemctl start vev-telegram-responder.service
+sudo systemctl stop vev-telegram-responder.service
+sudo systemctl restart vev-telegram-responder.service
+
+# Se logger
+sudo journalctl -u vev-telegram-responder.service -f
+tail -f /root/.openclaw/workspace/brain/logs/telegram-auto-responder.log
+```
+
+**Funksjonalitet:**
+- Sjekker nye meldinger hvert 2. sekund
+- Svarer automatisk med tekst OG stemme
+- Håndterer enkle samtaler
+- Logger all aktivitet
+- Restartes automatisk ved feil
+
 **Teknisk:**
 - **Stemme:** Sebastian (Norsk)
 - **Modell:** ElevenFlash 2.5

@@ -20,12 +20,22 @@
 - ✅ Jeg (BaarliClaw) kan svare deg personlig
 - ✅ 24/7 tilgjengelighet
 - ✅ **🎙️ TALEMELDINGER** - Kan sende voice messages via `vev-telegram-voice`
+- ✅ **🤖 AUTO-RESPONDER** - Svarer automatisk i realtid på meldinger!
 
 **Teknisk:**
 - Polling: `/root/.openclaw/workspace/scripts/telegram-poll.py`
 - Svar: `/root/.openclaw/workspace/scripts/telegram-reply.sh "melding"`
 - Send: `/root/.openclaw/workspace/scripts/telegram-send.sh "melding"`
 - **Voice:** `/root/.openclaw/workspace/scripts/vev-telegram-voice.py "tekst"`
+- **Auto-Responder:** `/root/.openclaw/workspace/scripts/vev-telegram-auto-responder.py`
+- **Service:** `systemctl status vev-telegram-responder.service`
+
+**Auto-Responder:**
+- Kjører som system-tjeneste 24/7
+- Sjekker nye meldinger hvert 2. sekund
+- Svarer automatisk med tekst OG stemme
+- Logger all aktivitet
+- Restartes automatisk ved feil
 
 **Voice Settings:**
 - **Stemme:** Sebastian (Norsk / Norwegian)
