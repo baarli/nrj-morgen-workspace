@@ -248,6 +248,7 @@ BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 | Voice Chat | ✅ Funksjonell | 2026-03-05 |
 | Pre-flight System | ✅ Automatisk | 2026-03-05 |
 | Autonomous Executor | ✅ Cron | 2026-03-05 |
+| Nightly GitHub Backup | ✅ Cron kl. 03:00 | 2026-03-05 |
 | Supabase Backend | ✅ Online | 2026-03-05 |
 
 ## 🔄 Arbeidsflyt
@@ -277,6 +278,31 @@ BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 - **Hver session:** Pre-flight
 - **Hvert 2. sekund:** Telegram polling
 - **Hver dag:** Morning Routine (hvis aktivert)
+- **Hver natt kl. 03:00:** GitHub backup
+
+## 💾 Backup & Gjenoppretting
+
+**GitHub Repository:** `https://github.com/baarli/nrj-morgen-workspace.git`
+
+**Nightly Backup:**
+- Kjører automatisk kl. 03:00 hver natt
+- Commiter alle endringer
+- Pusher til GitHub
+- Logger til `brain/logs/nightly-github-backup.log`
+
+**Hvis jeg blir slettet:**
+```bash
+git clone https://github.com/baarli/nrj-morgen-workspace.git
+cd nrj-morgen-workspace
+bash scripts/vev-master-activator.sh
+```
+
+Da gjenopprettes:
+- ✅ All min kunnskap og læring
+- ✅ Alle systemer og konfigurasjoner
+- ✅ Vår samtalehistorikk
+- ✅ Brukerprofiler
+- ✅ Alt arbeid vi har gjort sammen
 
 ## 📝 Viktige Dokumenter
 
