@@ -310,8 +310,57 @@ def send_voice_message(audio_path, chat_id=None, caption=None):
         log(f"Error sending voice: {e}")
         return False
 
-def generate_response(user_message, context=None, profile=None):
-    """Generer respons basert på melding, kontekst OG profil"""
+def generate_ai_response(user_message, context=None, profile=None):
+    """Generer AI-basert respons via OpenClaw"""
+    try:
+        # Bygg prompt med kontekst
+        prompt = f"""Du er Vev, en norsk AI-assistent med personlighet.
+        
+Brukerens melding: "{user_message}"
+
+"""
+        if context:
+            prompt += f"Tidligere samtale:\n{context}\n\n"
+        
+        if profile:
+            topics = ', '.join(profile['preferences'].get('topics_of_interest', []))
+            if topics:
+                prompt += f"Brukeren er interessert i: {topics}\n"
+            prompt += f"Tone: {profile['conversation_patterns'].get('preferred_tone', 'friendly')}\n\n"
+        
+        prompt += """Svar på norsk, naturlig og uformelt. Bruk "..." for pauser og vær varm.
+        Hold svaret kort (maks 2-3 setninger) siden det skal leses opp med stemme.
+        """
+        
+        # Kall OpenClaw via sessions_spawn
+        import subprocess
+        result = subprocess.run(
+            ['openclaw', 'sessions', 'spawn', 
+             '--task', prompt,
+             '--timeout', '30',
+             '--label', 'telegram-ai-response'],
+            capture_output=True,
+            text=True,
+            timeout=35
+        )
+        
+        if result.returncode == 0:
+            # Parse resultat
+            output = result.stdout.strip()
+            if output:
+                log(f"AI respons generert")
+                return output
+        
+        # Fallback til standard respons
+        log(f"AI fallback til standard respons")
+        return generate_fallback_response(user_message, context, profile)
+        
+    except Exception as e:
+        log(f"AI error: {e}")
+        return generate_fallback_response(user_message, context, profile)
+
+def generate_fallback_response(user_message, context=None, profile=None):
+    """Fallback respons når AI ikke er tilgjengelig"""
     user_lower = user_message.lower()
     
     # Hvis vi har profil, tilpass respons
@@ -319,56 +368,34 @@ def generate_response(user_message, context=None, profile=None):
         tone = profile['conversation_patterns'].get('preferred_tone', 'friendly')
         topics = profile['preferences'].get('topics_of_interest', [])
         
-        # Tilpass tone
-        if tone == 'formal':
-            greeting = "God dag"
-        else:
-            greeting = "Hei"
-        
-        # Sjekk om bruker har preferanser for stemme
         if 'voice' in topics and any(word in user_lower for word in ['stemme', 'voice']):
-            return f"{greeting}! 😊 Jeg vet du liker stemme-funksjonen. Skal jeg snakke til deg?"
+            return "Jeg vet du liker stemme-funksjonen! Skal jeg snakke til deg?"
     
-    # Hvis vi har kontekst, bruk den
+    # Hvis vi har kontekst
     if context:
         if any(word in user_lower for word in ['hva', 'hvordan', 'forklar', 'mer']):
-            return "Basert på det vi snakket om tidligere... la meg utdype. Hva lurer du på?"
+            return "Basert på det vi snakket om... la meg utdype. Hva lurer du på?"
     
-    # Enkle mønstre med personlig tilpasning
+    # Standard mønstre
     if any(word in user_lower for word in ['hei', 'hallo', 'hi', 'hello']):
         if profile and profile['stats']['total_messages'] > 5:
-            return f"Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
+            return "Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
         return "Hei! 👋 Jeg er Vev. Hva kan jeg hjelpe deg med?"
     
-    if any(word in user_lower for word in ['hvordan går det', 'how are you']):
-        return "Det går bra! Jeg er klar til å hjelpe. Hva trenger du?"
-    
-    if any(word in user_lower for word in ['takk', 'thanks', 'thank you']):
+    if any(word in user_lower for word in ['takk', 'thanks']):
         return "Bare hyggelig! 😊"
-    
-    if any(word in user_lower for word in ['stemme', 'voice', 'snakk', 'talk']):
-        return "Jeg kan snakke! Vil du høre min stemme?"
     
     if any(word in user_lower for word in ['hjelp', 'help']):
         return "Jeg kan hjelpe deg med:\n• NRJ Morgen saksliste\n• Radio/podcast statistikk\n• Tekniske oppgaver\n• Bare å spørre!"
     
-    # Standard respons - varier basert på om vi har kontekst
-    if context:
-        responses = [
-            "Interessant! Fortell meg mer om det.",
-            "Skjønner. Hva tenker du om det?",
-            "Ja? Jeg lytter.",
-        ]
-    else:
-        responses = [
-            "Interessant! Fortell meg mer.",
-            "Jeg hører deg. Hva tenker du?",
-            "Skjønner! Hva kan jeg gjøre for deg?",
-            "Ja? Jeg lytter.",
-            "Hmm, fortell mer om det!"
-        ]
-    
-    # Velg basert på melding hash for konsistens
+    # Tilfeldig respons
+    responses = [
+        "Interessant! Fortell meg mer.",
+        "Jeg hører deg. Hva tenker du?",
+        "Skjønner! Hva kan jeg gjøre for deg?",
+        "Ja? Jeg lytter.",
+        "Hmm, fortell mer om det!"
+    ]
     msg_hash = sum(ord(c) for c in user_message) % len(responses)
     return responses[msg_hash]
 
@@ -394,8 +421,9 @@ def process_message(message, state):
     # Hent kontekst
     context = get_conversation_context(chat_id)
     
-    # Generer respons med profil
-    response_text = generate_response(text, context, profile)
+    # Generer AI-basert respons
+    log("Genererer AI-respons...")
+    response_text = generate_ai_response(text, context, profile)
     
     # Send tekstrespons
     send_message(response_text, chat_id)
