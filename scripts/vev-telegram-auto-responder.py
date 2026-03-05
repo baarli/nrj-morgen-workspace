@@ -15,6 +15,7 @@ WORKSPACE = "/root/.openclaw/workspace"
 LOG_FILE = f"{WORKSPACE}/brain/logs/telegram-auto-responder.log"
 STATE_FILE = f"{WORKSPACE}/.vev-telegram-state.json"
 HISTORY_FILE = f"{WORKSPACE}/brain/conversations/telegram-history.json"
+PROFILES_FILE = f"{WORKSPACE}/brain/conversations/user-profiles.json"
 
 # Load credentials
 with open(f"{WORKSPACE}/.credentials/telegram-bot.env") as f:
@@ -43,7 +44,118 @@ def log(msg):
     with open(LOG_FILE, 'a') as f:
         f.write(log_msg + '\n')
 
+def load_profiles():
+    """Load user profiles"""
+    if os.path.exists(PROFILES_FILE):
+        try:
+            with open(PROFILES_FILE) as f:
+                return json.load(f)
+        except:
+            pass
+    return {'users': {}, 'last_updated': datetime.now().isoformat()}
+
+def save_profiles(profiles):
+    """Save user profiles"""
+    profiles['last_updated'] = datetime.now().isoformat()
+    os.makedirs(os.path.dirname(PROFILES_FILE), exist_ok=True)
+    with open(PROFILES_FILE, 'w') as f:
+        json.dump(profiles, f, indent=2, default=str)
+
+def get_or_create_profile(chat_id, user_name='Unknown'):
+    """Get existing profile or create new one"""
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key not in profiles['users']:
+        profiles['users'][chat_key] = {
+            'name': user_name,
+            'first_seen': datetime.now().strftime('%Y-%m-%d'),
+            'preferences': {
+                'communication_style': 'casual',
+                'response_format': 'both_voice_and_text',
+                'topics_of_interest': []
+            },
+            'conversation_patterns': {
+                'greeting_style': 'informal',
+                'question_frequency': 'medium',
+                'preferred_tone': 'friendly'
+            },
+            'memory': {
+                'last_topic': None,
+                'favorite_features': [],
+                'dislikes': [],
+                'common_phrases': []
+            },
+            'stats': {
+                'total_messages': 0,
+                'voice_messages_sent': 0,
+                'last_interaction': datetime.now().isoformat()
+            }
+        }
+        save_profiles(profiles)
+        log(f"Created new profile for user: {user_name}")
+    
+    return profiles['users'][chat_key], profiles
+
+def update_profile_stats(chat_id, message_received=True, voice_sent=False):
+    """Update user statistics"""
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key in profiles['users']:
+        if message_received:
+            profiles['users'][chat_key]['stats']['total_messages'] += 1
+        if voice_sent:
+            profiles['users'][chat_key]['stats']['voice_messages_sent'] += 1
+        profiles['users'][chat_key]['stats']['last_interaction'] = datetime.now().isoformat()
+        save_profiles(profiles)
+
 def load_history():
+    """Load conversation history"""
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE) as f:
+                return json.load(f)
+        except:
+            pass
+    return {'conversations': {}, 'user_profiles': {}, 'last_updated': datetime.now().isoformat()}
+    """Learn user preferences from message"""
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key not in profiles['users']:
+        return
+    
+    profile = profiles['users'][chat_key]
+    msg_lower = message_text.lower()
+    
+    # Learn topics of interest
+    topics = {
+        'radio': ['radio', 'nrj', 'p3', 'p4', 'lytter', 'sende'],
+        'podcast': ['podcast', 'episode', 'lytter', 'show'],
+        'technology': ['tech', 'kode', 'programmering', 'ai', 'system'],
+        'voice': ['stemme', 'voice', 'snakk', 'tale'],
+        'morning_routine': ['morning', 'morgen', 'saksliste', 'nyheter']
+    }
+    
+    for topic, keywords in topics.items():
+        if any(kw in msg_lower for kw in keywords):
+            if topic not in profile['preferences']['topics_of_interest']:
+                profile['preferences']['topics_of_interest'].append(topic)
+                log(f"Learned interest: {topic}")
+    
+    # Learn communication style
+    if any(word in msg_lower for word in ['hei', 'hallo', 'hi']):
+        profile['conversation_patterns']['greeting_style'] = 'informal'
+    
+    # Store common phrases (last 5)
+    if len(message_text) > 5 and len(message_text) < 50:
+        if 'common_phrases' not in profile['memory']:
+            profile['memory']['common_phrases'] = []
+        profile['memory']['common_phrases'].append(message_text)
+        profile['memory']['common_phrases'] = profile['memory']['common_phrases'][-5:]
+    
+    save_profiles(profiles)
     """Load conversation history"""
     if os.path.exists(HISTORY_FILE):
         try:
@@ -198,20 +310,34 @@ def send_voice_message(audio_path, chat_id=None, caption=None):
         log(f"Error sending voice: {e}")
         return False
 
-def generate_response(user_message, context=None):
-    """Generer respons basert på melding og kontekst"""
+def generate_response(user_message, context=None, profile=None):
+    """Generer respons basert på melding, kontekst OG profil"""
     user_lower = user_message.lower()
+    
+    # Hvis vi har profil, tilpass respons
+    if profile:
+        tone = profile['conversation_patterns'].get('preferred_tone', 'friendly')
+        topics = profile['preferences'].get('topics_of_interest', [])
+        
+        # Tilpass tone
+        if tone == 'formal':
+            greeting = "God dag"
+        else:
+            greeting = "Hei"
+        
+        # Sjekk om bruker har preferanser for stemme
+        if 'voice' in topics and any(word in user_lower for word in ['stemme', 'voice']):
+            return f"{greeting}! 😊 Jeg vet du liker stemme-funksjonen. Skal jeg snakke til deg?"
     
     # Hvis vi har kontekst, bruk den
     if context:
-        # Sjekk om det er en oppfølging
         if any(word in user_lower for word in ['hva', 'hvordan', 'forklar', 'mer']):
             return "Basert på det vi snakket om tidligere... la meg utdype. Hva lurer du på?"
     
-    # Enkle mønstre
+    # Enkle mønstre med personlig tilpasning
     if any(word in user_lower for word in ['hei', 'hallo', 'hi', 'hello']):
-        if context:
-            return "Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
+        if profile and profile['stats']['total_messages'] > 5:
+            return f"Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
         return "Hei! 👋 Jeg er Vev. Hva kan jeg hjelpe deg med?"
     
     if any(word in user_lower for word in ['hvordan går det', 'how are you']):
@@ -259,11 +385,17 @@ def process_message(message, state):
     
     log(f"Melding fra {from_user}: {text[:50]}...")
     
+    # Hent eller opprett profil
+    profile, profiles = get_or_create_profile(chat_id, from_user)
+    
+    # Lær fra meldingen
+    learn_from_message(chat_id, text)
+    
     # Hent kontekst
     context = get_conversation_context(chat_id)
     
-    # Generer respons
-    response_text = generate_response(text, context)
+    # Generer respons med profil
+    response_text = generate_response(text, context, profile)
     
     # Send tekstrespons
     send_message(response_text, chat_id)
@@ -277,6 +409,9 @@ def process_message(message, state):
     if audio_path:
         send_voice_message(audio_path, chat_id)
         log(f"Sendt talemelding")
+        update_profile_stats(chat_id, message_received=True, voice_sent=True)
+    else:
+        update_profile_stats(chat_id, message_received=True, voice_sent=False)
     
     # Oppdater state
     state['last_update_id'] = update_id + 1

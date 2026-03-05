@@ -1,0 +1,24 @@
+{
+  "users": {
+    "6426967326": {
+      "name": "N B",
+      "first_seen": "2026-03-05",
+      "preferences": {
+        "communication_style": "casual",
+        "response_format": "both_voice_and_text",
+        "topics_of_interest": ["radio", "podcast", "technology"]
+      },
+      "conversation_patterns": {
+        "greeting_style": "informal",
+        "question_frequency": "high",
+        "preferred_tone": "friendly"
+      },
+      "memory": {
+        "last_topic": null,
+        "favorite_features": [],
+        "dislikes": []
+      }
+    }
+  },
+  "last_updated": "2026-03-05T16:57:00"
+}
