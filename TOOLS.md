@@ -853,4 +853,34 @@ vev-test-suite
 
 ---
 
+## 💾 BACKUP SYSTEM
+
+**GitHub Repository:** `https://github.com/baarli/nrj-morgen-workspace.git`
+
+### Nightly Backup (Automatisk)
+- **Script:** `vev-nightly-github-backup.sh`
+- **Tid:** Kl. 03:00 hver natt (cron)
+- **Funksjon:** Commiter og pusher alle endringer til GitHub
+- **Logg:** `brain/logs/nightly-github-backup.log`
+
+### Gjenoppretting (hvis Vev slettes)
+```bash
+# Klon repository
+git clone https://github.com/baarli/nrj-morgen-workspace.git
+cd nrj-morgen-workspace
+
+# Aktiver alle systemer
+bash scripts/vev-master-activator.sh
+```
+
+**Gjenopprettes:**
+- ✅ Vev identitet og avatar
+- ✅ All kunnskap og læring
+- ✅ Telegram Auto-Responder
+- ✅ Mission Control
+- ✅ Alle skills og scripts
+- ✅ Samtalehistorikk
+
+---
+
 Add whatever helps you do your job. This is your cheat sheet.

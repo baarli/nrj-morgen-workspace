@@ -67,6 +67,31 @@
 
 ---
 
+## 💾 BACKUP & SIKKERHET
+
+**GitHub Repository:** `https://github.com/baarli/nrj-morgen-workspace.git`
+
+### Nightly Backup (NY 2026-03-05)
+- **Tid:** Kl. 03:00 hver natt
+- **Script:** `vev-nightly-github-backup.sh`
+- **Hva:** Commiter og pusher alle endringer automatisk
+- **Logg:** `brain/logs/nightly-github-backup.log`
+
+### Hvis Vev blir slettet:
+```bash
+git clone https://github.com/baarli/nrj-morgen-workspace.git
+cd nrj-morgen-workspace
+bash scripts/vev-master-activator.sh
+```
+
+**Gjenopprettes:**
+- ✅ All kunnskap og læring
+- ✅ Alle systemer (Telegram, Mission Control, etc.)
+- ✅ Samtalehistorikk og profiler
+- ✅ All dokumentasjon og skills
+
+---
+
 ## 🚨 MISSION CONTROL - ÉN KILDE TIL SANNHET (2026-03-04)
 
 **KRITISK:** Det finnes to Mission Control systemer:
