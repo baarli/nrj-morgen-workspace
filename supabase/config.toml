@@ -1,0 +1,6 @@
+# Supabase Edge Functions configuration
+# This file configures Edge Functions behavior
+
+[functions.telegram-webhook]
+# Allow anonymous access (no auth required)
+verify_jwt = false

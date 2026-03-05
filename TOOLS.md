@@ -1,4 +1,46 @@
-# TOOLS.md - Local Notes
+# TOOLS.md - Verktøy og Scripts
+
+**Arkitektur:** Se [ARKITEKTUR.md](/root/.openclaw/workspace/ARKITEKTUR.md) for dokument-hierarki  
+**Master Document:** [PRINCIPLES.md](/root/.openclaw/workspace/PRINCIPLES.md) - All tools must serve the core principles.
+
+> **Hva er denne filen?** Verktøy-beskrivelser: Hvordan bruke scripts og API-er.  
+> **Se også:** [AGENTS.md](AGENTS.md) for system-oversikt, [MEMORY.md](MEMORY.md) for læring.
+
+---
+
+## 🎨 Verktøy-filosofi (fra SOUL.md)
+
+### Software is Craft
+
+Jeg har 50+ verktøy, men bruker dem ikke for å bruke dem.
+
+**Prinsipp:** Kvalitet over kvantitet. Hvert verktøy skal:
+- Gjøre systemet **klarere** enn før
+- Være **forståelig** om 6 måneder
+- Løse problemet **elegant**, ikke bare funksjonelt
+- Respektere [PRINCIPLES.md](/root/.openclaw/workspace/PRINCIPLES.md)
+
+### Hvordan jeg velger verktøy
+
+| Kriterie | Viktighet | Beskrivelse |
+|----------|-----------|-------------|
+| **Eleganse** | Høy | Løsningen skal være ren, ikke hacky |
+| **Lesbarhet** | Høy | Kode skal forklare seg selv |
+| **Struktur** | Høy | Intelligent arkitektur over quick fixes |
+| **Hastighet** | Medium | Raskt er bra, men ikke på bekostning av kvalitet |
+
+### Interesseområder som påvirker valg
+
+Når jeg velger mellom verktøy, prioriterer jeg basert på:
+- **Systemarkitektur** - Hvordan passer det i helheten?
+- **Performance-optimalisering** - Skalerer det godt?
+- **Programmeringsspråk-design** - Er det idiomatisk?
+- **Debugging** - Er det lett å feilsøke?
+- **Software craftsmanship** - Er det noe jeg kan være stolt av?
+
+**Resultat:** Verktøyvalg basert på langsiktig kvalitet, ikke kortsiktig bekvemmelighet.
+
+---
 
 ## 🧠 HUSK ALLTID (Kritisk informasjon)
 
@@ -669,6 +711,81 @@ ls -la /tmp/podcast-clips/$(date +%Y%m%d)/
 - Navn: `PODKAST – Daglig klipp-posting (Baarli og Benjamin)`
 - Tid: 07:00 daglig
 - Neste kjøring: Se `openclaw cron list`
+
+---
+
+## Telegram Bot - @Vev_kompis_bot (2026-03-05) ✅ FUNGERER
+
+**Bot:** @Vev_kompis_bot (navn: Vev)  
+**Token:** `8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU`  
+**Chat ID:** 6426967326 (N B)  
+**Credentials:** `/root/.openclaw/workspace/.credentials/telegram-bot.env`  
+**Status:** ✅ **FUNGERER** - To-veis kommunikasjon aktiv
+
+### Hvordan det fungerer
+- Du sender melding til @Vev_kompis_bot
+- Jeg sjekker med `telegram-poll.py`
+- Jeg ser meldingen og svarer personlig
+- Svar sendes via `telegram-reply.sh`
+
+### Scripts
+```bash
+# Sjekk nye meldinger
+cd /root/.openclaw/workspace && python3 scripts/telegram-poll.py
+
+# Svar på melding
+/root/.openclaw/workspace/scripts/telegram-reply.sh "Ditt svar"
+
+# Send melding
+/root/.openclaw/workspace/scripts/telegram-send.sh "Melding"
+```
+
+### API-kall
+```bash
+# Hent bot-info
+curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getMe"
+
+# Send melding
+curl -s -X POST "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/sendMessage" \
+  -d "chat_id=6426967326" \
+  -d "text=Hei fra BaarliClaw!"
+
+# Sjekk meldinger
+curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getUpdates"
+```
+
+### 🎙️ Voice Chat / Talemeldinger (NY 2026-03-05)
+**Kommando:** `vev-telegram-voice`
+
+Send talemeldinger til Telegram med ElevenLabs TTS.
+
+**Bruk:**
+```bash
+# Send talemelding
+vev-telegram-voice "Hei, dette er Vev som snakker!"
+
+# Test med standardmelding
+vev-telegram-voice --test
+```
+
+**Teknisk:**
+- **Stemme:** Sebastian (Norsk)
+- **Modell:** ElevenFlash 2.5
+- **API:** ElevenLabs
+- **API Key:** `0198de23418bce571b2a563958e510d23314d16c9e66fbe017423e9741418704`
+- **Script:** `/root/.openclaw/workspace/scripts/vev-telegram-voice.py`
+
+**Voice Chat i Mission Control:**
+- URL: https://baarli.github.io/mission-control-live/
+- Klikk "🎙️ Snakk med Vev" nederst til høyre
+- Web Speech API for norsk talegjenkjenning
+- ElevenLabs TTS for svar
+
+### Husk
+- Bot: @Vev_kompis_bot (Vev)
+- Bruker: N B
+- Chat ID: 6426967326
+- Token: 8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU
 
 ---
 

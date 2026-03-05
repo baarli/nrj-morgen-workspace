@@ -1,0 +1,5 @@
+# Compliance Check Cron Job
+# Sjekker at systemet følger PRINCIPLES.md hver time
+# Legg til med: crontab -e
+
+0 * * * * cd /root/.openclaw/workspace && bash scripts/compliance-checker.sh >> memory/compliance-cron.log 2>&1

@@ -47,6 +47,26 @@ GitHub User:           baarli
                         (Full tilgang til repos)
 
 ================================================================================
+TELEGRAM BOT - @Vev_kompis_bot ✅ FUNGERER
+================================================================================
+
+Bot Name:              Vev
+Bot Username:          @Vev_kompis_bot
+Bot Token:             8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU
+User:                  N B
+Chat ID:               6426967326
+                        (For 24/7 kommunikasjon)
+
+Webhook URL:           https://kvniauxokdtmpvjtfnej.supabase.co/functions/v1/telegram-webhook
+Edge Function:         telegram-webhook (Supabase)
+Status:                ✅ FUNGERER - To-veis kommunikasjon aktiv
+
+Kommandoer:
+- /start - Velkomstmelding
+- /help  - Hjelp
+- /status - Systemstatus
+
+================================================================================
 E-POST & KOMMUNIKASJON
 ================================================================================
 

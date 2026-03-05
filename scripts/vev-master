@@ -1,0 +1,104 @@
+#!/bin/bash
+# VEV MASTER CONTROL
+# One command to run all Vev improvement tools
+
+echo "═══════════════════════════════════════════════════════════════════════"
+echo "🚀 VEV MASTER CONTROL - Choose an option:"
+echo "═══════════════════════════════════════════════════════════════════════"
+echo ""
+echo "📚 LEARNING & MEMORY:"
+echo "   1. Auto-learning capture (document what you learned)"
+echo "   2. View error patterns (see repeated mistakes)"
+echo "   3. Mood tracker (track emotions over time)"
+echo ""
+echo "🔍 ANALYSIS:"
+echo "   4. Skill suggester (find relevant skills)"
+echo "   5. Conversation summary (summarize this chat)"
+echo "   6. Proactive suggestions (system status)"
+echo ""
+echo "⚡ ALL AT ONCE:"
+echo "   7. Run post-session routine (learning + summary + mood)"
+echo "   8. Run full analysis (errors + proactive + skills)"
+echo ""
+echo "   0. Exit"
+echo ""
+read -p "Enter choice [0-8]: " choice
+
+cd /root/.openclaw/workspace/scripts
+
+case $choice in
+    1)
+        echo ""
+        python3 vev-auto-learning.py
+        ;;
+    2)
+        echo ""
+        python3 vev-error-patterns.py
+        ;;
+    3)
+        echo ""
+        echo "Mood Tracker:"
+        echo "   1. View mood history"
+        echo "   2. Log current mood"
+        read -p "   Choice: " mood_choice
+        if [ "$mood_choice" == "2" ]; then
+            read -p "   How do you feel? " mood
+            python3 vev-mood-tracker.py --log "$mood"
+        else
+            python3 vev-mood-tracker.py
+        fi
+        ;;
+    4)
+        echo ""
+        read -p "What do you want to do? " query
+        python3 vev-skill-suggest.py "$query"
+        ;;
+    5)
+        echo ""
+        python3 vev-conversation-summary.py
+        ;;
+    6)
+        echo ""
+        python3 vev-proactive-suggest.py
+        ;;
+    7)
+        echo ""
+        echo "📝 Running post-session routine..."
+        echo ""
+        echo "Step 1/3: Learning capture"
+        python3 vev-auto-learning.py
+        echo ""
+        echo "Step 2/3: Conversation summary"
+        python3 vev-conversation-summary.py
+        echo ""
+        echo "Step 3/3: Mood check"
+        read -p "How do you feel right now? " mood
+        python3 vev-mood-tracker.py --log "$mood"
+        echo ""
+        echo "✅ Post-session routine complete!"
+        ;;
+    8)
+        echo ""
+        echo "🔍 Running full analysis..."
+        echo ""
+        echo "=== Error Patterns ==="
+        python3 vev-error-patterns.py
+        echo ""
+        echo "=== Proactive Suggestions ==="
+        python3 vev-proactive-suggest.py
+        echo ""
+        echo "=== Skill Suggestions ==="
+        read -p "What are you working on? " work
+        python3 vev-skill-suggest.py "$work"
+        echo ""
+        echo "✅ Full analysis complete!"
+        ;;
+    0)
+        echo "Goodbye!"
+        exit 0
+        ;;
+    *)
+        echo "Invalid choice"
+        exit 1
+        ;;
+esac

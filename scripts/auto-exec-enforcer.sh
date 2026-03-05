@@ -43,6 +43,20 @@ echo "🔒 AUTO-EXEC ENFORCER - MANDATORY PROCEDURES"
 echo "═══════════════════════════════════════════════════════════════════════"
 echo ""
 
+# Run compliance check (NEW - verifies alignment with PRINCIPLES.md)
+echo "📋 Checking compliance with PRINCIPLES.md..."
+if [ -f "$SCRIPT_DIR/compliance-checker.sh" ]; then
+    bash "$SCRIPT_DIR/compliance-checker.sh" || true
+    echo ""
+fi
+
+# Run VEV PRE-FLIGHT (NEW - automatic context loading)
+echo "🧠 Running Vev Pre-Flight System..."
+if [ -f "$SCRIPT_DIR/vev-preflight.py" ]; then
+    python3 "$SCRIPT_DIR/vev-preflight.py"
+    echo ""
+fi
+
 # Run pre-flight
 run_with_verification "mandatory-preflight.sh"
 

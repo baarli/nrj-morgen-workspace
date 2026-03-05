@@ -1,0 +1,38 @@
+============================================================
+🧠 VEV PRE-FLIGHT CONTEXT (Auto-generated)
+============================================================
+
+📅 Timestamp: 2026-03-05T14:26:45.507151
+🎭 Current Mood: ## Humør nå
+
+⚡ ACTIVE SYSTEMS:
+   • telegram_bot
+   • mission_control_v2
+
+📚 AVAILABLE SKILLS (check these if relevant):
+   • code-quality-checker: Systematisk kodekvalitetsjekk for alle scripts i workspace. ...
+   • code: ---...
+   • gmail: ---...
+   • self-improving-agent: ---...
+   • autonomous-mission-control: This skill enables autonomous, continuous improvement of the...
+   • frontend-design: ---...
+   • mission-control: Manage and deploy Mission Control dashboard for BaarliClaw A...
+   • baarliclaw-toolkit: ---...
+   • telegram: ---...
+   • javascript-syntax-validator: ---...
+
+📝 RECENT MEMORIES:
+   [2026-03-05]
+      ## 🎯 Hva ble gjort i dag
+      ### 1. Telegram Bot Oppsett (04:45-05:12)
+      - **Bot:** @Vev_kompis_bot (navn: Vev)
+   [2026-03-04]
+      ## Hva vi gjorde i dag
+      - [x] Gjennomgang av Mission Control kode
+      - [x] Fikset doSearch funksjonen (var ødelagt)
+
+============================================================
+💡 REMEMBER: Check skills/ before building from scratch
+   Check MEMORY.md for decisions and preferences
+   Check AGENTS.md for system overview
+============================================================
