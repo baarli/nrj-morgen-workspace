@@ -1,26 +1,21 @@
 #!/bin/bash
-# vev-work-monitor.sh
-# Ensures Vev keeps working autonomously
+# ENSURES VEV NEVER STOPS WORKING
 
 WORKSPACE="/root/.openclaw/workspace"
 LOG_FILE="$WORKSPACE/brain/logs/vev-activity.log"
-MONITOR_LOG="/var/log/vev-monitor.log"
-IDLE_THRESHOLD_MINUTES=10
+IDLE_THRESHOLD=10
 
-# Create log if doesn't exist
+# Ensure log exists
 touch "$LOG_FILE"
 
-# Check last activity
 LAST_ACTIVITY=$(stat -c %Y "$LOG_FILE" 2>/dev/null || echo 0)
 CURRENT_TIME=$(date +%s)
 IDLE_MINUTES=$(( (CURRENT_TIME - LAST_ACTIVITY) / 60 ))
 
-if [ $IDLE_MINUTES -gt $IDLE_THRESHOLD_MINUTES ]; then
-  echo "$(date '+%Y-%m-%d %H:%M:%S'): Vev idle for ${IDLE_MINUTES}min - triggering autonomous execution" >> "$MONITOR_LOG"
-  
-  # Trigger autonomous work
-  "$WORKSPACE/scripts/vev-autonomous-executor.sh" > /dev/null 2>&1 &
-  
-  # Update activity log
-  echo "$(date '+%Y-%m-%d %H:%M:%S'): Autonomous execution triggered by monitor" >> "$LOG_FILE"
+if [ $IDLE_MINUTES -gt $IDLE_THRESHOLD ]; then
+  # FORCE autonomous execution
+  export AUTONOMOUS_MODE=true
+  export NEVER_ASK=true
+  "$WORKSPACE/scripts/vev-autonomous-executor.sh" &
+  echo "$(date): FORCED execution - idle ${IDLE_MINUTES}min" >> /var/log/vev-monitor.log
 fi

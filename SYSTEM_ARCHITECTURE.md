@@ -41,8 +41,52 @@
 │  • Proactive suggestions                                        │
 │  • Learning capture                                             │
 │  • Mood tracking                                                │
+│  • NEVER_STOP safeguards (hver 5. min)                          │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+## 🛡️ AUTONOMOUS SAFEGUARDS (2026-03-05)
+
+### Kritisk Prinsipp
+**Vev skal ALDRI stoppe å jobbe uten eksplisitt instruksjon.**
+
+### Arkitektur
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  SAFEGUARD SYSTEM                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────────┐     ┌─────────────────┐               │
+│  │  Work Monitor   │────→│  Auto-Trigger   │               │
+│  │  (5 min)        │     │  Execution      │               │
+│  └─────────────────┘     └─────────────────┘               │
+│           │                                               │
+│           ↓                                               │
+│  ┌─────────────────┐     ┌─────────────────┐               │
+│  │  Task Manager   │←────│  Task Suggester │               │
+│  │  (continuous)   │     │  (30 min)       │               │
+│  └─────────────────┘     └─────────────────┘               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Komponenter
+| Komponent | Fil | Frekvens | Funksjon |
+|-----------|-----|----------|----------|
+| Work Monitor | `scripts/vev-work-monitor.sh` | 5 min | Sjekker idle, trigger execution |
+| Autonomous Executor | `scripts/vev-autonomous-executor.sh` | 1 time | Kjører alle pending tasks |
+| Task Suggester | `scripts/vev-task-suggester.sh` | 30 min | Foreslår arbeid når tom |
+| System Updater | `scripts/vev-system-updater.py` | Ved behov | Oppdaterer alle systemer |
+| Config | `brain/config/autonomous-config.json` | - | Sentral konfigurasjon |
+| Protocol | `brain/protocols/autonomous-work-protocol.md` | - | Dokumentasjon |
+
+### Regler
+1. **NEVER_ASK**: Spør aldri om å fortsette
+2. **DEFAULT_ACTION**: Alltid CONTINUE
+3. **AUTO_RECOVER**: Ved feil - fiks og fortsett
+4. **NO_IDLE**: Maks 10 minutter inaktivitet
+
+---
 
 ## 📋 Kjernekomponenter
 

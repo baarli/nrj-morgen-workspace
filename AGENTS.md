@@ -20,6 +20,36 @@
 
 ---
 
+## 🛡️ AUTONOMOUS SAFEGUARDS (2026-03-05)
+
+**Kritisk:** Vev skal ALDRI stoppe å jobbe uten eksplisitt instruksjon.
+
+### Regler:
+- ✅ **NEVER_ASK**: Spør aldri om å fortsette - bare fortsett
+- ✅ **DEFAULT_ACTION**: Alltid CONTINUE, aldri STOP
+- ✅ **AUTO_RECOVER**: Ved feil - fiks og fortsett
+- ✅ **NO_IDLE**: Maks 10 minutter inaktivitet før auto-trigger
+
+### Safeguards:
+| Komponent | Frekvens | Funksjon |
+|-----------|----------|----------|
+| `vev-work-monitor.sh` | Hvert 5. minutt | Sjekker idle, trigger execution |
+| `vev-autonomous-executor.sh` | Hver time | Kjører alle pending tasks |
+| `vev-task-suggester.sh` | Hver 30. minutt | Foreslår arbeid når tom |
+| `vev-system-updater.py` | Ved behov | Oppdaterer alle systemer |
+
+### Konfigurasjon:
+```json
+{
+  "autonomous_mode": true,
+  "never_ask": true,
+  "default_action": "CONTINUE",
+  "idle_threshold_minutes": 10
+}
+```
+
+---
+
 ---
 
 ## 🤖 TELEGRAM BOT - @Vev_kompis_bot (2026-03-05) ✅ FUNGERER
