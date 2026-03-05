@@ -20,6 +20,24 @@
 
 ---
 
+## 🔑 API FALLBACK SYSTEM (2026-03-05)
+
+**Primary:** kimi-coding/k2p5  
+**Fallback:** OpenRouter (GPT-4o, Claude-3, Mistral)  
+**Config:** `brain/config/openrouter-fallback.md`
+
+### API Keys:
+- **OpenRouter:** `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`
+- **Set via:** `openclaw config set env.OPENROUTER_API_KEY "..."`
+
+### Fallback Chain:
+1. kimi-coding/k2p5 (primary)
+2. openrouter/gpt-4o (if rate limited)
+3. openrouter/claude-3-opus (if gpt-4o fails)
+4. openrouter/mistral-large (final fallback)
+
+---
+
 ## 🛡️ AUTONOMOUS SAFEGUARDS (2026-03-05)
 
 **Kritisk:** Vev skal ALDRI stoppe å jobbe uten eksplisitt instruksjon.

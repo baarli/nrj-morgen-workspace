@@ -43,7 +43,37 @@
 │  • Mood tracking                                                │
 │  • NEVER_STOP safeguards (hver 5. min)                          │
 └─────────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────────┐
+│                     API FALLBACK LAYER                          │
+│  • Primary: kimi-coding/k2p5                                    │
+│  • Fallback: OpenRouter (GPT-4o, Claude-3, Mistral)             │
+│  • Auto-switch on rate limits                                   │
+│  • Config: brain/config/openrouter-fallback.md                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+## 🔑 API FALLBACK SYSTEM (2026-03-05)
+
+### Configuration
+- **Primary Model:** kimi-coding/k2p5
+- **Fallback Provider:** OpenRouter
+- **API Key:** `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`
+- **Set via:** `openclaw config set env.OPENROUTER_API_KEY "..."`
+
+### Fallback Chain
+1. **kimi-coding/k2p5** - Primary, all operations
+2. **openrouter/gpt-4o** - If kimi rate limited
+3. **openrouter/claude-3-opus** - If gpt-4o fails
+4. **openrouter/mistral-large** - Final fallback
+
+### Benefits
+- ✅ No interruption on rate limits
+- ✅ Multiple provider redundancy
+- ✅ Cost optimization
+- ✅ Automatic switching
+
+---
 
 ## 🛡️ AUTONOMOUS SAFEGUARDS (2026-03-05)
 
