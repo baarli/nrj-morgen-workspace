@@ -24,11 +24,18 @@
 
 **Primary:** kimi-coding/k2p5  
 **Fallback:** OpenRouter (GPT-4o, Claude-3, Mistral)  
+**Auto-Switch:** FreeRide system  
 **Config:** `brain/config/openrouter-fallback.md`
 
 ### API Keys:
 - **OpenRouter:** `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`
 - **Set via:** `openclaw config set env.OPENROUTER_API_KEY "..."`
+
+### FreeRide Auto:
+- **Script:** `scripts/vev-freeride-auto.sh`
+- **Function:** Automatic fallback on rate limits
+- **Status:** ✅ ACTIVE
+- **Log:** `brain/logs/freeride-auto.log`
 
 ### Fallback Chain:
 1. kimi-coding/k2p5 (primary)

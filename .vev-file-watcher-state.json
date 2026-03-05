@@ -2,6 +2,7 @@
   "/root/.openclaw/workspace/scripts/vev-auto-detect-learning.py": "7acb9e996203dd8e296ade8bd64e0c37",
   "/root/.openclaw/workspace/scripts/notification_service.py": "136146a4ff00e977be8e6620be882d8d",
   "/root/.openclaw/workspace/scripts/data_analyzer.py": "d7fc7867175020568e7e5918bb7f2a42",
+  "/root/.openclaw/workspace/scripts/vev-freeride-fallback.py": "8b00cdcfc22d43629d2dfb9b494e3390",
   "/root/.openclaw/workspace/scripts/fetch_nrj_dashboard_stats_v2.py": "29807609965ae22a75d4d525916a0ca6",
   "/root/.openclaw/workspace/scripts/daily-podcast-email.py": "99ecd39565ecc930a60f6e9cf213d3a5",
   "/root/.openclaw/workspace/scripts/vev-telegram-auto-responder.py": "1130b0c6c6ce39642932990385b31998",
@@ -275,7 +276,7 @@
   "/root/.openclaw/workspace/skills/api-gateway/SKILL.md": "7d98c976ecceac437091d49252e9f3b3",
   "/root/.openclaw/workspace/skills/nrj-dashboard-system/SKILL.md": "7c9f4f50a82a850c77400157f2ac77e6",
   "/root/.openclaw/workspace/AGENTS.md": "7929fa400622b54e33a04cc5957fbacb",
-  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "7cb25ccfd4eb0746093f5face639ed1e",
+  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "2ccb500ac6def99e2d445f65c076a0e1",
   "/root/.openclaw/workspace/TOOLS.md": "01494885d76e15b8ab004127ddb33af4",
   "/root/.openclaw/workspace/MEMORY.md": "b3f34b9bb07772556cce9d992500290e"
 }
