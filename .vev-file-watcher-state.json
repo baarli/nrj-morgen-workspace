@@ -213,6 +213,7 @@
   "/root/.openclaw/workspace/scripts/apply-cron-fixes.sh": "64749412ee2b828ca3025f4ece9057e2",
   "/root/.openclaw/workspace/scripts/auto-exec-enforcer.sh": "e179de312343dadd362605fbd5adc112",
   "/root/.openclaw/workspace/scripts/vev-verify-reliability.sh": "72f067bb18b66377f0e6ec6271abd972",
+  "/root/.openclaw/workspace/scripts/vev-work-monitor.sh": "e70f753c7b676ed6d18840d088a868dc",
   "/root/.openclaw/workspace/scripts/vev-task-suggester.sh": "470f72a7d8dc58e5e7ea4fca4eda38b0",
   "/root/.openclaw/workspace/scripts/vev-master-activator.sh": "095aff5f399393172353e62af2a49255",
   "/root/.openclaw/workspace/scripts/continuous-autonomous-operation.sh": "fa552da6fff1a530b69fb8240370dce3",
