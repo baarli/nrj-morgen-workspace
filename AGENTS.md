@@ -1,10 +1,13 @@
 # AGENTS.md - System Oversikt
 
-**Arkitektur:** Se [ARKITEKTUR.md](/root/.openclaw/workspace/ARKITEKTUR.md) for dokument-hierarki  
+**Arkitektur:** Se [SYSTEM_ARCHITECTURE.md](/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md) for komplett system-oversikt  
 **Master Document:** [PRINCIPLES.md](/root/.openclaw/workspace/PRINCIPLES.md) - All activity must align with core principles.
 
 > **Hva er denne filen?** System-oversikt: Hva finnes, hvor finnes det, status.  
-> **Se også:** [MEMORY.md](MEMORY.md) for læring, [TOOLS.md](TOOLS.md) for verktøy-bruk.
+> **Se også:** [MEMORY.md](MEMORY.md) for læring, [TOOLS.md](TOOLS.md) for verktøy-bruk.  
+> **Komplett arkitektur:** [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)
+
+---
 
 ---
 
