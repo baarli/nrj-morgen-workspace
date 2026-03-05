@@ -90,14 +90,33 @@ vev-init() {
 - ✅ Rydder og vedlikeholder
 - ✅ Oppdaterer todo-lister
 
-#### Telegram Auto-Responder (24/7)
+#### Telegram Auto-Responder v2.0 (24/7)
 ```bash
 # Systemd service: vev-telegram-responder.service
 ```
 
 **Hva det gjør:**
 - ✅ Lytter etter meldinger hvert 2. sekund
-- ✅ Svarer automatisk med tekst
+- ✅ **AI-baserte svar** med OpenClaw integrasjon
+- ✅ **Samtale-historikk** (siste 10 meldinger)
+- ✅ **Bruker-profiler** (lærer interesser og preferanser)
+- ✅ **Emosjonell stemme** (tilpasser tone etter kontekst)
+- ✅ Svarer med tekst OG stemme
+- ✅ Restartes automatisk ved feil
+
+**Kommandoer:**
+```bash
+# Sjekk status
+systemctl status vev-telegram-responder.service
+
+# Restart
+sudo systemctl restart vev-telegram-responder.service
+
+# Se logger
+sudo journalctl -u vev-telegram-responder.service -f
+```
+
+**Bruk:** Send melding til @Vev_kompis_bot på Telegram
 - ✅ Genererer og sender talemeldinger
 - ✅ Logger all aktivitet
 - ✅ Restartes automatisk ved feil
@@ -110,19 +129,30 @@ vev-init() {
 | **Mission Control** | GitHub Pages | ✅ Voice chat integrert |
 | **Web Chat** | Kimi/OpenClaw | ✅ Tilgjengelig |
 
-### 5. Voice System
+### 5. Voice System v2.0
 
 **Teknologi-stack:**
 - **TTS:** ElevenLabs ElevenFlash 2.5
 - **Stemme:** Sebastian (Norsk)
 - **Voice ID:** `4kCDY3HJwvO7Zp3con83`
 - **STT:** Web Speech API (Mission Control)
+- **Emosjoner:** Excited, Happy, Serious, Curious
 
 **Komponenter:**
 - `vev-telegram-voice.py` - Send talemeldinger
+- `vev-emotional-voice.py` - Emosjonell stemme-generator
 - `vev-voice.py` - Generer TTS
 - `voice-chat.js` - Mission Control UI
+- `voice-chat-v2.js` - Ny versjon med real-time
 - `supabase/functions/voice-chat/index.ts` - Backend
+
+**Emosjonelle Innstillinger:**
+| Emosjon | Stability | Similarity | Style |
+|---------|-----------|------------|-------|
+| Excited | 0.25 | 0.90 | 0.8 |
+| Happy | 0.35 | 0.85 | 0.6 |
+| Serious | 0.65 | 0.70 | 0.2 |
+| Curious | 0.45 | 0.75 | 0.4 |
 
 ### 6. Tilgjengelige Skills
 

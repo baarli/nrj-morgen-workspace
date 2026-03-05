@@ -23,7 +23,7 @@
 - ✅ Jeg (BaarliClaw) kan svare deg personlig
 - ✅ 24/7 tilgjengelighet
 - ✅ **🎙️ TALEMELDINGER** - Kan sende voice messages via `vev-telegram-voice`
-- ✅ **🤖 AUTO-RESPONDER** - Svarer automatisk i realtid på meldinger!
+- ✅ **🤖 AUTO-RESPONDER v2.0** - AI-baserte svar med samtale-historikk, bruker-profiler og emosjonell stemme!
 
 **Teknisk:**
 - Polling: `/root/.openclaw/workspace/scripts/telegram-poll.py`

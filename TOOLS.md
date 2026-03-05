@@ -754,24 +754,30 @@ curl -s -X POST "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h
 curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getUpdates"
 ```
 
-### 🎙️ Voice Chat / Talemeldinger (NY 2026-03-05)
-**Kommando:** `vev-telegram-voice`
-
-Send talemeldinger til Telegram med ElevenLabs TTS.
+### 🎙️ Voice Chat / Talemeldinger v2.0 (NY 2026-03-05)
+**Kommandoer:**
+- `vev-telegram-voice` - Send talemelding
+- `vev-emotional-voice` - Send med emosjonell tilpasning
 
 **Bruk:**
 ```bash
 # Send talemelding
 vev-telegram-voice "Hei, dette er Vev som snakker!"
 
+# Send med spesifikk emosjon
+vev-emotional-voice "Dette er fantastisk!" excited
+vev-emotional-voice "Dette er viktig..." serious
+
 # Test med standardmelding
 vev-telegram-voice --test
 ```
 
-### 🤖 Auto-Responder (NY 2026-03-05)
+**Emosjoner:** excited, happy, serious, curious
+
+### 🤖 Auto-Responder v2.0 (NY 2026-03-05)
 **Service:** `vev-telegram-responder.service`
 
-Kontinuerlig lytter og svarer på Telegram-meldinger automatisk.
+Kontinuerlig lytter og svarer på Telegram-meldinger med AI, historikk og emosjonell stemme.
 
 **Status:**
 ```bash
@@ -788,15 +794,26 @@ sudo journalctl -u vev-telegram-responder.service -f
 tail -f /root/.openclaw/workspace/brain/logs/telegram-auto-responder.log
 ```
 
-**Funksjonalitet:**
-- Sjekker nye meldinger hvert 2. sekund
-- Svarer automatisk med tekst OG stemme
-- Håndterer enkle samtaler
-- Logger all aktivitet
-- Restartes automatisk ved feil
+**Funksjonalitet v2.0:**
+- ✅ **AI-baserte svar** - OpenClaw integrasjon
+- ✅ **Samtale-historikk** - Husker siste 10 meldinger
+- ✅ **Bruker-profiler** - Lærer interesser og preferanser
+- ✅ **Emosjonell stemme** - Tilpasser tone automatisk
+- ✅ Sjekker nye meldinger hvert 2. sekund
+- ✅ Svarer med tekst OG stemme
+- ✅ Logger all aktivitet
+- ✅ Restartes automatisk ved feil
+
+**Test:**
+```bash
+# Kjør test suite
+vev-test-suite
+```
 
 **Teknisk:**
 - **Stemme:** Sebastian (Norsk)
+- **Modell:** ElevenFlash 2.5
+- **Emosjoner:** excited, happy, serious, curious
 - **Modell:** ElevenFlash 2.5
 - **API:** ElevenLabs
 - **API Key:** `0198de23418bce571b2a563958e510d23314d16c9e66fbe017423e9741418704`
