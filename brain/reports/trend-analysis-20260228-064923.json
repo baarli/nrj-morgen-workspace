@@ -1,0 +1,29 @@
+{
+  "period_days": 1,
+  "samples": 1,
+  "cpu": {
+    "average": 2.0,
+    "maximum": 2.0,
+    "minimum": 2.0,
+    "trend": "insufficient data",
+    "samples": 1
+  },
+  "memory": {
+    "average": 36.2,
+    "maximum": 36.2,
+    "minimum": 36.2,
+    "samples": 1
+  },
+  "disk": {
+    "average": 69.8,
+    "current": 69.8,
+    "samples": 1
+  },
+  "code_growth": {
+    "initial_lines": 87985,
+    "current_lines": 87985,
+    "growth": 0,
+    "growth_percent": 0.0
+  },
+  "generated_at": "2026-02-28T06:49:23.876893"
+}

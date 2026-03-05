@@ -1,0 +1,94 @@
+{
+  "run_id": "2026-02-24-1740",
+  "timestamp": "2026-02-24T17:40:00+08:00",
+  "system_health": {
+    "mission_control_dashboard": "operational",
+    "supabase_database": "authentication_required",
+    "nielsen_api": "connection_error",
+    "podtoppen_api": "operational",
+    "brave_search_api": "operational"
+  },
+  "data_freshness": {
+    "morning_routine": "no_log_found",
+    "nrj_dashboard": "no_log_found",
+    "nielsen_data": "week_7_2026",
+    "podtoppen_data": "unknown"
+  },
+  "code_analysis": {
+    "total_html_pages": 27,
+    "pwa_support": false,
+    "service_worker": false,
+    "dark_mode_coverage": "90%",
+    "realtime_pages": 0
+  },
+  "identified_improvements": [
+    {
+      "priority": "P1",
+      "id": "pwa-manifest",
+      "title": "PWA Manifest",
+      "description": "Legg til manifest.json for PWA-støtte",
+      "estimated_time": "1 time",
+      "impact": "high",
+      "status": "pending"
+    },
+    {
+      "priority": "P2", 
+      "id": "service-worker",
+      "title": "Service Worker",
+      "description": "Implementer service worker for offline-støtte",
+      "estimated_time": "2 timer",
+      "impact": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": "P3",
+      "id": "realtime-updates",
+      "title": "Real-time Updates",
+      "description": "Utvid real-time funksjonalitet til flere sider",
+      "estimated_time": "4 timer",
+      "impact": "medium",
+      "status": "pending"
+    },
+    {
+      "priority": "P2",
+      "id": "analytics-dashboard",
+      "title": "Analytics Dashboard Enhancement",
+      "description": "Forbedre analytics-sider med mer data",
+      "estimated_time": "2 timer",
+      "impact": "medium",
+      "status": "pending"
+    }
+  ],
+  "generated_tasks": [
+    {
+      "id": "task-001",
+      "title": "Implementere PWA-støtte",
+      "description": "Opprette manifest.json og service worker for Mission Control",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "status": "ready_for_implementation",
+      "created_at": "2026-02-24T17:40:00+08:00"
+    },
+    {
+      "id": "task-002",
+      "title": "Forbedre data logging",
+      "description": "Legge til logging for Morning Routine og NRJ Dashboard",
+      "priority": "P2",
+      "estimated_hours": 1,
+      "status": "ready_for_implementation",
+      "created_at": "2026-02-24T17:40:00+08:00"
+    },
+    {
+      "id": "task-003",
+      "title": "Utvide real-time funksjonalitet",
+      "description": "Legge til WebSocket/Server-Sent Events på flere sider",
+      "priority": "P3",
+      "estimated_hours": 4,
+      "status": "backlog",
+      "created_at": "2026-02-24T17:40:00+08:00"
+    }
+  ],
+  "next_maintenance_window": "2026-02-25T02:00:00+01:00",
+  "recommended_action": "Implementere PWA-støtte (task-001) i neste vedlikeholdsvindu",
+  "notes": "Nielsen API har tilkoblingsproblemer - må overvåkes. Supabase krever autentisering."
+}

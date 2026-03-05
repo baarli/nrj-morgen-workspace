@@ -1,0 +1,32 @@
+[
+  {
+    "platform": "tiktok",
+    "hook": "Du vil ikke tro hva Baarli sa i dag...",
+    "cta": "F\u00f8lg for mer!",
+    "hashtags": [
+      "#NRJMorgen",
+      "#Podcast",
+      "#Norge"
+    ]
+  },
+  {
+    "platform": "instagram",
+    "hook": "Ukens reality-drama forklart p\u00e5 60 sekunder",
+    "cta": "H\u00f8r hele episoden - link i bio!",
+    "hashtags": [
+      "#NRJMorgen",
+      "#RealityTV",
+      "#NorskPodcast"
+    ]
+  },
+  {
+    "platform": "tiktok",
+    "hook": "Benjamin sin reaksjon da han h\u00f8rte nyheten \ud83d\ude02",
+    "cta": "H\u00f8r mer i podcasten!",
+    "hashtags": [
+      "#NRJMorgen",
+      "#Humor",
+      "#PodcastNorge"
+    ]
+  }
+]

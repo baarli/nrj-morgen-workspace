@@ -1,0 +1,3 @@
+[2026-03-05 03:51:21] 🔔 Wake event received: test_wake
+[2026-03-05 03:51:21] ❓ Unknown event type: test_wake
+[2026-03-05 03:51:21] ✅ Agent is now awake and processing

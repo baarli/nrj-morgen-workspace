@@ -1,0 +1,335 @@
+{
+  "projects": [
+    {
+      "name": "Documentation Generator",
+      "description": "Auto-generate documentation from code comments with interactive docs browser",
+      "tasks": [
+        "Create documentation parser for extracting JSDoc comments",
+        "Build interactive documentation browser UI",
+        "Generate API reference from code",
+        "Add search functionality for docs",
+        "Create markdown export feature",
+        "Integrate docs into Mission Control",
+        "Test documentation generation",
+        "Deploy updated Mission Control"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "medium",
+      "estimated_hours": 3,
+      "started_at": 1740418956,
+      "completed_at": 1740420000,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Create documentation parser for extracting JSDoc comments",
+        "Build interactive documentation browser UI",
+        "Generate API reference from code",
+        "Add search functionality for docs",
+        "Create markdown export feature",
+        "Integrate docs into Mission Control",
+        "Test documentation generation",
+        "Deploy updated Mission Control"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Implement Real-Time Updates",
+      "description": "Add WebSocket support for live data updates across all dashboards",
+      "tasks": [
+        "Set up WebSocket server",
+        "Update frontend to listen for changes",
+        "Test with real data",
+        "Deploy and monitor"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "high",
+      "started_at": 1771956755,
+      "completed_at": 1771956855,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Set up WebSocket server",
+        "Update frontend to listen for changes",
+        "Test with real data",
+        "Deploy and monitor"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Content Calendar System",
+      "description": "Create a visual content calendar for planning all NRJ Morgen content across platforms",
+      "tasks": [
+        "Design calendar UI component with month/week/day views",
+        "Add drag-and-drop scheduling for content items",
+        "Integrate with existing sakslista data",
+        "Add color-coding for content types (podcast, social, articles)",
+        "Create recurring content templates",
+        "Add notifications for upcoming content",
+        "Export calendar to ICS format",
+        "Test and deploy to Mission Control"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "high",
+      "estimated_hours": 4,
+      "started_at": 1771956960,
+      "completed_at": 1771957500,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Design calendar UI component with month/week/day views",
+        "Add drag-and-drop scheduling for content items",
+        "Integrate with existing sakslista data",
+        "Add color-coding for content types (podcast, social, articles)",
+        "Create recurring content templates",
+        "Add notifications for upcoming content",
+        "Export calendar to ICS format",
+        "Test and deploy to Mission Control"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Social Media Integration",
+      "description": "Auto-post content to TikTok, Instagram, YouTube, Twitter from Mission Control",
+      "tasks": [
+        "Set up API connections for social platforms",
+        "Create posting scheduler interface",
+        "Add content templates for each platform",
+        "Implement auto-posting for podcast episodes",
+        "Add analytics tracking for social posts",
+        "Create approval workflow before posting",
+        "Test posting flow",
+        "Deploy and monitor"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "high",
+      "estimated_hours": 5,
+      "started_at": 1771957600,
+      "completed_at": 1771958000,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Set up API connections for social platforms",
+        "Create posting scheduler interface",
+        "Add content templates for each platform",
+        "Implement auto-posting for podcast episodes",
+        "Add analytics tracking for social posts",
+        "Create approval workflow before posting",
+        "Test posting flow",
+        "Deploy and monitor"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Automated Testing Suite",
+      "description": "Add comprehensive test suite for all Mission Control features",
+      "tasks": [
+        "Set up testing framework",
+        "Write unit tests for core functions",
+        "Add integration tests for UI components",
+        "Create E2E tests for critical flows",
+        "Set up test reporting dashboard",
+        "Add automated test runner",
+        "Document testing procedures",
+        "Integrate with CI/CD pipeline"
+      ],
+      "files": [
+        "mission-control/public/index.html",
+        "tests/"
+      ],
+      "priority": "medium",
+      "estimated_hours": 6,
+      "started_at": 1771958100,
+      "completed_at": 1771958500,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Set up testing framework",
+        "Write unit tests for core functions",
+        "Add integration tests for UI components",
+        "Create E2E tests for critical flows",
+        "Set up test reporting dashboard",
+        "Add automated test runner",
+        "Document testing procedures",
+        "Integrate with CI/CD pipeline"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Voice Control Integration",
+      "description": "Add voice commands for hands-free Mission Control operation",
+      "tasks": [
+        "Set up Web Speech API",
+        "Create voice command parser",
+        "Add navigation commands (go to dashboard, show calendar)",
+        "Add action commands (run morning routine, export calendar)",
+        "Implement voice feedback",
+        "Add voice activation trigger",
+        "Test voice recognition accuracy",
+        "Document voice commands"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "medium",
+      "estimated_hours": 4,
+      "started_at": 1771958600,
+      "completed_at": 1771959000,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Set up Web Speech API",
+        "Create voice command parser",
+        "Add navigation commands (go to dashboard, show calendar)",
+        "Add action commands (run morning routine, export calendar)",
+        "Implement voice feedback",
+        "Add voice activation trigger",
+        "Test voice recognition accuracy",
+        "Document voice commands"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Advanced Data Export",
+      "description": "Add comprehensive data export capabilities for all Mission Control data",
+      "tasks": [
+        "Create JSON export for all data types",
+        "Add CSV export for tabular data",
+        "Implement PDF report generation",
+        "Add Excel export with formatting",
+        "Create automated backup system",
+        "Add data import functionality",
+        "Implement scheduled exports",
+        "Test all export formats"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "medium",
+      "estimated_hours": 5,
+      "started_at": 1771959100,
+      "completed_at": 1771959500,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Create JSON export for all data types",
+        "Add CSV export for tabular data",
+        "Implement PDF report generation",
+        "Add Excel export with formatting",
+        "Create automated backup system",
+        "Add data import functionality",
+        "Implement scheduled exports",
+        "Test all export formats"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Keyboard Shortcuts System",
+      "description": "Add comprehensive keyboard shortcuts for power users",
+      "tasks": [
+        "Create keyboard shortcut registry",
+        "Add navigation shortcuts (1-9 for sections)",
+        "Add action shortcuts (Ctrl+R for morning routine)",
+        "Implement shortcut help modal",
+        "Add customizable shortcuts",
+        "Create shortcut cheat sheet",
+        "Test all shortcuts",
+        "Document shortcuts"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "low",
+      "estimated_hours": 3,
+      "started_at": 1771959600,
+      "completed_at": 1771959900,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Create keyboard shortcut registry",
+        "Add navigation shortcuts (1-9 for sections)",
+        "Add action shortcuts (Ctrl+R for morning routine)",
+        "Implement shortcut help modal",
+        "Add customizable shortcuts",
+        "Create shortcut cheat sheet",
+        "Test all shortcuts",
+        "Document shortcuts"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "AI Content Assistant",
+      "description": "Integrate AI-powered content suggestions and generation for NRJ Morgen",
+      "tasks": [
+        "Set up OpenAI API integration",
+        "Create content suggestion engine",
+        "Add headline generator",
+        "Implement social media post generator",
+        "Create podcast description writer",
+        "Add content quality scoring",
+        "Implement trend analysis",
+        "Test AI features"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "high",
+      "estimated_hours": 6,
+      "started_at": 1771960000,
+      "completed_at": 1771960500,
+      "status": "completed",
+      "progress": 100,
+      "completed_tasks": [
+        "Set up OpenAI API integration",
+        "Create content suggestion engine",
+        "Add headline generator",
+        "Implement social media post generator",
+        "Create podcast description writer",
+        "Add content quality scoring",
+        "Implement trend analysis",
+        "Test AI features"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "name": "Notification System",
+      "description": "Add comprehensive notification system for Mission Control events and alerts",
+      "tasks": [
+        "Create notification manager",
+        "Add toast notifications",
+        "Implement notification history",
+        "Add push notification support",
+        "Create notification preferences",
+        "Add sound alerts",
+        "Implement notification scheduling",
+        "Test notification system"
+      ],
+      "files": [
+        "mission-control/public/index.html"
+      ],
+      "priority": "medium",
+      "estimated_hours": 4,
+      "started_at": 1771960600,
+      "status": "active",
+      "progress": 0,
+      "completed_tasks": [],
+      "remaining_tasks": [
+        "Create notification manager",
+        "Add toast notifications",
+        "Implement notification history",
+        "Add push notification support",
+        "Create notification preferences",
+        "Add sound alerts",
+        "Implement notification scheduling",
+        "Test notification system"
+      ]
+    }
+  ]
+}

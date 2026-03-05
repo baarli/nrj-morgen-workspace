@@ -1,0 +1,17 @@
+   1102 exec
+    314 read
+    234 write
+    187 edit
+    122 kimi_search
+     95 cron
+     90 process
+     39 web_search
+     39 subagents
+     39 kimi_fetch
+     38 sessions_spawn
+     11 memory_search
+      8 web_fetch
+      7 sessions_history
+      3 kimi_upload_file
+      2 browser
+      1 agents_list

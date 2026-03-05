@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "calendar": {
+      "version": "1.0.0",
+      "installedAt": 1771624801708
+    },
+    "slack": {
+      "version": "1.0.0",
+      "installedAt": 1771624806090
+    }
+  }
+}

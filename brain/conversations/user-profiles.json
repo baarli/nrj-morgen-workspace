@@ -1,0 +1,40 @@
+{
+  "users": {
+    "6426967326": {
+      "name": "N B",
+      "first_seen": "2026-03-05",
+      "preferences": {
+        "communication_style": "casual",
+        "response_format": "both_voice_and_text",
+        "topics_of_interest": [
+          "radio",
+          "podcast",
+          "technology"
+        ]
+      },
+      "conversation_patterns": {
+        "greeting_style": "informal",
+        "question_frequency": "high",
+        "preferred_tone": "friendly"
+      },
+      "memory": {
+        "last_topic": null,
+        "favorite_features": [],
+        "dislikes": [],
+        "common_phrases": [
+          "Bruk det som profilbilde her ogs\u00e5 da",
+          "Test test",
+          "status",
+          "Hva er status p\u00e5 prosjektene du holder p\u00e5 med",
+          "Hva er status p\u00e5 prosjektene du holder p\u00e5 med"
+        ]
+      },
+      "stats": {
+        "total_messages": 6,
+        "voice_messages_sent": 6,
+        "last_interaction": "2026-03-06T01:13:01.681484"
+      }
+    }
+  },
+  "last_updated": "2026-03-06T01:13:01.681495"
+}

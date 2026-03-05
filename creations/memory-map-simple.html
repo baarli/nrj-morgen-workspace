@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Map - /root/.openclaw/workspace/memory/</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #00d4ff;
+            font-size: 1.8em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0,212,255,0.2);
+        }
+        .stat-number { font-size: 2em; color: #00d4ff; font-weight: bold; }
+        .stat-label { color: #888; font-size: 0.85em; }
+        
+        /* Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Sections */
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section h2 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* File tree */
+        .folder {
+            margin: 5px 0;
+        }
+        .folder-name {
+            color: #ffd700;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 10px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .file-list {
+            margin-left: 20px;
+            margin-top: 5px;
+            padding-left: 15px;
+            border-left: 2px solid rgba(255,255,255,0.1);
+        }
+        .file-item {
+            padding: 3px 8px;
+            margin: 2px 0;
+            border-radius: 4px;
+            font-size: 0.85em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.05); }
+        .file-name { color: #aaa; }
+        .file-size { color: #666; font-size: 0.8em; }
+        
+        /* Central files */
+        .central-file {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: rgba(0,212,255,0.1);
+            border-radius: 8px;
+            border-left: 3px solid #00d4ff;
+        }
+        .centrality-score {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(#00d4ff var(--score), rgba(255,255,255,0.1) var(--score));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            position: relative;
+        }
+        .centrality-score::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #1a1a2e;
+            border-radius: 50%;
+        }
+        .centrality-score span { position: relative; z-index: 1; }
+        .central-info { flex: 1; }
+        .central-name { color: #fff; font-weight: 500; }
+        .central-refs { color: #888; font-size: 0.8em; }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #00d4ff, #ff6b6b);
+        }
+        .timeline-item {
+            position: relative;
+            padding: 10px 0;
+            margin-bottom: 5px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00d4ff;
+            border: 2px solid #1a1a2e;
+        }
+        .timeline-date {
+            color: #00d4ff;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .timeline-files {
+            color: #aaa;
+            font-size: 0.85em;
+            margin-top: 3px;
+        }
+        
+        /* Legend */
+        .legend {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #888;
+        }
+        .legend span { margin: 0 15px; }
+        .legend-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        /* Connections visualization */
+        .connections {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+        }
+        .connection-line {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85em;
+        }
+        .connection-from {
+            color: #00d4ff;
+            background: rgba(0,212,255,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .connection-arrow {
+            color: #666;
+            margin: 0 10px;
+        }
+        .connection-to {
+            color: #ffd700;
+            background: rgba(255,215,0,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Memory Map</h1>
+        <p class="subtitle">/root/.openclaw/workspace/memory/ — 63 filer totalt</p>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">63</div>
+                <div class="stat-label">Totale filer</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Mapper</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Dagslogger</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">18</div>
+                <div class="stat-label">Mission Control</div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- File Structure -->
+            <div class="section">
+                <h2>📁 Mappestruktur</h2>
+                <div class="folder">
+                    <div class="folder-name">📂 memory/</div>
+                    <div class="file-list">
+                        <div class="file-item"><span class="file-name">2026-02-22.md</span><span class="file-size">257 B</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-24.md</span><span class="file-size">1.6 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-25.md</span><span class="file-size">1.4 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-26.md</span><span class="file-size">2.7 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-27.md</span><span class="file-size">6.4 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-28.md</span><span class="file-size">722 B</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-01.md</span><span class="file-size">2.6 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-02.md</span><span class="file-size">2.9 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-04.md</span><span class="file-size">1.6 KB</span></div>
+                        <div class="file-item"><span class="file-name">baarliclaw-status.md</span><span class="file-size">2.0 KB</span></div>
+                        <div class="file-item"><span class="file-name">baarliclaw-todo-list.md</span><span class="file-size">3.3 KB</span></div>
+                        <div class="file-item"><span class="file-name">mission-control-v2-documentation.md</span><span class="file-size">10.5 KB</span></div>
+                        <div class="file-item"><span class="file-name">mission-control-improvement-plan.md</span><span class="file-size">14.0 KB</span></div>
+                        <div class="file-item"><span class="file-name">... +40 flere filer</span><span class="file-size"></span></div>
+                    </div>
+                </div>
+                <div class="folder" style="margin-top: 15px;">
+                    <div class="folder-name">📂 self-dev/</div>
+                    <div class="file-list">
+                        <div class="file-item"><span class="file-name">2026-02-25.md</span><span class="file-size">3.3 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-26.md</span><span class="file-size">2.5 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-27.md</span><span class="file-size">3.8 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-28.md</span><span class="file-size">2.6 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-02-28-evening-reflection.md</span><span class="file-size">4.1 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-01.md</span><span class="file-size">1.2 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-01-evening-reflection.md</span><span class="file-size">3.8 KB</span></div>
+                        <div class="file-item"><span class="file-name">2026-03-02.md</span><span class="file-size">1.8 KB</span></div>
+                    </div>
+                </div>
+                <div class="folder" style="margin-top: 15px;">
+                    <div class="folder-name">📂 self-reflection/</div>
+                    <div class="file-list">
+                        <div class="file-item"><span class="file-name">2026-03-05.md</span><span class="file-size">457 B</span></div>
+                    </div>
+                </div>
+                <div class="folder" style="margin-top: 15px;">
+                    <div class="folder-name">📂 archive/</div>
+                    <div class="file-list">
+                        <div class="file-item"><span class="file-name">archive_202603.tar.gz</span><span class="file-size">45 B</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Central Files -->
+            <div class="section">
+                <h2>🔗 Mest Sentrale Filer</h2>
+                <p style="color: #888; font-size: 0.85em; margin-bottom: 15px;">Filer som linkes til mest av andre filer</p>
+                
+                <div class="central-file">
+                    <div class="centrality-score" style="--score: 100%;"><span>9</span></div>
+                    <div class="central-info">
+                        <div class="central-name">mission-control-v2-documentation.md</div>
+                        <div class="central-refs">Referert av 9 andre filer</div>
+                    </div>
+                </div>
+                
+                <div class="central-file">
+                    <div class="centrality-score" style="--score: 78%;"><span>7</span></div>
+                    <div class="central-info">
+                        <div class="central-name">mission-control-improvement-plan.md</div>
+                        <div class="central-refs">Referert av 7 andre filer</div>
+                    </div>
+                </div>
+                
+                <div class="central-file">
+                    <div class="centrality-score" style="--score: 56%;"><span>5</span></div>
+                    <div class="central-info">
+                        <div class="central-name">2026-02-24.md</div>
+                        <div class="central-refs">Referert av 5 andre filer</div>
+                    </div>
+                </div>
+                
+                <div class="central-file">
+                    <div class="centrality-score" style="--score: 44%;"><span>4</span></div>
+                    <div class="central-info">
+                        <div class="central-name">system-sync-complete.md</div>
+                        <div class="central-refs">Referert av 4 andre filer</div>
+                    </div>
+                </div>
+                
+                <div class="central-file">
+                    <div class="centrality-score" style="--score: 33%;"><span>3</span></div>
+                    <div class="central-info">
+                        <div class="central-name">baarliclaw-todo-list.md</div>
+                        <div class="central-refs">Referert av 3 andre filer</div>
+                    </div>
+                </div>
+                
+                <div class="connections">
+                    <h3 style="color: #888; font-size: 0.9em; margin-bottom: 10px;">Topp Koblinger</h3>
+                    <div class="connection-line">
+                        <span class="connection-from">2026-02-27.md</span>
+                        <span class="connection-arrow">→</span>
+                        <span class="connection-to">mission-control-v2-doc</span>
+                    </div>
+                    <div class="connection-line">
+                        <span class="connection-from">system-sync-complete</span>
+                        <span class="connection-arrow">→</span>
+                        <span class="connection-to">MEMORY.md</span>
+                    </div>
+                    <div class="connection-line">
+                        <span class="connection-from">self-dev/2026-02-27</span>
+                        <span class="connection-arrow">→</span>
+                        <span class="connection-to">AGENTS.md</span>
+                    </div>
+                    <div class="connection-line">
+                        <span class="connection-from">2026-02-24-autonomous</span>
+                        <span class="connection-arrow">→</span>
+                        <span class="connection-to">mission-control-v2-doc</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timeline -->
+        <div class="section" style="margin-top: 30px;">
+            <h2>📅 Tidslinje over Filopprettelse</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">22. februar 2026</div>
+                    <div class="timeline-files">2026-02-22.md — Første daglige logg</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">24. februar 2026</div>
+                    <div class="timeline-files">8 filer — Autonomous Mission Control lansert<br>
+                    2026-02-24.md, autonomous-report, consolidation, project-completion, autonomous-mission-control, autonomous-log</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">25. februar 2026</div>
+                    <div class="timeline-files">6 filer — Project marathon dag<br>
+                    2026-02-25.md, project-session, project-update, content-calendar, project-marathon, autonomous-mission-control</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">26. februar 2026</div>
+                    <div class="timeline-files">2026-02-26.md — Utviklingslogg</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">27. februar 2026</div>
+                    <div class="timeline-files">2026-02-27.md — Stor oppdatering (6.4 KB)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">28. februar 2026</div>
+                    <div class="timeline-files">2026-02-28.md — Kort logg</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">1. mars 2026</div>
+                    <div class="timeline-files">2026-03-01.md — Mars starter</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2. mars 2026</div>
+                    <div class="timeline-files">2026-03-02.md — Oppdatering</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">4. mars 2026</div>
+                    <div class="timeline-files">12 filer — Mission Control v2.0 dokumentasjon<br>
+                    documentation, technical-spec, quick-reference, v2-documentation, improvement-plan, visual-roadmap, analysis-summary, quick-wins-log, fase2-plan, fase3-plan, fase4-plan, fase5-plan</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">5. mars 2026</div>
+                    <div class="timeline-files">11 filer — System sync & continuous operation<br>
+                    bug-fix-plan, test-checklist, todo-list, kimi-code-prompts, 2way-communication, baarliclaw-todo-list, baarliclaw-status, system-sync-analysis, system-sync-complete, continuous-operation-setup, continuous-operation-ready, continuous-operation-active, full-life-development, personal-goals, development-complete-phases-1-3-4, system-integration-complete, self-reflection/2026-03-05.md</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <span><span class="legend-dot" style="background: #00d4ff;"></span>Daglige logger</span>
+            <span><span class="legend-dot" style="background: #ffd700;"></span>Mission Control</span>
+            <span><span class="legend-dot" style="background: #ff6b6b;"></span>System-dokumentasjon</span>
+            <span><span class="legend-dot" style="background: #4ecdc4;"></span>Selv-utvikling</span>
+        </div>
+    </div>
+</body>
+</html>

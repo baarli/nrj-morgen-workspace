@@ -1,0 +1,36 @@
+# HTML Quality Rules
+
+## Structure Requirements
+- Must have DOCTYPE declaration
+- Must have html, head, and body tags
+- Proper nesting of elements
+
+## Head Section
+- Must have title tag
+- Should have meta charset (UTF-8)
+- Should have viewport meta tag
+- Should have meta description
+
+## Accessibility
+- Images must have alt attributes
+- Form inputs must have labels
+- Use semantic HTML elements (header, nav, main, etc.)
+- Proper heading hierarchy (h1 > h2 > h3)
+
+## Performance
+- Minimize inline CSS/JS
+- Use external resources efficiently
+- Keep file size reasonable
+
+## Code Style
+- Maximum line length: 150 characters
+- Consistent indentation (2 or 4 spaces)
+- Lowercase tags and attributes
+- Quote all attributes
+
+## Scoring
+- Missing DOCTYPE: -10 points
+- Missing title: -10 points
+- Missing viewport: -5 points
+- Missing alt attributes: -2 points each
+- File too long (>1000 lines): -10 points

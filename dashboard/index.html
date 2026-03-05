@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaarliClaw Agent Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stat:last-child {
+            border-bottom: none;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+        .status-ok {
+            color: #10b981;
+        }
+        .status-warning {
+            color: #f59e0b;
+        }
+        .cron-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cron-item:last-child {
+            border-bottom: none;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 BaarliClaw Agent Dashboard</h1>
+            <p>Self-Improving AI System Monitor</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>📊 Session Statistics</h2>
+                <div class="stat">
+                    <span>Total Sessions</span>
+                    <span class="stat-value">31</span>
+                </div>
+                <div class="stat">
+                    <span>Learning Logs</span>
+                    <span class="stat-value">2</span>
+                </div>
+                <div class="stat">
+                    <span>Skills Created</span>
+                    <span class="stat-value">5</span>
+                </div>
+                <div class="stat">
+                    <span>Scripts Available</span>
+                    <span class="stat-value">33</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💚 System Health</h2>
+                <div class="stat">
+                    <span>Auto-Exec Enforcer</span>
+                    <span class="status-ok">✅ OK</span>
+                </div>
+                <div class="stat">
+                    <span>Memory Validator</span>
+                    <span class="status-ok">✅ OK</span>
+                </div>
+                <div class="stat">
+                    <span>Session End Handler</span>
+                    <span class="status-ok">✅ OK</span>
+                </div>
+                <div class="stat">
+                    <span>Auto-Learning</span>
+                    <span class="status-ok">✅ ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⏰ Cron Jobs</h2>
+                <div class="cron-item">
+                    <strong>Daily Pre-Flight</strong><br>
+                    <small>Every 24 hours</small>
+                </div>
+                <div class="cron-item">
+                    <strong>Session End Capture</strong><br>
+                    <small>Every hour</small>
+                </div>
+                <div class="cron-item">
+                    <strong>NRJ Dashboard Update</strong><br>
+                    <small>Wednesdays 14:00</small>
+                </div>
+                <div class="cron-item">
+                    <strong>Morning Routine</strong><br>
+                    <small>Mon-Fri 06:00</small>
+                </div>
+                <div class="cron-item">
+                    <strong>Podcast Download</strong><br>
+                    <small>Daily 07:00</small>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎓 Skills</h2>
+                <div class="stat">
+                    <span>nrj-dashboard-system</span>
+                    <span class="status-ok">✅</span>
+                </div>
+                <div class="stat">
+                    <span>self-improvement</span>
+                    <span class="status-ok">✅</span>
+                </div>
+                <div class="stat">
+                    <span>system-manager</span>
+                    <span class="status-ok">✅</span>
+                </div>
+                <div class="stat">
+                    <span>calendar</span>
+                    <span class="status-ok">✅</span>
+                </div>
+                <div class="stat">
+                    <span>slack</span>
+                    <span class="status-ok">✅</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📖 Documentation</h2>
+                <div class="stat">
+                    <span>MEMORY.md</span>
+                    <span class="stat-value">392 lines</span>
+                </div>
+                <div class="stat">
+                    <span>TOOLS.md</span>
+                    <span class="stat-value">501 lines</span>
+                </div>
+                <div class="stat">
+                    <span>SOUL.md</span>
+                    <span class="stat-value">148 lines</span>
+                </div>
+                <div class="stat">
+                    <span>Dashboard Docs</span>
+                    <span class="stat-value">216 lines</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🚀 Automation Status</h2>
+                <div class="stat">
+                    <span>Pre-Flight System</span>
+                    <span class="status-ok">🟢</span>
+                </div>
+                <div class="stat">
+                    <span>Learning Capture</span>
+                    <span class="status-ok">🟢</span>
+                </div>
+                <div class="stat">
+                    <span>NRJ Updates</span>
+                    <span class="status-ok">🟢</span>
+                </div>
+                <div class="stat">
+                    <span>Sakslista Routine</span>
+                    <span class="status-ok">🟢</span>
+                </div>
+                <div class="stat">
+                    <span>Podcast Clips</span>
+                    <span class="status-ok">🟢</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Last updated: 2026-02-24 | System Status: OPERATIONAL</p>
+            <p>Auto-learning: ENABLED | Self-improvement: ACTIVE</p>
+        </div>
+    </div>
+</body>
+</html>

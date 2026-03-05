@@ -1,0 +1,23 @@
+{
+  "start_date": "2026-02-28T20:21:09.539682",
+  "baseline": {
+    "listeners": 17108,
+    "rank": 46,
+    "episodes": 157
+  },
+  "targets": {
+    "3_months": {
+      "listeners": 25000,
+      "rank": 35
+    },
+    "6_months": {
+      "listeners": 35000,
+      "rank": 25
+    },
+    "12_months": {
+      "listeners": 50000,
+      "rank": 15
+    }
+  },
+  "weekly_tracking": []
+}

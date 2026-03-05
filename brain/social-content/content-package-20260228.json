@@ -1,0 +1,202 @@
+{
+  "generated": "2026-02-28T20:23:01.662899",
+  "weekly_content": {
+    "week": 9,
+    "generated": "2026-02-28T20:23:01.662913",
+    "posts": [
+      {
+        "day": "Mandag",
+        "platform": "TikTok",
+        "type": "Weekend Recap",
+        "hook": "Helgen som gikk i kjendis-Norge...",
+        "script": [
+          "Start: \"Du vil ikke tro hva som skjedde i helgen...\"",
+          "Midt: Fortell om 2-3 kjendis-hendelser",
+          "Slutt: \"H\u00f8r mer i dagens episode!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#KjendisNorge",
+          "#Helg",
+          "#Podcast"
+        ],
+        "duration": "30-45 sek",
+        "music": "Trending sound - check TikTok trends"
+      },
+      {
+        "day": "Tirsdag",
+        "platform": "Instagram Reels",
+        "type": "Funny Moment",
+        "hook": "Baarli sin reaksjon da... \ud83d\ude02",
+        "script": [
+          "Start: Vis Baarli/Benjamin som reagerer",
+          "Midt: Spill av den morsomme kommentaren",
+          "Slutt: \"Hver dag p\u00e5 NRJ Morgen!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#Humor",
+          "#Radio",
+          "#Norge"
+        ],
+        "duration": "15-30 sek",
+        "music": "Funny/trending audio"
+      },
+      {
+        "day": "Onsdag",
+        "platform": "TikTok",
+        "type": "Reality Update",
+        "hook": "Paradise Hotel-oppdatering! \ud83c\udfdd\ufe0f",
+        "script": [
+          "Start: \"Paradise Hotel-nyheter!\"",
+          "Midt: Hva skjedde i siste episode",
+          "Slutt: \"Vi diskuterer dette i morgen!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#ParadiseHotel",
+          "#RealityTV",
+          "#Norge"
+        ],
+        "duration": "30-45 sek",
+        "music": "Dramatic/trending sound"
+      },
+      {
+        "day": "Torsdag",
+        "platform": "Instagram Reels",
+        "type": "Q&A",
+        "hook": "Sp\u00f8rsm\u00e5l fra lytteren! \u2753",
+        "script": [
+          "Start: \"Sp\u00f8rsm\u00e5l fra @brukernavn\"",
+          "Midt: Les sp\u00f8rsm\u00e5let + svar",
+          "Slutt: \"Still sp\u00f8rsm\u00e5l i kommentarene!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#QandA",
+          "#Podcast",
+          "#Norge"
+        ],
+        "duration": "30-60 sek",
+        "music": "Upbeat/trending"
+      },
+      {
+        "day": "Fredag",
+        "platform": "TikTok",
+        "type": "Best of Week",
+        "hook": "Ukens beste \u00f8yeblikk! \ud83c\udf89",
+        "script": [
+          "Start: \"Ukens h\u00f8ydepunkter!\"",
+          "Midt: Kompilasjon av morsomme klipp",
+          "Slutt: \"God helg fra NRJ Morgen!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#BestOf",
+          "#Uke",
+          "#Podcast"
+        ],
+        "duration": "45-60 sek",
+        "music": "High energy/trending"
+      },
+      {
+        "day": "L\u00f8rdag",
+        "platform": "Instagram Stories",
+        "type": "Behind the Scenes",
+        "hook": "Bak kulissene p\u00e5 NRJ Morgen \ud83c\udf99\ufe0f",
+        "script": [
+          "Vis studio",
+          "Vis forberedelser",
+          "Fortell om kommende uke"
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#BTS",
+          "#Radio",
+          "#Studio"
+        ],
+        "duration": "Stories format",
+        "music": "Chill background"
+      },
+      {
+        "day": "S\u00f8ndag",
+        "platform": "TikTok",
+        "type": "Week Preview",
+        "hook": "Hva skjer neste uke? \ud83d\udc40",
+        "script": [
+          "Start: \"Neste uke p\u00e5 NRJ Morgen:\"",
+          "Midt: List opp 3 ting som kommer",
+          "Slutt: \"F\u00f8lg med!\""
+        ],
+        "hashtags": [
+          "#NRJMorgen",
+          "#ComingUp",
+          "#NesteUke",
+          "#Podcast"
+        ],
+        "duration": "30-45 sek",
+        "music": "Exciting/trending"
+      }
+    ]
+  },
+  "captions": {
+    "tiktok_viral": "\ud83c\udf99\ufe0f NRJ Morgen Podcast\n\nBaarli og Benjamin diskuterer det du bryr deg om!\n\nReality \u2726 Kjendiser \u2726 Popkultur\n\n\ud83d\udd17 H\u00f8r hele episoden - link i bio!\n\n#NRJMorgen #Podcast #Norge #Radio #BaarliOgBenjamin #Morgenradio #NorskPodcast",
+    "instagram_engaging": "\ud83c\udf99\ufe0f Hva synes du om dette?\n\nBaarli og Benjamin tar opp det alle snakker om i dagens episode!\n\n\ud83d\udcac Kommenter din mening nedenfor!\n\ud83d\udc46 Trykk link i bio for \u00e5 h\u00f8re mer\n\n#NRJMorgen #Podcast #Norge #Radio #KjendisNorge",
+    "instagram_reel": "\ud83d\ude02 Denne reaksjonen da!\n\nH\u00f8r mer i dagens episode av NRJ Morgen Podcast med Baarli og Benjamin \ud83c\udf99\ufe0f\n\n#NRJMorgen #Podcast #Humor #Norge #Radio",
+    "story_poll": "\ud83c\udf99\ufe0f Dagens sp\u00f8rsm\u00e5l!\n\nHva synes du?\n\n\ud83d\udc46 Stem i poll ovenfor!\n\n#NRJMorgen #Podcast #Norge"
+  },
+  "hashtag_sets": [
+    {
+      "name": "General",
+      "tags": [
+        "#NRJMorgen",
+        "#Podcast",
+        "#Norge",
+        "#Radio",
+        "#Morgenradio"
+      ]
+    },
+    {
+      "name": "Reality",
+      "tags": [
+        "#NRJMorgen",
+        "#RealityTV",
+        "#ParadiseHotel",
+        "#Farmen",
+        "#Norge"
+      ]
+    },
+    {
+      "name": "Kjendis",
+      "tags": [
+        "#NRJMorgen",
+        "#KjendisNorge",
+        "#CelebNews",
+        "#Norge",
+        "#Popkultur"
+      ]
+    },
+    {
+      "name": "Humor",
+      "tags": [
+        "#NRJMorgen",
+        "#Humor",
+        "#Funny",
+        "#Podcast",
+        "#Norge",
+        "#Comedy"
+      ]
+    },
+    {
+      "name": "Viral",
+      "tags": [
+        "#NRJMorgen",
+        "#Viral",
+        "#Trending",
+        "#Podcast",
+        "#Norge",
+        "#FYP"
+      ]
+    }
+  ]
+}

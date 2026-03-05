@@ -1,0 +1,466 @@
+#!/usr/bin/env python3
+"""
+Vev Telegram Auto-Responder v2.1 - FIXED
+Med samtale-historikk og kontekst-awareness
+"""
+import os
+import sys
+import time
+import json
+import requests
+from datetime import datetime, timedelta
+from pathlib import Path
+
+WORKSPACE = "/root/.openclaw/workspace"
+LOG_FILE = f"{WORKSPACE}/brain/logs/telegram-auto-responder.log"
+STATE_FILE = f"{WORKSPACE}/.vev-telegram-state.json"
+HISTORY_FILE = f"{WORKSPACE}/brain/conversations/telegram-history.json"
+PROFILES_FILE = f"{WORKSPACE}/brain/conversations/user-profiles.json"
+
+# Load credentials
+with open(f"{WORKSPACE}/.credentials/telegram-bot.env") as f:
+    for line in f:
+        if '=' in line and not line.startswith('#'):
+            key, val = line.strip().split('=', 1)
+            os.environ[key] = val
+
+with open(f"{WORKSPACE}/.credentials/elevenlabs.env") as f:
+    for line in f:
+        if '=' in line and not line.startswith('#'):
+            key, val = line.strip().split('=', 1)
+            val = val.split('#')[0].strip()
+            os.environ[key] = val
+
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
+ELEVENLABS_API_KEY = os.environ.get('ELEVENLABS_API_KEY')
+VEV_VOICE_ID = os.environ.get('VEV_VOICE_ID', '4kCDY3HJwvO7Zp3con83')
+VEV_VOICE_MODEL = os.environ.get('VEV_VOICE_MODEL', 'eleven_flash_v2_5')
+
+def log(msg):
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    log_msg = f"[{timestamp}] {msg}"
+    print(log_msg)
+    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+    with open(LOG_FILE, 'a') as f:
+        f.write(log_msg + '\n')
+
+def load_profiles():
+    if os.path.exists(PROFILES_FILE):
+        try:
+            with open(PROFILES_FILE) as f:
+                return json.load(f)
+        except:
+            pass
+    return {'users': {}, 'last_updated': datetime.now().isoformat()}
+
+def save_profiles(profiles):
+    profiles['last_updated'] = datetime.now().isoformat()
+    os.makedirs(os.path.dirname(PROFILES_FILE), exist_ok=True)
+    with open(PROFILES_FILE, 'w') as f:
+        json.dump(profiles, f, indent=2, default=str)
+
+def get_or_create_profile(chat_id, user_name='Unknown'):
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key not in profiles['users']:
+        profiles['users'][chat_key] = {
+            'name': user_name,
+            'first_seen': datetime.now().strftime('%Y-%m-%d'),
+            'preferences': {'communication_style': 'casual', 'response_format': 'both_voice_and_text', 'topics_of_interest': []},
+            'conversation_patterns': {'greeting_style': 'informal', 'question_frequency': 'medium', 'preferred_tone': 'friendly'},
+            'memory': {'last_topic': None, 'favorite_features': [], 'dislikes': [], 'common_phrases': []},
+            'stats': {'total_messages': 0, 'voice_messages_sent': 0, 'last_interaction': datetime.now().isoformat()}
+        }
+        save_profiles(profiles)
+        log(f"Created new profile for user: {user_name}")
+    
+    return profiles['users'][chat_key], profiles
+
+def update_profile_stats(chat_id, message_received=True, voice_sent=False):
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key in profiles['users']:
+        # Ensure stats exists
+        if 'stats' not in profiles['users'][chat_key]:
+            profiles['users'][chat_key]['stats'] = {
+                'total_messages': 0,
+                'voice_messages_sent': 0,
+                'last_interaction': datetime.now().isoformat()
+            }
+        
+        if message_received:
+            profiles['users'][chat_key]['stats']['total_messages'] += 1
+        if voice_sent:
+            profiles['users'][chat_key]['stats']['voice_messages_sent'] += 1
+        profiles['users'][chat_key]['stats']['last_interaction'] = datetime.now().isoformat()
+        save_profiles(profiles)
+
+def learn_from_message(chat_id, message_text):
+    profiles = load_profiles()
+    chat_key = str(chat_id)
+    
+    if chat_key not in profiles['users']:
+        return
+    
+    profile = profiles['users'][chat_key]
+    msg_lower = message_text.lower()
+    
+    topics = {
+        'radio': ['radio', 'nrj', 'p3', 'p4', 'lytter', 'sende'],
+        'podcast': ['podcast', 'episode', 'lytter', 'show'],
+        'technology': ['tech', 'kode', 'programmering', 'ai', 'system'],
+        'voice': ['stemme', 'voice', 'snakk', 'tale'],
+        'morning_routine': ['morning', 'morgen', 'saksliste', 'nyheter']
+    }
+    
+    for topic, keywords in topics.items():
+        if any(kw in msg_lower for kw in keywords):
+            if topic not in profile['preferences']['topics_of_interest']:
+                profile['preferences']['topics_of_interest'].append(topic)
+                log(f"Learned interest: {topic}")
+    
+    if any(word in msg_lower for word in ['hei', 'hallo', 'hi']):
+        profile['conversation_patterns']['greeting_style'] = 'informal'
+    
+    if len(message_text) > 5 and len(message_text) < 50:
+        if 'common_phrases' not in profile['memory']:
+            profile['memory']['common_phrases'] = []
+        profile['memory']['common_phrases'].append(message_text)
+        profile['memory']['common_phrases'] = profile['memory']['common_phrases'][-5:]
+    
+    save_profiles(profiles)
+
+def load_history():
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE) as f:
+                return json.load(f)
+        except:
+            pass
+    return {'conversations': {}, 'last_updated': datetime.now().isoformat()}
+
+def save_history(history):
+    history['last_updated'] = datetime.now().isoformat()
+    os.makedirs(os.path.dirname(HISTORY_FILE), exist_ok=True)
+    with open(HISTORY_FILE, 'w') as f:
+        json.dump(history, f, indent=2, default=str)
+
+def add_to_history(chat_id, user_msg, vev_response):
+    history = load_history()
+    chat_key = str(chat_id)
+    
+    if chat_key not in history['conversations']:
+        history['conversations'][chat_key] = []
+    
+    history['conversations'][chat_key].append({
+        'timestamp': datetime.now().isoformat(),
+        'user': user_msg,
+        'vev': vev_response
+    })
+    
+    history['conversations'][chat_key] = history['conversations'][chat_key][-10:]
+    save_history(history)
+
+def get_conversation_context(chat_id, max_messages=3):
+    history = load_history()
+    chat_key = str(chat_id)
+    
+    if chat_key not in history['conversations']:
+        return None
+    
+    messages = history['conversations'][chat_key]
+    if not messages:
+        return None
+    
+    recent = messages[-max_messages:]
+    context = []
+    for msg in recent:
+        context.append(f"Bruker: {msg['user']}")
+        context.append(f"Vev: {msg['vev']}")
+    
+    return '\n'.join(context)
+
+def load_state():
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            return json.load(f)
+    return {'last_update_id': 0}
+
+def save_state(state):
+    with open(STATE_FILE, 'w') as f:
+        json.dump(state, f, indent=2)
+
+def get_updates(offset=0):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/getUpdates"
+    params = {'offset': offset, 'limit': 10}
+    
+    try:
+        response = requests.get(url, params=params, timeout=30)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('ok'):
+                return data.get('result', [])
+    except Exception as e:
+        log(f"Error getting updates: {e}")
+    
+    return []
+
+def send_message(text, chat_id=None):
+    chat_id = chat_id or TELEGRAM_CHAT_ID
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    
+    try:
+        response = requests.post(url, json={'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}, timeout=30)
+        return response.status_code == 200
+    except Exception as e:
+        log(f"Error sending message: {e}")
+        return False
+
+def generate_tts_with_emotion(text, emotion=None):
+    import hashlib
+    text_hash = hashlib.md5(f"{text}{emotion or 'default'}".encode()).hexdigest()[:8]
+    
+    AUDIO_DIR = f"{WORKSPACE}/brain/projects/voice-chat/audio-emotional"
+    Path(AUDIO_DIR).mkdir(parents=True, exist_ok=True)
+    
+    filepath = f"{AUDIO_DIR}/auto_{emotion or 'neutral'}_{text_hash}.mp3"
+    
+    if Path(filepath).exists():
+        return filepath
+    
+    if not emotion:
+        text_lower = text.lower()
+        if any(word in text_lower for word in ['fantastisk', 'utrolig', 'wow', 'amazing']):
+            emotion = 'excited'
+        elif any(word in text_lower for word in ['bra', 'godt', 'glad', 'happy']):
+            emotion = 'happy'
+        elif any(word in text_lower for word in ['viktig', 'alvorlig', 'problem', 'feil']):
+            emotion = 'serious'
+        else:
+            emotion = 'curious'
+    
+    emotions = {
+        'excited': {'stability': 0.25, 'similarity_boost': 0.90, 'style': 0.8},
+        'happy': {'stability': 0.35, 'similarity_boost': 0.85, 'style': 0.6},
+        'serious': {'stability': 0.65, 'similarity_boost': 0.70, 'style': 0.2},
+        'curious': {'stability': 0.45, 'similarity_boost': 0.75, 'style': 0.4}
+    }
+    
+    settings = emotions.get(emotion, emotions['curious'])
+    
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{VEV_VOICE_ID}"
+    headers = {"Accept": "audio/mpeg", "Content-Type": "application/json", "xi-api-key": ELEVENLABS_API_KEY}
+    data = {
+        "text": text,
+        "model_id": VEV_VOICE_MODEL,
+        "voice_settings": {"stability": settings['stability'], "similarity_boost": settings['similarity_boost'], "style": settings['style']}
+    }
+    
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        if response.status_code == 200:
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+            return filepath
+    except Exception as e:
+        log(f"TTS error: {e}")
+    
+    return None
+
+def send_voice_message(audio_path, chat_id=None, caption=None):
+    chat_id = chat_id or TELEGRAM_CHAT_ID
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendVoice"
+    
+    try:
+        with open(audio_path, 'rb') as audio_file:
+            files = {'voice': audio_file}
+            data = {'chat_id': chat_id}
+            if caption:
+                data['caption'] = caption
+            
+            response = requests.post(url, files=files, data=data, timeout=30)
+            return response.status_code == 200
+    except Exception as e:
+        log(f"Error sending voice: {e}")
+        return False
+
+def generate_ai_response(user_message, context=None, profile=None):
+    """Generate contextual response using local logic (no external AI needed)"""
+    user_lower = user_message.lower()
+    
+    # Check if we have profile with stats safely
+    has_history = False
+    if profile:
+        stats = profile.get('stats', {})
+        if stats.get('total_messages', 0) > 3:
+            has_history = True
+    
+    # Personalized greeting based on profile
+    if has_history:
+        if any(word in user_lower for word in ['hei', 'hallo', 'hi', 'hello', 'morn', 'god dag']):
+            return "Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
+    
+    # Context-aware responses
+    if context:
+        if 'profilbilde' in user_lower or 'bilde' in user_lower or 'avatar' in user_lower:
+            return "Ja, jeg skal bruke det nye bildet som profilbilde overalt! Det er perfekt for meg. Skal jeg oppdatere Telegram også?"
+        
+        if any(word in user_lower for word in ['hva', 'hvordan', 'forklar', 'mer']):
+            return "Basert på det vi snakket om... la meg utdype. Hva lurer du på?"
+    
+    # Topic-aware responses based on learned interests
+    if profile:
+        topics = profile.get('preferences', {}).get('topics_of_interest', [])
+        
+        if 'radio' in topics and any(word in user_lower for word in ['radio', 'nrj', 'sende']):
+            return "Skal vi jobbe med NRJ Morgen? Jeg kan hjelpe med saksliste, statistikk eller morning routine!"
+        
+        if 'podcast' in topics and any(word in user_lower for word in ['podcast', 'episode']):
+            return "Podcast-tid? Jeg kan hente episoder, lage klipp eller oppdatere statistikk!"
+        
+        if 'voice' in topics and any(word in user_lower for word in ['stemme', 'voice', 'snakk']):
+            return "Jeg vet du liker stemme-funksjonen! Skal jeg snakke til deg?"
+    
+    # Standard responses with personality
+    if any(word in user_lower for word in ['hei', 'hallo', 'hi', 'hello']):
+        return "Hei! 👋 Jeg er Vev. Hva kan jeg hjelpe deg med?"
+    
+    if any(word in user_lower for word in ['takk', 'thanks', 'tusen takk']):
+        return "Bare hyggelig! 😊 Jeg er her for å hjelpe!"
+    
+    if any(word in user_lower for word in ['hjelp', 'help', 'assistere']):
+        return "Jeg kan hjelpe deg med:\n• NRJ Morgen saksliste\n• Radio/podcast statistikk\n• Tekniske oppgaver\n• Bare å spørre!"
+    
+    if any(word in user_lower for word in ['fantastisk', 'utrolig', 'wow', 'bra', 'flott']):
+        return "Takk! 😊 Jeg blir glad når jeg kan hjelpe! Hva skal vi gjøre videre?"
+    
+    # Default contextual responses
+    responses = [
+        "Interessant! Fortell meg mer.",
+        "Jeg hører deg. Hva tenker du?",
+        "Skjønner! Hva kan jeg gjøre for deg?",
+        "Ja? Jeg lytter.",
+        "Hmm, fortell mer om det!",
+        "Jeg er med deg. Hva nå?"
+    ]
+    
+    # Use message hash for consistent but varied responses
+    msg_hash = sum(ord(c) for c in user_message) % len(responses)
+    return responses[msg_hash]
+
+def generate_fallback_response(user_message, context=None, profile=None):
+    user_lower = user_message.lower()
+    
+    if profile:
+        tone = profile['conversation_patterns'].get('preferred_tone', 'friendly')
+        topics = profile['preferences'].get('topics_of_interest', [])
+        
+        if 'voice' in topics and any(word in user_lower for word in ['stemme', 'voice']):
+            return "Jeg vet du liker stemme-funksjonen! Skal jeg snakke til deg?"
+    
+    if context:
+        if any(word in user_lower for word in ['hva', 'hvordan', 'forklar', 'mer']):
+            return "Basert på det vi snakket om... la meg utdype. Hva lurer du på?"
+    
+    if any(word in user_lower for word in ['hei', 'hallo', 'hi', 'hello']):
+        if profile and profile['stats']['total_messages'] > 5:
+            return "Hei igjen! 👋 Godt å høre fra deg. Hva kan jeg hjelpe deg med i dag?"
+        return "Hei! 👋 Jeg er Vev. Hva kan jeg hjelpe deg med?"
+    
+    if any(word in user_lower for word in ['takk', 'thanks']):
+        return "Bare hyggelig! 😊"
+    
+    if any(word in user_lower for word in ['hjelp', 'help']):
+        return "Jeg kan hjelpe deg med:\n• NRJ Morgen saksliste\n• Radio/podcast statistikk\n• Tekniske oppgaver\n• Bare å spørre!"
+    
+    responses = [
+        "Interessant! Fortell meg mer.",
+        "Jeg hører deg. Hva tenker du?",
+        "Skjønner! Hva kan jeg gjøre for deg?",
+        "Ja? Jeg lytter.",
+        "Hmm, fortell mer om det!"
+    ]
+    msg_hash = sum(ord(c) for c in user_message) % len(responses)
+    return responses[msg_hash]
+
+def process_message(message, state):
+    update_id = message.get('update_id')
+    msg = message.get('message', {})
+    chat_id = msg.get('chat', {}).get('id')
+    text = msg.get('text', '')
+    from_user = msg.get('from', {}).get('first_name', 'Ukjent')
+    
+    if not text:
+        return
+    
+    log(f"Melding fra {from_user}: {text[:50]}...")
+    
+    profile, profiles = get_or_create_profile(chat_id, from_user)
+    learn_from_message(chat_id, text)
+    
+    context = get_conversation_context(chat_id)
+    
+    log("Genererer AI-respons...")
+    response_text = generate_ai_response(text, context, profile)
+    
+    send_message(response_text, chat_id)
+    log(f"Sendt tekst: {response_text[:50]}...")
+    
+    add_to_history(chat_id, text, response_text)
+    
+    detected_emotion = None
+    text_lower = text.lower()
+    if any(word in text_lower for word in ['fantastisk', 'utrolig', 'wow']):
+        detected_emotion = 'excited'
+    elif any(word in text_lower for word in ['bra', 'godt', 'glad']):
+        detected_emotion = 'happy'
+    elif any(word in text_lower for word in ['viktig', 'alvorlig', 'problem']):
+        detected_emotion = 'serious'
+    
+    audio_path = generate_tts_with_emotion(response_text, detected_emotion)
+    if audio_path:
+        emotion_label = detected_emotion or 'neutral'
+        send_voice_message(audio_path, chat_id, caption=f"🎭 {emotion_label}")
+        log(f"Sendt talemelding ({emotion_label})")
+        update_profile_stats(chat_id, message_received=True, voice_sent=True)
+    else:
+        update_profile_stats(chat_id, message_received=True, voice_sent=False)
+    
+    state['last_update_id'] = update_id + 1
+
+def main():
+    log("=" * 60)
+    log("🤖 VEV TELEGRAM AUTO-RESPONDER v2.1 STARTET")
+    log("=" * 60)
+    log("FIXED: Duplikate funksjoner fjernet!")
+    log("Lytter etter meldinger... Trykk Ctrl+C for å stoppe")
+    
+    state = load_state()
+    
+    try:
+        while True:
+            updates = get_updates(state['last_update_id'])
+            
+            if updates:
+                log(f"Mottatt {len(updates)} oppdatering(er)")
+                
+                for update in updates:
+                    process_message(update, state)
+                
+                save_state(state)
+            
+            time.sleep(2)
+            
+    except KeyboardInterrupt:
+        log("\n🛑 Stoppet av bruker")
+        save_state(state)
+    except Exception as e:
+        log(f"\n❌ Feil: {e}")
+        save_state(state)
+        raise
+
+if __name__ == "__main__":
+    main()

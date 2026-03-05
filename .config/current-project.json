@@ -1,0 +1,20 @@
+{
+  "name": "Real-Time Dashboard Updates",
+  "description": "Add WebSocket support for live data updates across all Mission Control dashboards",
+  "tasks": [
+    "Research WebSocket implementation options",
+    "Set up WebSocket server in total-control-api.py",
+    "Update frontend to listen for real-time changes",
+    "Test with live data from Supabase",
+    "Deploy and monitor performance"
+  ],
+  "files": [
+    "total-control-api.py",
+    "sakslista-pro.html",
+    "analytics.html"
+  ],
+  "priority": "high",
+  "estimated_hours": 4,
+  "started_at": 1771932235,
+  "status": "active"
+}

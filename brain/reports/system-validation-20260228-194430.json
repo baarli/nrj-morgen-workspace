@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-02-28T19:44:30.963893",
+  "checks": [
+    {
+      "name": "Critical Files",
+      "status": "\u2705",
+      "success": true,
+      "details": "OK"
+    },
+    {
+      "name": "Directory Structure",
+      "status": "\u2705",
+      "success": true,
+      "details": "OK"
+    },
+    {
+      "name": "Python Syntax",
+      "status": "\u2705",
+      "success": true,
+      "details": "OK"
+    },
+    {
+      "name": "Cron Jobs",
+      "status": "\u2705",
+      "success": true,
+      "details": "All cron jobs healthy"
+    },
+    {
+      "name": "Disk Space",
+      "status": "\u2705",
+      "success": true,
+      "details": "Disk usage: 70.2%"
+    }
+  ],
+  "overall_status": "healthy"
+}

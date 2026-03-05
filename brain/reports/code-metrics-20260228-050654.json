@@ -1,0 +1,1643 @@
+{
+  "timestamp": "2026-02-28T05:06:54.551867",
+  "summary": {
+    "total_files": 168,
+    "total_lines": 36109,
+    "total_code_lines": 27253,
+    "total_comment_lines": 2207,
+    "total_functions": 1419,
+    "total_classes": 195,
+    "avg_complexity": 38.2,
+    "comment_ratio": 8.1,
+    "most_complex_files": [
+      [
+        "/root/.openclaw/workspace/scripts/api_builder.py",
+        107.42999999999999
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/bot_toolkit.py",
+        97.59
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/testing_toolkit.py",
+        91.3
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/automation_engine.py",
+        90.75
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/docs_toolkit.py",
+        90.10000000000001
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/database_toolkit.py",
+        86.76
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/ml_toolkit.py",
+        85.19
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/baarliclaw_toolkit.py",
+        84.13
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/dashboard_builder.py",
+        83.55000000000001
+      ],
+      [
+        "/root/.openclaw/workspace/scripts/consolidated-morning-routine.py",
+        83.18
+      ]
+    ]
+  },
+  "files": {
+    "/root/.openclaw/workspace/scripts/data_analyzer.py": {
+      "total_lines": 409,
+      "code_lines": 305,
+      "blank_lines": 86,
+      "comment_lines": 18,
+      "functions": 18,
+      "classes": 3,
+      "imports": 8,
+      "complexity_score": 75.1
+    },
+    "/root/.openclaw/workspace/scripts/fetch_nrj_dashboard_stats_v2.py": {
+      "total_lines": 268,
+      "code_lines": 209,
+      "blank_lines": 49,
+      "comment_lines": 10,
+      "functions": 5,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 35.75
+    },
+    "/root/.openclaw/workspace/scripts/daily-podcast-email.py": {
+      "total_lines": 298,
+      "code_lines": 226,
+      "blank_lines": 56,
+      "comment_lines": 16,
+      "functions": 9,
+      "classes": 0,
+      "imports": 15,
+      "complexity_score": 44.910000000000004
+    },
+    "/root/.openclaw/workspace/scripts/email_toolkit.py": {
+      "total_lines": 181,
+      "code_lines": 141,
+      "blank_lines": 32,
+      "comment_lines": 8,
+      "functions": 5,
+      "classes": 3,
+      "imports": 11,
+      "complexity_score": 27.090000000000003
+    },
+    "/root/.openclaw/workspace/scripts/dashboard_builder.py": {
+      "total_lines": 505,
+      "code_lines": 433,
+      "blank_lines": 62,
+      "comment_lines": 10,
+      "functions": 14,
+      "classes": 2,
+      "imports": 8,
+      "complexity_score": 83.55000000000001
+    },
+    "/root/.openclaw/workspace/scripts/generate-mission-control-pages.py": {
+      "total_lines": 256,
+      "code_lines": 204,
+      "blank_lines": 41,
+      "comment_lines": 11,
+      "functions": 6,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 38.620000000000005
+    },
+    "/root/.openclaw/workspace/scripts/testing_toolkit.py": {
+      "total_lines": 294,
+      "code_lines": 225,
+      "blank_lines": 58,
+      "comment_lines": 11,
+      "functions": 32,
+      "classes": 5,
+      "imports": 8,
+      "complexity_score": 91.3
+    },
+    "/root/.openclaw/workspace/scripts/cli_toolkit.py": {
+      "total_lines": 191,
+      "code_lines": 145,
+      "blank_lines": 36,
+      "comment_lines": 10,
+      "functions": 15,
+      "classes": 3,
+      "imports": 4,
+      "complexity_score": 47.42
+    },
+    "/root/.openclaw/workspace/scripts/daily-podcast-with-skills.py": {
+      "total_lines": 234,
+      "code_lines": 175,
+      "blank_lines": 43,
+      "comment_lines": 16,
+      "functions": 4,
+      "classes": 0,
+      "imports": 7,
+      "complexity_score": 29.65
+    },
+    "/root/.openclaw/workspace/scripts/regenerate-ui-2026.py": {
+      "total_lines": 299,
+      "code_lines": 268,
+      "blank_lines": 27,
+      "comment_lines": 4,
+      "functions": 4,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 45.47
+    },
+    "/root/.openclaw/workspace/scripts/autonomous-watchdog.py": {
+      "total_lines": 252,
+      "code_lines": 197,
+      "blank_lines": 36,
+      "comment_lines": 19,
+      "functions": 11,
+      "classes": 1,
+      "imports": 8,
+      "complexity_score": 48.11
+    },
+    "/root/.openclaw/workspace/scripts/smart-generate-title.py": {
+      "total_lines": 139,
+      "code_lines": 95,
+      "blank_lines": 25,
+      "comment_lines": 19,
+      "functions": 2,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 16.33
+    },
+    "/root/.openclaw/workspace/scripts/update_nielsen_radio_stats.py": {
+      "total_lines": 188,
+      "code_lines": 138,
+      "blank_lines": 31,
+      "comment_lines": 19,
+      "functions": 3,
+      "classes": 0,
+      "imports": 4,
+      "complexity_score": 22.16
+    },
+    "/root/.openclaw/workspace/scripts/import_nielsen_spreadsheet.py": {
+      "total_lines": 366,
+      "code_lines": 269,
+      "blank_lines": 76,
+      "comment_lines": 21,
+      "functions": 5,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 44.410000000000004
+    },
+    "/root/.openclaw/workspace/scripts/content-hub-api.py": {
+      "total_lines": 207,
+      "code_lines": 142,
+      "blank_lines": 45,
+      "comment_lines": 20,
+      "functions": 6,
+      "classes": 0,
+      "imports": 6,
+      "complexity_score": 28.910000000000004
+    },
+    "/root/.openclaw/workspace/scripts/ai-research-module.py": {
+      "total_lines": 178,
+      "code_lines": 137,
+      "blank_lines": 32,
+      "comment_lines": 9,
+      "functions": 7,
+      "classes": 2,
+      "imports": 7,
+      "complexity_score": 31.240000000000002
+    },
+    "/root/.openclaw/workspace/scripts/security_audit_service.py": {
+      "total_lines": 299,
+      "code_lines": 222,
+      "blank_lines": 58,
+      "comment_lines": 19,
+      "functions": 10,
+      "classes": 2,
+      "imports": 13,
+      "complexity_score": 49.440000000000005
+    },
+    "/root/.openclaw/workspace/scripts/web_scraper.py": {
+      "total_lines": 380,
+      "code_lines": 282,
+      "blank_lines": 77,
+      "comment_lines": 21,
+      "functions": 20,
+      "classes": 3,
+      "imports": 11,
+      "complexity_score": 75.95
+    },
+    "/root/.openclaw/workspace/scripts/log_analyzer.py": {
+      "total_lines": 321,
+      "code_lines": 245,
+      "blank_lines": 61,
+      "comment_lines": 15,
+      "functions": 23,
+      "classes": 4,
+      "imports": 11,
+      "complexity_score": 76.61
+    },
+    "/root/.openclaw/workspace/scripts/smart_backup_service.py": {
+      "total_lines": 285,
+      "code_lines": 217,
+      "blank_lines": 52,
+      "comment_lines": 16,
+      "functions": 13,
+      "classes": 2,
+      "imports": 13,
+      "complexity_score": 53.120000000000005
+    },
+    "/root/.openclaw/workspace/scripts/date_toolkit.py": {
+      "total_lines": 186,
+      "code_lines": 143,
+      "blank_lines": 35,
+      "comment_lines": 8,
+      "functions": 21,
+      "classes": 2,
+      "imports": 3,
+      "complexity_score": 58.79
+    },
+    "/root/.openclaw/workspace/scripts/decorator_toolkit.py": {
+      "total_lines": 180,
+      "code_lines": 141,
+      "blank_lines": 32,
+      "comment_lines": 7,
+      "functions": 24,
+      "classes": 1,
+      "imports": 4,
+      "complexity_score": 65.37
+    },
+    "/root/.openclaw/workspace/scripts/radio-stats-updater-v2.py": {
+      "total_lines": 179,
+      "code_lines": 132,
+      "blank_lines": 39,
+      "comment_lines": 8,
+      "functions": 6,
+      "classes": 1,
+      "imports": 9,
+      "complexity_score": 28.85
+    },
+    "/root/.openclaw/workspace/scripts/io_toolkit.py": {
+      "total_lines": 107,
+      "code_lines": 80,
+      "blank_lines": 21,
+      "comment_lines": 6,
+      "functions": 12,
+      "classes": 1,
+      "imports": 5,
+      "complexity_score": 33.11
+    },
+    "/root/.openclaw/workspace/scripts/cicd_toolkit.py": {
+      "total_lines": 326,
+      "code_lines": 252,
+      "blank_lines": 62,
+      "comment_lines": 12,
+      "functions": 15,
+      "classes": 5,
+      "imports": 11,
+      "complexity_score": 62.410000000000004
+    },
+    "/root/.openclaw/workspace/scripts/configuration_manager.py": {
+      "total_lines": 253,
+      "code_lines": 193,
+      "blank_lines": 49,
+      "comment_lines": 11,
+      "functions": 10,
+      "classes": 1,
+      "imports": 11,
+      "complexity_score": 44.75
+    },
+    "/root/.openclaw/workspace/scripts/performance_profiler.py": {
+      "total_lines": 157,
+      "code_lines": 116,
+      "blank_lines": 34,
+      "comment_lines": 7,
+      "functions": 14,
+      "classes": 2,
+      "imports": 7,
+      "complexity_score": 41.99
+    },
+    "/root/.openclaw/workspace/scripts/generate-showprepp.py": {
+      "total_lines": 188,
+      "code_lines": 113,
+      "blank_lines": 56,
+      "comment_lines": 19,
+      "functions": 3,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 18.560000000000002
+    },
+    "/root/.openclaw/workspace/scripts/perfect_clip_finder.py": {
+      "total_lines": 486,
+      "code_lines": 339,
+      "blank_lines": 102,
+      "comment_lines": 45,
+      "functions": 16,
+      "classes": 1,
+      "imports": 12,
+      "complexity_score": 77.04
+    },
+    "/root/.openclaw/workspace/scripts/event_toolkit.py": {
+      "total_lines": 183,
+      "code_lines": 130,
+      "blank_lines": 44,
+      "comment_lines": 9,
+      "functions": 22,
+      "classes": 4,
+      "imports": 3,
+      "complexity_score": 59.47
+    },
+    "/root/.openclaw/workspace/scripts/trigger_nrj_dashboard_update.py": {
+      "total_lines": 207,
+      "code_lines": 162,
+      "blank_lines": 39,
+      "comment_lines": 6,
+      "functions": 5,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 29.31
+    },
+    "/root/.openclaw/workspace/scripts/update_article_images.py": {
+      "total_lines": 131,
+      "code_lines": 100,
+      "blank_lines": 22,
+      "comment_lines": 9,
+      "functions": 3,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 18.76
+    },
+    "/root/.openclaw/workspace/scripts/build-mc-2026.py": {
+      "total_lines": 636,
+      "code_lines": 556,
+      "blank_lines": 77,
+      "comment_lines": 3,
+      "functions": 1,
+      "classes": 0,
+      "imports": 1,
+      "complexity_score": 70.93
+    },
+    "/root/.openclaw/workspace/scripts/security_toolkit.py": {
+      "total_lines": 340,
+      "code_lines": 265,
+      "blank_lines": 59,
+      "comment_lines": 16,
+      "functions": 21,
+      "classes": 5,
+      "imports": 12,
+      "complexity_score": 74.44
+    },
+    "/root/.openclaw/workspace/scripts/brave-news-search-v2.py": {
+      "total_lines": 223,
+      "code_lines": 157,
+      "blank_lines": 45,
+      "comment_lines": 21,
+      "functions": 7,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 32.71
+    },
+    "/root/.openclaw/workspace/scripts/podcast-clipper.py": {
+      "total_lines": 239,
+      "code_lines": 171,
+      "blank_lines": 49,
+      "comment_lines": 19,
+      "functions": 8,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 36.24
+    },
+    "/root/.openclaw/workspace/scripts/live-search-api.py": {
+      "total_lines": 120,
+      "code_lines": 85,
+      "blank_lines": 25,
+      "comment_lines": 10,
+      "functions": 4,
+      "classes": 0,
+      "imports": 7,
+      "complexity_score": 18.19
+    },
+    "/root/.openclaw/workspace/scripts/auto_doc_generator.py": {
+      "total_lines": 277,
+      "code_lines": 214,
+      "blank_lines": 54,
+      "comment_lines": 9,
+      "functions": 8,
+      "classes": 1,
+      "imports": 5,
+      "complexity_score": 45.230000000000004
+    },
+    "/root/.openclaw/workspace/scripts/autonomous-task-generator.py": {
+      "total_lines": 245,
+      "code_lines": 210,
+      "blank_lines": 24,
+      "comment_lines": 11,
+      "functions": 9,
+      "classes": 1,
+      "imports": 4,
+      "complexity_score": 45.78
+    },
+    "/root/.openclaw/workspace/scripts/monitor-topic.py": {
+      "total_lines": 103,
+      "code_lines": 75,
+      "blank_lines": 23,
+      "comment_lines": 5,
+      "functions": 3,
+      "classes": 0,
+      "imports": 7,
+      "complexity_score": 15.52
+    },
+    "/root/.openclaw/workspace/scripts/string_toolkit.py": {
+      "total_lines": 283,
+      "code_lines": 214,
+      "blank_lines": 50,
+      "comment_lines": 19,
+      "functions": 20,
+      "classes": 2,
+      "imports": 4,
+      "complexity_score": 66.12
+    },
+    "/root/.openclaw/workspace/scripts/agent_orchestrator.py": {
+      "total_lines": 203,
+      "code_lines": 151,
+      "blank_lines": 38,
+      "comment_lines": 14,
+      "functions": 9,
+      "classes": 2,
+      "imports": 9,
+      "complexity_score": 36.79
+    },
+    "/root/.openclaw/workspace/scripts/openai-generate-title.py": {
+      "total_lines": 116,
+      "code_lines": 89,
+      "blank_lines": 23,
+      "comment_lines": 4,
+      "functions": 3,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 16.48
+    },
+    "/root/.openclaw/workspace/scripts/color_toolkit.py": {
+      "total_lines": 171,
+      "code_lines": 128,
+      "blank_lines": 30,
+      "comment_lines": 13,
+      "functions": 11,
+      "classes": 2,
+      "imports": 3,
+      "complexity_score": 36.919999999999995
+    },
+    "/root/.openclaw/workspace/scripts/regex_toolkit.py": {
+      "total_lines": 118,
+      "code_lines": 88,
+      "blank_lines": 24,
+      "comment_lines": 6,
+      "functions": 11,
+      "classes": 1,
+      "imports": 2,
+      "complexity_score": 32.15
+    },
+    "/root/.openclaw/workspace/scripts/metrics_collector.py": {
+      "total_lines": 182,
+      "code_lines": 140,
+      "blank_lines": 36,
+      "comment_lines": 6,
+      "functions": 12,
+      "classes": 2,
+      "imports": 12,
+      "complexity_score": 40.76
+    },
+    "/root/.openclaw/workspace/scripts/morning-routine-v2.1.py": {
+      "total_lines": 303,
+      "code_lines": 234,
+      "blank_lines": 55,
+      "comment_lines": 14,
+      "functions": 6,
+      "classes": 0,
+      "imports": 8,
+      "complexity_score": 39.99000000000001
+    },
+    "/root/.openclaw/workspace/scripts/generate_and_send_showprep.py": {
+      "total_lines": 170,
+      "code_lines": 135,
+      "blank_lines": 30,
+      "comment_lines": 5,
+      "functions": 4,
+      "classes": 0,
+      "imports": 8,
+      "complexity_score": 23.46
+    },
+    "/root/.openclaw/workspace/scripts/brave-news-search-parallel.py": {
+      "total_lines": 192,
+      "code_lines": 149,
+      "blank_lines": 32,
+      "comment_lines": 11,
+      "functions": 5,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 28.15
+    },
+    "/root/.openclaw/workspace/scripts/dependency_checker.py": {
+      "total_lines": 197,
+      "code_lines": 151,
+      "blank_lines": 38,
+      "comment_lines": 8,
+      "functions": 10,
+      "classes": 1,
+      "imports": 6,
+      "complexity_score": 39.010000000000005
+    },
+    "/root/.openclaw/workspace/scripts/send-daily-email.py": {
+      "total_lines": 200,
+      "code_lines": 158,
+      "blank_lines": 26,
+      "comment_lines": 16,
+      "functions": 3,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 25.87
+    },
+    "/root/.openclaw/workspace/scripts/daily-podcast-email-v2.py": {
+      "total_lines": 355,
+      "code_lines": 276,
+      "blank_lines": 61,
+      "comment_lines": 18,
+      "functions": 9,
+      "classes": 0,
+      "imports": 16,
+      "complexity_score": 51.95
+    },
+    "/root/.openclaw/workspace/scripts/update_description_images.py": {
+      "total_lines": 93,
+      "code_lines": 70,
+      "blank_lines": 18,
+      "comment_lines": 5,
+      "functions": 3,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 14.49
+    },
+    "/root/.openclaw/workspace/scripts/send-mission-control-email.py": {
+      "total_lines": 108,
+      "code_lines": 79,
+      "blank_lines": 22,
+      "comment_lines": 7,
+      "functions": 1,
+      "classes": 0,
+      "imports": 7,
+      "complexity_score": 10.780000000000001
+    },
+    "/root/.openclaw/workspace/scripts/scheduler_toolkit.py": {
+      "total_lines": 147,
+      "code_lines": 118,
+      "blank_lines": 27,
+      "comment_lines": 2,
+      "functions": 7,
+      "classes": 3,
+      "imports": 9,
+      "complexity_score": 28.650000000000002
+    },
+    "/root/.openclaw/workspace/scripts/auto-insert-top10.py": {
+      "total_lines": 122,
+      "code_lines": 95,
+      "blank_lines": 19,
+      "comment_lines": 8,
+      "functions": 0,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 10.53
+    },
+    "/root/.openclaw/workspace/scripts/system_health_dashboard.py": {
+      "total_lines": 271,
+      "code_lines": 212,
+      "blank_lines": 50,
+      "comment_lines": 9,
+      "functions": 11,
+      "classes": 1,
+      "imports": 6,
+      "complexity_score": 49.510000000000005
+    },
+    "/root/.openclaw/workspace/scripts/validation_toolkit.py": {
+      "total_lines": 253,
+      "code_lines": 198,
+      "blank_lines": 45,
+      "comment_lines": 10,
+      "functions": 14,
+      "classes": 3,
+      "imports": 4,
+      "complexity_score": 52.349999999999994
+    },
+    "/root/.openclaw/workspace/scripts/data_transform_toolkit.py": {
+      "total_lines": 276,
+      "code_lines": 215,
+      "blank_lines": 50,
+      "comment_lines": 11,
+      "functions": 23,
+      "classes": 3,
+      "imports": 10,
+      "complexity_score": 71.82
+    },
+    "/root/.openclaw/workspace/scripts/fetch_podtoppen_live.py": {
+      "total_lines": 213,
+      "code_lines": 156,
+      "blank_lines": 45,
+      "comment_lines": 12,
+      "functions": 4,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 27.340000000000003
+    },
+    "/root/.openclaw/workspace/scripts/final-title-generator.py": {
+      "total_lines": 95,
+      "code_lines": 67,
+      "blank_lines": 15,
+      "comment_lines": 13,
+      "functions": 2,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 11.91
+    },
+    "/root/.openclaw/workspace/scripts/bot_toolkit.py": {
+      "total_lines": 352,
+      "code_lines": 275,
+      "blank_lines": 60,
+      "comment_lines": 17,
+      "functions": 32,
+      "classes": 4,
+      "imports": 9,
+      "complexity_score": 97.59
+    },
+    "/root/.openclaw/workspace/scripts/baarliclaw_toolkit.py": {
+      "total_lines": 334,
+      "code_lines": 272,
+      "blank_lines": 51,
+      "comment_lines": 11,
+      "functions": 25,
+      "classes": 3,
+      "imports": 12,
+      "complexity_score": 84.13
+    },
+    "/root/.openclaw/workspace/scripts/state_toolkit.py": {
+      "total_lines": 214,
+      "code_lines": 154,
+      "blank_lines": 52,
+      "comment_lines": 8,
+      "functions": 28,
+      "classes": 4,
+      "imports": 4,
+      "complexity_score": 74.41000000000001
+    },
+    "/root/.openclaw/workspace/scripts/morning-routine-v2.py": {
+      "total_lines": 393,
+      "code_lines": 299,
+      "blank_lines": 74,
+      "comment_lines": 20,
+      "functions": 7,
+      "classes": 0,
+      "imports": 10,
+      "complexity_score": 49.61000000000001
+    },
+    "/root/.openclaw/workspace/scripts/supabase-publisher.py": {
+      "total_lines": 151,
+      "code_lines": 114,
+      "blank_lines": 20,
+      "comment_lines": 17,
+      "functions": 6,
+      "classes": 1,
+      "imports": 6,
+      "complexity_score": 26.74
+    },
+    "/root/.openclaw/workspace/scripts/url_toolkit.py": {
+      "total_lines": 125,
+      "code_lines": 97,
+      "blank_lines": 21,
+      "comment_lines": 7,
+      "functions": 12,
+      "classes": 1,
+      "imports": 2,
+      "complexity_score": 35.18
+    },
+    "/root/.openclaw/workspace/scripts/http_toolkit.py": {
+      "total_lines": 266,
+      "code_lines": 209,
+      "blank_lines": 48,
+      "comment_lines": 9,
+      "functions": 19,
+      "classes": 3,
+      "imports": 9,
+      "complexity_score": 63.77
+    },
+    "/root/.openclaw/workspace/scripts/git_toolkit.py": {
+      "total_lines": 341,
+      "code_lines": 264,
+      "blank_lines": 61,
+      "comment_lines": 16,
+      "functions": 20,
+      "classes": 3,
+      "imports": 7,
+      "complexity_score": 73.72
+    },
+    "/root/.openclaw/workspace/scripts/health_check_service.py": {
+      "total_lines": 302,
+      "code_lines": 242,
+      "blank_lines": 55,
+      "comment_lines": 5,
+      "functions": 12,
+      "classes": 2,
+      "imports": 11,
+      "complexity_score": 53.980000000000004
+    },
+    "/root/.openclaw/workspace/scripts/uuid_toolkit.py": {
+      "total_lines": 141,
+      "code_lines": 103,
+      "blank_lines": 31,
+      "comment_lines": 7,
+      "functions": 15,
+      "classes": 2,
+      "imports": 5,
+      "complexity_score": 41.839999999999996
+    },
+    "/root/.openclaw/workspace/scripts/template_toolkit.py": {
+      "total_lines": 357,
+      "code_lines": 298,
+      "blank_lines": 53,
+      "comment_lines": 6,
+      "functions": 12,
+      "classes": 3,
+      "imports": 5,
+      "complexity_score": 61.91
+    },
+    "/root/.openclaw/workspace/scripts/fetch_nrj_morgen_podcast.py": {
+      "total_lines": 233,
+      "code_lines": 177,
+      "blank_lines": 47,
+      "comment_lines": 9,
+      "functions": 5,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 31.39
+    },
+    "/root/.openclaw/workspace/scripts/video-to-audio-pipeline.py": {
+      "total_lines": 333,
+      "code_lines": 241,
+      "blank_lines": 63,
+      "comment_lines": 29,
+      "functions": 9,
+      "classes": 0,
+      "imports": 10,
+      "complexity_score": 47.97
+    },
+    "/root/.openclaw/workspace/scripts/fetch_nielsen_live.py": {
+      "total_lines": 219,
+      "code_lines": 166,
+      "blank_lines": 41,
+      "comment_lines": 12,
+      "functions": 4,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 27.470000000000002
+    },
+    "/root/.openclaw/workspace/scripts/format-title.py": {
+      "total_lines": 148,
+      "code_lines": 103,
+      "blank_lines": 22,
+      "comment_lines": 23,
+      "functions": 1,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 14.580000000000002
+    },
+    "/root/.openclaw/workspace/scripts/extract-video-urls.py": {
+      "total_lines": 300,
+      "code_lines": 239,
+      "blank_lines": 48,
+      "comment_lines": 13,
+      "functions": 9,
+      "classes": 0,
+      "imports": 6,
+      "complexity_score": 47.940000000000005
+    },
+    "/root/.openclaw/workspace/scripts/file_toolkit.py": {
+      "total_lines": 355,
+      "code_lines": 267,
+      "blank_lines": 71,
+      "comment_lines": 17,
+      "functions": 17,
+      "classes": 2,
+      "imports": 10,
+      "complexity_score": 69.33
+    },
+    "/root/.openclaw/workspace/scripts/guaranteed-project-starter.py": {
+      "total_lines": 353,
+      "code_lines": 288,
+      "blank_lines": 45,
+      "comment_lines": 20,
+      "functions": 14,
+      "classes": 1,
+      "imports": 9,
+      "complexity_score": 66.38
+    },
+    "/root/.openclaw/workspace/scripts/smart_notification_service.py": {
+      "total_lines": 249,
+      "code_lines": 190,
+      "blank_lines": 48,
+      "comment_lines": 11,
+      "functions": 13,
+      "classes": 2,
+      "imports": 9,
+      "complexity_score": 49.12
+    },
+    "/root/.openclaw/workspace/scripts/fetch-podcast.py": {
+      "total_lines": 84,
+      "code_lines": 60,
+      "blank_lines": 19,
+      "comment_lines": 5,
+      "functions": 3,
+      "classes": 0,
+      "imports": 5,
+      "complexity_score": 13.02
+    },
+    "/root/.openclaw/workspace/scripts/iterator_toolkit.py": {
+      "total_lines": 159,
+      "code_lines": 122,
+      "blank_lines": 29,
+      "comment_lines": 8,
+      "functions": 13,
+      "classes": 2,
+      "imports": 2,
+      "complexity_score": 40.5
+    },
+    "/root/.openclaw/workspace/scripts/show_nrj_dashboard_data.py": {
+      "total_lines": 154,
+      "code_lines": 120,
+      "blank_lines": 29,
+      "comment_lines": 5,
+      "functions": 3,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 20.89
+    },
+    "/root/.openclaw/workspace/scripts/radio-stats-updater.py": {
+      "total_lines": 283,
+      "code_lines": 203,
+      "blank_lines": 58,
+      "comment_lines": 22,
+      "functions": 9,
+      "classes": 1,
+      "imports": 12,
+      "complexity_score": 44.849999999999994
+    },
+    "/root/.openclaw/workspace/scripts/api_builder.py": {
+      "total_lines": 344,
+      "code_lines": 266,
+      "blank_lines": 66,
+      "comment_lines": 12,
+      "functions": 36,
+      "classes": 4,
+      "imports": 10,
+      "complexity_score": 107.42999999999999
+    },
+    "/root/.openclaw/workspace/scripts/collections_toolkit.py": {
+      "total_lines": 80,
+      "code_lines": 58,
+      "blank_lines": 18,
+      "comment_lines": 4,
+      "functions": 4,
+      "classes": 2,
+      "imports": 2,
+      "complexity_score": 14.8
+    },
+    "/root/.openclaw/workspace/scripts/serialization_toolkit.py": {
+      "total_lines": 171,
+      "code_lines": 130,
+      "blank_lines": 34,
+      "comment_lines": 7,
+      "functions": 20,
+      "classes": 5,
+      "imports": 5,
+      "complexity_score": 54.87
+    },
+    "/root/.openclaw/workspace/scripts/task_queue_manager.py": {
+      "total_lines": 331,
+      "code_lines": 252,
+      "blank_lines": 64,
+      "comment_lines": 15,
+      "functions": 14,
+      "classes": 4,
+      "imports": 11,
+      "complexity_score": 59.440000000000005
+    },
+    "/root/.openclaw/workspace/scripts/process_toolkit.py": {
+      "total_lines": 140,
+      "code_lines": 112,
+      "blank_lines": 22,
+      "comment_lines": 6,
+      "functions": 12,
+      "classes": 2,
+      "imports": 6,
+      "complexity_score": 37.190000000000005
+    },
+    "/root/.openclaw/workspace/scripts/image_toolkit.py": {
+      "total_lines": 384,
+      "code_lines": 291,
+      "blank_lines": 69,
+      "comment_lines": 24,
+      "functions": 15,
+      "classes": 2,
+      "imports": 9,
+      "complexity_score": 67.97
+    },
+    "/root/.openclaw/workspace/scripts/network_toolkit.py": {
+      "total_lines": 408,
+      "code_lines": 325,
+      "blank_lines": 67,
+      "comment_lines": 16,
+      "functions": 17,
+      "classes": 4,
+      "imports": 13,
+      "complexity_score": 75.92
+    },
+    "/root/.openclaw/workspace/scripts/api_gateway_service.py": {
+      "total_lines": 295,
+      "code_lines": 231,
+      "blank_lines": 49,
+      "comment_lines": 15,
+      "functions": 17,
+      "classes": 4,
+      "imports": 12,
+      "complexity_score": 62.63
+    },
+    "/root/.openclaw/workspace/scripts/performance_monitor.py": {
+      "total_lines": 258,
+      "code_lines": 194,
+      "blank_lines": 50,
+      "comment_lines": 14,
+      "functions": 10,
+      "classes": 2,
+      "imports": 12,
+      "complexity_score": 44.120000000000005
+    },
+    "/root/.openclaw/workspace/scripts/content-pipeline-v3.py": {
+      "total_lines": 357,
+      "code_lines": 292,
+      "blank_lines": 57,
+      "comment_lines": 8,
+      "functions": 18,
+      "classes": 5,
+      "imports": 10,
+      "complexity_score": 72.72
+    },
+    "/root/.openclaw/workspace/scripts/config_toolkit.py": {
+      "total_lines": 274,
+      "code_lines": 201,
+      "blank_lines": 55,
+      "comment_lines": 18,
+      "functions": 14,
+      "classes": 3,
+      "imports": 11,
+      "complexity_score": 53.77
+    },
+    "/root/.openclaw/workspace/scripts/error_toolkit.py": {
+      "total_lines": 263,
+      "code_lines": 202,
+      "blank_lines": 52,
+      "comment_lines": 9,
+      "functions": 21,
+      "classes": 5,
+      "imports": 8,
+      "complexity_score": 66.92
+    },
+    "/root/.openclaw/workspace/scripts/insert_nrj_dashboard_data.py": {
+      "total_lines": 196,
+      "code_lines": 158,
+      "blank_lines": 35,
+      "comment_lines": 3,
+      "functions": 5,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 29.66
+    },
+    "/root/.openclaw/workspace/scripts/report_generator.py": {
+      "total_lines": 235,
+      "code_lines": 183,
+      "blank_lines": 40,
+      "comment_lines": 12,
+      "functions": 9,
+      "classes": 2,
+      "imports": 8,
+      "complexity_score": 40.94
+    },
+    "/root/.openclaw/workspace/scripts/perfect-clip-finder.py": {
+      "total_lines": 486,
+      "code_lines": 339,
+      "blank_lines": 102,
+      "comment_lines": 45,
+      "functions": 16,
+      "classes": 1,
+      "imports": 12,
+      "complexity_score": 77.04
+    },
+    "/root/.openclaw/workspace/scripts/log_analyzer_service.py": {
+      "total_lines": 260,
+      "code_lines": 200,
+      "blank_lines": 47,
+      "comment_lines": 13,
+      "functions": 9,
+      "classes": 3,
+      "imports": 10,
+      "complexity_score": 42.99
+    },
+    "/root/.openclaw/workspace/scripts/chart_toolkit.py": {
+      "total_lines": 306,
+      "code_lines": 222,
+      "blank_lines": 71,
+      "comment_lines": 13,
+      "functions": 11,
+      "classes": 3,
+      "imports": 6,
+      "complexity_score": 50.03
+    },
+    "/root/.openclaw/workspace/scripts/code_metrics_analyzer.py": {
+      "total_lines": 224,
+      "code_lines": 167,
+      "blank_lines": 48,
+      "comment_lines": 9,
+      "functions": 9,
+      "classes": 1,
+      "imports": 6,
+      "complexity_score": 40.31
+    },
+    "/root/.openclaw/workspace/scripts/insert_to_supabase.py": {
+      "total_lines": 114,
+      "code_lines": 87,
+      "blank_lines": 19,
+      "comment_lines": 8,
+      "functions": 3,
+      "classes": 0,
+      "imports": 4,
+      "complexity_score": 15.97
+    },
+    "/root/.openclaw/workspace/scripts/docs_toolkit.py": {
+      "total_lines": 493,
+      "code_lines": 387,
+      "blank_lines": 89,
+      "comment_lines": 17,
+      "functions": 20,
+      "classes": 7,
+      "imports": 8,
+      "complexity_score": 90.10000000000001
+    },
+    "/root/.openclaw/workspace/scripts/update_nrj_podcast_dashboard.py": {
+      "total_lines": 161,
+      "code_lines": 122,
+      "blank_lines": 32,
+      "comment_lines": 7,
+      "functions": 4,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 22.480000000000004
+    },
+    "/root/.openclaw/workspace/scripts/automation_engine.py": {
+      "total_lines": 435,
+      "code_lines": 347,
+      "blank_lines": 70,
+      "comment_lines": 18,
+      "functions": 23,
+      "classes": 4,
+      "imports": 11,
+      "complexity_score": 90.75
+    },
+    "/root/.openclaw/workspace/scripts/insert-morning-news.py": {
+      "total_lines": 276,
+      "code_lines": 211,
+      "blank_lines": 50,
+      "comment_lines": 15,
+      "functions": 6,
+      "classes": 0,
+      "imports": 6,
+      "complexity_score": 37.46
+    },
+    "/root/.openclaw/workspace/scripts/fetch_nrj_dashboard_stats.py": {
+      "total_lines": 296,
+      "code_lines": 233,
+      "blank_lines": 55,
+      "comment_lines": 8,
+      "functions": 5,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 39.73
+    },
+    "/root/.openclaw/workspace/scripts/update_nrj_dashboard.py": {
+      "total_lines": 321,
+      "code_lines": 252,
+      "blank_lines": 60,
+      "comment_lines": 9,
+      "functions": 6,
+      "classes": 0,
+      "imports": 3,
+      "complexity_score": 44.260000000000005
+    },
+    "/root/.openclaw/workspace/scripts/consolidated-morning-routine.py": {
+      "total_lines": 594,
+      "code_lines": 444,
+      "blank_lines": 123,
+      "comment_lines": 27,
+      "functions": 15,
+      "classes": 0,
+      "imports": 13,
+      "complexity_score": 83.18
+    },
+    "/root/.openclaw/workspace/scripts/quick-news-search.py": {
+      "total_lines": 81,
+      "code_lines": 65,
+      "blank_lines": 12,
+      "comment_lines": 4,
+      "functions": 0,
+      "classes": 0,
+      "imports": 2,
+      "complexity_score": 7.640000000000001
+    },
+    "/root/.openclaw/workspace/scripts/async_toolkit.py": {
+      "total_lines": 167,
+      "code_lines": 118,
+      "blank_lines": 39,
+      "comment_lines": 10,
+      "functions": 9,
+      "classes": 4,
+      "imports": 4,
+      "complexity_score": 32.15
+    },
+    "/root/.openclaw/workspace/scripts/ai-generate-title.py": {
+      "total_lines": 120,
+      "code_lines": 80,
+      "blank_lines": 25,
+      "comment_lines": 15,
+      "functions": 3,
+      "classes": 0,
+      "imports": 4,
+      "complexity_score": 15.32
+    },
+    "/root/.openclaw/workspace/scripts/database_toolkit.py": {
+      "total_lines": 346,
+      "code_lines": 269,
+      "blank_lines": 64,
+      "comment_lines": 13,
+      "functions": 27,
+      "classes": 3,
+      "imports": 9,
+      "complexity_score": 86.76
+    },
+    "/root/.openclaw/workspace/scripts/functional_toolkit.py": {
+      "total_lines": 193,
+      "code_lines": 147,
+      "blank_lines": 38,
+      "comment_lines": 8,
+      "functions": 23,
+      "classes": 1,
+      "imports": 2,
+      "complexity_score": 63.39
+    },
+    "/root/.openclaw/workspace/scripts/math_toolkit.py": {
+      "total_lines": 322,
+      "code_lines": 248,
+      "blank_lines": 63,
+      "comment_lines": 11,
+      "functions": 19,
+      "classes": 4,
+      "imports": 5,
+      "complexity_score": 68.05
+    },
+    "/root/.openclaw/workspace/scripts/brave-news-search.py": {
+      "total_lines": 430,
+      "code_lines": 324,
+      "blank_lines": 77,
+      "comment_lines": 29,
+      "functions": 9,
+      "classes": 0,
+      "imports": 9,
+      "complexity_score": 57.08
+    },
+    "/root/.openclaw/workspace/scripts/cache_toolkit.py": {
+      "total_lines": 290,
+      "code_lines": 216,
+      "blank_lines": 61,
+      "comment_lines": 13,
+      "functions": 23,
+      "classes": 4,
+      "imports": 12,
+      "complexity_score": 72.69
+    },
+    "/root/.openclaw/workspace/scripts/ml_toolkit.py": {
+      "total_lines": 435,
+      "code_lines": 307,
+      "blank_lines": 100,
+      "comment_lines": 28,
+      "functions": 23,
+      "classes": 5,
+      "imports": 10,
+      "complexity_score": 85.19
+    },
+    "/root/.openclaw/workspace/scripts/toolkit-integration-demo.py": {
+      "total_lines": 214,
+      "code_lines": 160,
+      "blank_lines": 40,
+      "comment_lines": 14,
+      "functions": 10,
+      "classes": 0,
+      "imports": 11,
+      "complexity_score": 37.83
+    },
+    "/root/.openclaw/workspace/scripts/video_toolkit.py": {
+      "total_lines": 449,
+      "code_lines": 374,
+      "blank_lines": 62,
+      "comment_lines": 13,
+      "functions": 16,
+      "classes": 2,
+      "imports": 9,
+      "complexity_score": 79.86000000000001
+    },
+    "/root/.openclaw/workspace/scripts/auto-sync-mission-control.sh": {
+      "total_lines": 42,
+      "code_lines": 24,
+      "blank_lines": 10,
+      "comment_lines": 8,
+      "functions": 1,
+      "complexity_score": 2.4000000000000004
+    },
+    "/root/.openclaw/workspace/scripts/ml-learning-analyzer.sh": {
+      "total_lines": 91,
+      "code_lines": 65,
+      "blank_lines": 16,
+      "comment_lines": 10,
+      "functions": 0,
+      "complexity_score": 13.5
+    },
+    "/root/.openclaw/workspace/scripts/auto-skill-selector.sh": {
+      "total_lines": 19,
+      "code_lines": 10,
+      "blank_lines": 5,
+      "comment_lines": 4,
+      "functions": 0,
+      "complexity_score": 2.0
+    },
+    "/root/.openclaw/workspace/scripts/auto-exec-enforcer-cron.sh": {
+      "total_lines": 53,
+      "code_lines": 35,
+      "blank_lines": 11,
+      "comment_lines": 7,
+      "functions": 2,
+      "complexity_score": 8.5
+    },
+    "/root/.openclaw/workspace/scripts/calendar-today.sh": {
+      "total_lines": 61,
+      "code_lines": 38,
+      "blank_lines": 14,
+      "comment_lines": 9,
+      "functions": 0,
+      "complexity_score": 12.8
+    },
+    "/root/.openclaw/workspace/scripts/verify-podcast-system.sh": {
+      "total_lines": 107,
+      "code_lines": 84,
+      "blank_lines": 13,
+      "comment_lines": 10,
+      "functions": 0,
+      "complexity_score": 20.4
+    },
+    "/root/.openclaw/workspace/scripts/self-dev-task-generator.sh": {
+      "total_lines": 113,
+      "code_lines": 63,
+      "blank_lines": 26,
+      "comment_lines": 24,
+      "functions": 3,
+      "complexity_score": 14.3
+    },
+    "/root/.openclaw/workspace/scripts/build-mission-control-2026.sh": {
+      "total_lines": 582,
+      "code_lines": 481,
+      "blank_lines": 88,
+      "comment_lines": 13,
+      "functions": 1,
+      "complexity_score": 51.1
+    },
+    "/root/.openclaw/workspace/scripts/send-daily-email.sh": {
+      "total_lines": 151,
+      "code_lines": 105,
+      "blank_lines": 26,
+      "comment_lines": 20,
+      "functions": 0,
+      "complexity_score": 21.5
+    },
+    "/root/.openclaw/workspace/scripts/mandatory-preflight.sh": {
+      "total_lines": 86,
+      "code_lines": 66,
+      "blank_lines": 13,
+      "comment_lines": 7,
+      "functions": 0,
+      "complexity_score": 15.600000000000001
+    },
+    "/root/.openclaw/workspace/scripts/visualize-data.sh": {
+      "total_lines": 47,
+      "code_lines": 33,
+      "blank_lines": 9,
+      "comment_lines": 5,
+      "functions": 1,
+      "complexity_score": 4.300000000000001
+    },
+    "/root/.openclaw/workspace/scripts/forecast-trends.sh": {
+      "total_lines": 69,
+      "code_lines": 39,
+      "blank_lines": 18,
+      "comment_lines": 12,
+      "functions": 0,
+      "complexity_score": 4.9
+    },
+    "/root/.openclaw/workspace/scripts/agent-wrapper.sh": {
+      "total_lines": 38,
+      "code_lines": 26,
+      "blank_lines": 7,
+      "comment_lines": 5,
+      "functions": 0,
+      "complexity_score": 5.6
+    },
+    "/root/.openclaw/workspace/scripts/auto-learning-capture.sh": {
+      "total_lines": 97,
+      "code_lines": 64,
+      "blank_lines": 20,
+      "comment_lines": 13,
+      "functions": 0,
+      "complexity_score": 14.4
+    },
+    "/root/.openclaw/workspace/scripts/research-topic.sh": {
+      "total_lines": 79,
+      "code_lines": 38,
+      "blank_lines": 27,
+      "comment_lines": 14,
+      "functions": 0,
+      "complexity_score": 5.800000000000001
+    },
+    "/root/.openclaw/workspace/scripts/daily-email-report.sh": {
+      "total_lines": 140,
+      "code_lines": 76,
+      "blank_lines": 41,
+      "comment_lines": 23,
+      "functions": 0,
+      "complexity_score": 10.600000000000001
+    },
+    "/root/.openclaw/workspace/scripts/auto-update-all-knowledge.sh": {
+      "total_lines": 76,
+      "code_lines": 50,
+      "blank_lines": 16,
+      "comment_lines": 10,
+      "functions": 1,
+      "complexity_score": 12.0
+    },
+    "/root/.openclaw/workspace/scripts/integrated-morning-routine.sh": {
+      "total_lines": 318,
+      "code_lines": 216,
+      "blank_lines": 35,
+      "comment_lines": 67,
+      "functions": 0,
+      "complexity_score": 44.6
+    },
+    "/root/.openclaw/workspace/scripts/deploy-video-function-manual.sh": {
+      "total_lines": 44,
+      "code_lines": 25,
+      "blank_lines": 12,
+      "comment_lines": 7,
+      "functions": 0,
+      "complexity_score": 3.5
+    },
+    "/root/.openclaw/workspace/scripts/live-search.sh": {
+      "total_lines": 48,
+      "code_lines": 35,
+      "blank_lines": 7,
+      "comment_lines": 6,
+      "functions": 0,
+      "complexity_score": 6.5
+    },
+    "/root/.openclaw/workspace/scripts/auto-exec-enforcer.sh": {
+      "total_lines": 60,
+      "code_lines": 41,
+      "blank_lines": 12,
+      "comment_lines": 7,
+      "functions": 1,
+      "complexity_score": 6.1000000000000005
+    },
+    "/root/.openclaw/workspace/scripts/continuous-autonomous-operation.sh": {
+      "total_lines": 153,
+      "code_lines": 88,
+      "blank_lines": 34,
+      "comment_lines": 31,
+      "functions": 6,
+      "complexity_score": 27.8
+    },
+    "/root/.openclaw/workspace/scripts/notify-user.sh": {
+      "total_lines": 121,
+      "code_lines": 76,
+      "blank_lines": 32,
+      "comment_lines": 13,
+      "functions": 3,
+      "complexity_score": 15.600000000000001
+    },
+    "/root/.openclaw/workspace/scripts/session-end-handler.sh": {
+      "total_lines": 37,
+      "code_lines": 26,
+      "blank_lines": 7,
+      "comment_lines": 4,
+      "functions": 0,
+      "complexity_score": 4.6
+    },
+    "/root/.openclaw/workspace/scripts/skill-health-check.sh": {
+      "total_lines": 23,
+      "code_lines": 16,
+      "blank_lines": 5,
+      "comment_lines": 2,
+      "functions": 0,
+      "complexity_score": 3.6
+    },
+    "/root/.openclaw/workspace/scripts/dashboard.sh": {
+      "total_lines": 80,
+      "code_lines": 56,
+      "blank_lines": 15,
+      "comment_lines": 9,
+      "functions": 0,
+      "complexity_score": 8.600000000000001
+    },
+    "/root/.openclaw/workspace/scripts/voice-transcribe.sh": {
+      "total_lines": 69,
+      "code_lines": 46,
+      "blank_lines": 15,
+      "comment_lines": 8,
+      "functions": 0,
+      "complexity_score": 7.6000000000000005
+    },
+    "/root/.openclaw/workspace/scripts/autonomous-mode.sh": {
+      "total_lines": 67,
+      "code_lines": 40,
+      "blank_lines": 14,
+      "comment_lines": 13,
+      "functions": 0,
+      "complexity_score": 13.0
+    },
+    "/root/.openclaw/workspace/scripts/autonomous-mission-control.sh": {
+      "total_lines": 216,
+      "code_lines": 141,
+      "blank_lines": 39,
+      "comment_lines": 36,
+      "functions": 9,
+      "complexity_score": 39.1
+    },
+    "/root/.openclaw/workspace/scripts/meeting-prep.sh": {
+      "total_lines": 95,
+      "code_lines": 56,
+      "blank_lines": 30,
+      "comment_lines": 9,
+      "functions": 0,
+      "complexity_score": 7.6000000000000005
+    },
+    "/root/.openclaw/workspace/scripts/morning-routine.sh": {
+      "total_lines": 318,
+      "code_lines": 216,
+      "blank_lines": 35,
+      "comment_lines": 67,
+      "functions": 0,
+      "complexity_score": 44.6
+    },
+    "/root/.openclaw/workspace/scripts/memory-validator-cron.sh": {
+      "total_lines": 55,
+      "code_lines": 37,
+      "blank_lines": 10,
+      "comment_lines": 8,
+      "functions": 1,
+      "complexity_score": 11.7
+    },
+    "/root/.openclaw/workspace/scripts/brainstorm-ideas.sh": {
+      "total_lines": 87,
+      "code_lines": 55,
+      "blank_lines": 24,
+      "comment_lines": 8,
+      "functions": 0,
+      "complexity_score": 11.5
+    },
+    "/root/.openclaw/workspace/scripts/mission-control-sync.sh": {
+      "total_lines": 191,
+      "code_lines": 143,
+      "blank_lines": 28,
+      "comment_lines": 20,
+      "functions": 2,
+      "complexity_score": 27.3
+    },
+    "/root/.openclaw/workspace/scripts/repurpose-content.sh": {
+      "total_lines": 165,
+      "code_lines": 107,
+      "blank_lines": 47,
+      "comment_lines": 11,
+      "functions": 0,
+      "complexity_score": 12.700000000000001
+    },
+    "/root/.openclaw/workspace/scripts/network-manage.sh": {
+      "total_lines": 75,
+      "code_lines": 49,
+      "blank_lines": 16,
+      "comment_lines": 10,
+      "functions": 0,
+      "complexity_score": 7.9
+    },
+    "/root/.openclaw/workspace/scripts/health-check.sh": {
+      "total_lines": 127,
+      "code_lines": 102,
+      "blank_lines": 14,
+      "comment_lines": 11,
+      "functions": 0,
+      "complexity_score": 26.200000000000003
+    },
+    "/root/.openclaw/workspace/scripts/crisis-respond.sh": {
+      "total_lines": 104,
+      "code_lines": 63,
+      "blank_lines": 30,
+      "comment_lines": 11,
+      "functions": 0,
+      "complexity_score": 9.3
+    },
+    "/root/.openclaw/workspace/scripts/preflight-checklist.sh": {
+      "total_lines": 111,
+      "code_lines": 79,
+      "blank_lines": 20,
+      "comment_lines": 12,
+      "functions": 0,
+      "complexity_score": 25.9
+    },
+    "/root/.openclaw/workspace/scripts/memory-validator.sh": {
+      "total_lines": 116,
+      "code_lines": 83,
+      "blank_lines": 21,
+      "comment_lines": 12,
+      "functions": 0,
+      "complexity_score": 19.3
+    },
+    "/root/.openclaw/workspace/scripts/skill-master.sh": {
+      "total_lines": 55,
+      "code_lines": 41,
+      "blank_lines": 7,
+      "comment_lines": 7,
+      "functions": 0,
+      "complexity_score": 5.1000000000000005
+    },
+    "/root/.openclaw/workspace/scripts/skill-activation.sh": {
+      "total_lines": 48,
+      "code_lines": 41,
+      "blank_lines": 5,
+      "comment_lines": 2,
+      "functions": 0,
+      "complexity_score": 7.1000000000000005
+    },
+    "/root/.openclaw/workspace/scripts/daily-podcast-clips.sh": {
+      "total_lines": 163,
+      "code_lines": 108,
+      "blank_lines": 31,
+      "comment_lines": 24,
+      "functions": 1,
+      "complexity_score": 25.8
+    },
+    "/root/.openclaw/workspace/scripts/deploy-total-control.sh": {
+      "total_lines": 16,
+      "code_lines": 9,
+      "blank_lines": 4,
+      "comment_lines": 3,
+      "functions": 0,
+      "complexity_score": 0.9
+    },
+    "/root/.openclaw/workspace/scripts/agent-dashboard.sh": {
+      "total_lines": 121,
+      "code_lines": 92,
+      "blank_lines": 17,
+      "comment_lines": 12,
+      "functions": 0,
+      "complexity_score": 14.200000000000001
+    },
+    "/root/.openclaw/workspace/scripts/summarize.sh": {
+      "total_lines": 66,
+      "code_lines": 41,
+      "blank_lines": 17,
+      "comment_lines": 8,
+      "functions": 0,
+      "complexity_score": 14.100000000000001
+    },
+    "/root/.openclaw/workspace/scripts/never-stop-mechanism.sh": {
+      "total_lines": 130,
+      "code_lines": 79,
+      "blank_lines": 27,
+      "comment_lines": 24,
+      "functions": 6,
+      "complexity_score": 23.9
+    }
+  }
+}

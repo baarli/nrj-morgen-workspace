@@ -1,0 +1,39 @@
+# Bash Quality Rules
+
+## Syntax Requirements
+- Must pass `bash -n` syntax check
+- No syntax errors allowed
+
+## Header Requirements
+- Must have shebang: #!/bin/bash or #!/bin/sh
+- Should include brief description comment
+
+## Error Handling
+- Use `set -e` or explicit error handling
+- Check return codes for important operations
+- Use trap for cleanup
+
+## Variable Usage
+- Quote all variables: "$VAR" not $VAR
+- Use local in functions
+- Avoid global variables when possible
+- No hardcoded paths (use variables)
+
+## Code Style
+- Maximum line length: 100 characters
+- Use meaningful variable names
+- Functions should have comments
+- Use indentation consistently
+
+## Best Practices
+- Use [[ ]] for tests, not [ ]
+- Use $() instead of backticks
+- Prefer printf over echo for formatting
+- Check if commands exist before using
+
+## Scoring
+- Missing shebang: -10 points
+- No error handling: -5 points
+- Unquoted variables: -1 point each (max -10)
+- Line too long: -1 point per line
+- Syntax error: -30 points (critical)

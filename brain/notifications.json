@@ -1,0 +1,12 @@
+[
+  {
+    "id": "87c5f372",
+    "title": "Test Notification",
+    "message": "System monitoring is working correctly",
+    "level": "info",
+    "source": "cli",
+    "timestamp": "2026-02-28T06:56:45.410950",
+    "read": false,
+    "actions": []
+  }
+]

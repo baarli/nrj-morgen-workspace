@@ -1,0 +1,23 @@
+[Unit]
+Description=Mission Control API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/.openclaw/workspace/mission-control/api
+Environment=PYTHONUNBUFFERED=1
+Environment=API_PORT=8081
+Environment=WS_PORT=8082
+Environment=LOG_LEVEL=INFO
+Environment=JWT_SECRET=your-secret-key-here
+Environment=ADMIN_PASSWORD=your-admin-password
+Environment=SUPABASE_URL=https://kvniauxokdtmpvjtfnej.supabase.co
+Environment=SUPABASE_SERVICE_KEY=your-service-key
+
+ExecStart=/usr/bin/python3 /root/.openclaw/workspace/mission-control/api/total-control-api.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
