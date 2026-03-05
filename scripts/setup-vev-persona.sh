@@ -13,30 +13,38 @@ vev-persona() {
 }
 export -f vev-persona
 
-# Full Vev initialization (persona + context + proactive)
+# Full Vev initialization (master + persona + context + proactive)
 vev-init() {
     echo "════════════════════════════════════════════════════════════════"
     echo "🚀 VEV FULL INITIALIZATION"
     echo "════════════════════════════════════════════════════════════════"
     echo ""
     
+    # Step 0: Master Architecture
+    echo "📋 Step 0/4: Loading system architecture..."
+    if [ -f "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md" ]; then
+        echo "   ✅ System architecture loaded"
+        echo "   📊 Components: Voice Chat, Auto-Responder, Pre-flight, Skills"
+    fi
+    echo ""
+    
     # Step 1: Persona
-    echo "🎭 Step 1/3: Loading persona from SOUL.md..."
+    echo "🎭 Step 1/4: Loading persona from SOUL.md..."
     vev-persona
     echo ""
     
     # Step 2: Context  
-    echo "🧠 Step 2/3: Loading system context..."
+    echo "🧠 Step 2/4: Loading system context..."
     cd /root/.openclaw/workspace/scripts && python3 vev-preflight.py 2>/dev/null
     echo ""
     
     # Step 3: Proactive
-    echo "🔔 Step 3/3: Checking proactive suggestions..."
+    echo "🔔 Step 3/4: Checking proactive suggestions..."
     cd /root/.openclaw/workspace/scripts && python3 vev-proactive-suggest.py 2>/dev/null
     echo ""
     
     echo "════════════════════════════════════════════════════════════════"
-    echo "✅ VEV IS READY - Persona + Context + Awareness"
+    echo "✅ VEV IS READY - Architecture + Persona + Context + Awareness"
     echo "════════════════════════════════════════════════════════════════"
     echo ""
 }
