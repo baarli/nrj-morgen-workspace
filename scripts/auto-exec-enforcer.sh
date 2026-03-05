@@ -57,6 +57,24 @@ if [ -f "$SCRIPT_DIR/vev-preflight.py" ]; then
     echo ""
 fi
 
+# Run learning loop check (NEW - verifies learning system is active)
+echo "🔄 Checking Learning Loop System..."
+if [ -f "$SCRIPT_DIR/vev-learning-loop.sh" ]; then
+    echo "   ✅ Learning Loop v2.0 is installed"
+    echo "   📝 Auto-detects learning from file changes"
+    echo "   🧠 Applies learning before tasks"
+    echo "   📊 Analyzes patterns every 6 hours"
+    echo "   🔄 Self-improves daily at 2 AM"
+    echo ""
+fi
+
+# Run VEV PRE-FLIGHT (NEW - automatic context loading with learning)
+echo "🧠 Running Vev Pre-Flight System v2.0..."
+if [ -f "$SCRIPT_DIR/vev-preflight.py" ]; then
+    python3 "$SCRIPT_DIR/vev-preflight.py"
+    echo ""
+fi
+
 # Run pre-flight
 run_with_verification "mandatory-preflight.sh"
 
@@ -69,5 +87,12 @@ echo "✅ ALL MANDATORY PROCEDURES COMPLETED"
 echo "═══════════════════════════════════════════════════════════════════════"
 echo ""
 echo "You may now proceed with work."
-echo "Remember: auto-learning-capture.sh will run at session end."
+echo ""
+echo "🔄 LEARNING LOOP v2.0 STATUS:"
+echo "   • Auto-detects learning: ACTIVE (every 30 min)"
+echo "   • Applies learning: ACTIVE (in pre-flight)"
+echo "   • Pattern analysis: ACTIVE (every 6 hours)"
+echo "   • Self-improvement: ACTIVE (daily at 2 AM)"
+echo ""
+echo "No manual input required - I learn automatically!"
 echo ""

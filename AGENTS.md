@@ -274,7 +274,7 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
 
-## End of Every Session (AUTOMATIC)
+## End of Every Session (AUTOMATIC) - v2.0
 
 **MANDATORY - Before ending ANY session:**
 
@@ -285,43 +285,51 @@ bash session-end-handler.sh
 ```
 
 **This AUTOMATICALLY runs:**
-1. auto-learning-capture.sh
-2. Documents all learnings
-3. Updates daily log
-4. Creates completion markers
+1. **Learning Loop v2.0** - Auto-detects learning from file changes
+2. **Pattern Analyzer** - Finds trends (every 6 hours)
+3. **Self-Improvement** - Creates skills from patterns (daily)
+4. **Git commit** - Saves all changes automatically
 
-**You CANNOT skip this.** It runs automatically via cron job every hour.
+**You CANNOT skip this.** It runs automatically via cron job every 30 minutes.
+
+### Learning Loop v2.0 Components:
+
+| Component | Runs | Function |
+|-----------|------|----------|
+| `vev-auto-detect-learning.py` | Every 30 min | Detects learning from file changes |
+| `vev-apply-learning.py` | Before tasks | Applies previous learning |
+| `vev-pattern-analyzer.py` | Every 6 hours | Analyzes trends |
+| `vev-self-improve.py` | Daily at 2 AM | Creates skills from patterns |
+| `vev-learning-loop.sh` | Every 30 min | Orchestrates all systems |
+
+**NO MANUAL INPUT REQUIRED!**
 
 ### Manual Verification (if needed)
 If automatic handler didn't run:
 ```bash
 cd /root/.openclaw/workspace/scripts
-bash auto-learning-capture.sh
+bash vev-learning-loop.sh
 ```
 
 **This documents:**
-- What was accomplished
-- Key insights
-- Mistakes made and lessons learned
-- New skills created
+- What was accomplished (auto-detected)
+- File changes analyzed
+- Patterns identified
+- Skills created from experience
 
 ---
 
-## End of Every Session
+## End of Every Session (LEGACY - Replaced by v2.0)
 
-**MANDATORY - Before ending ANY session:**
+**OLD SYSTEM - Now runs automatically:**
 
-### Step 1: Learning Capture
-```bash
-cd /root/.openclaw/workspace/scripts
-bash auto-learning-capture.sh
-```
+### ~~Step 1: Learning Capture~~
+~~bash auto-learning-capture.sh~~
 
-### Step 2: Document Learnings
-Update `/root/.openclaw/workspace/memory/YYYY-MM-DD.md` with:
-- What was accomplished
-- Key insights
-- Mistakes made and lessons learned
+**REPLACED BY:** `vev-auto-detect-learning.py` (no manual input)
+
+### ~~Step 2: Document Learnings~~
+**REPLACED BY:** Automatic pattern analysis and MEMORY.md updates
 - New skills created
 
 ### Step 3: Update Long-term Memory

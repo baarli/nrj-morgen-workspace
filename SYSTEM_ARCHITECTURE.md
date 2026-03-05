@@ -187,13 +187,22 @@ vev-init              # Full initialisering
 vev-preflight         # Last kontekst
 vev-persona           # Husk hvem jeg er
 
-# Analyse & Læring
-vev-learn             # Dokumenter læring
+# Analyse & Læring (v2.0 - AUTOMATISK)
+vev-preflight         # Last kontekst (inkluderer læring)
 vev-skills            # Finn relevante skills
-vev-errors            # Se gjentatte feil
 vev-mood              # Spor humør
 vev-summary           # Oppsummer samtale
 vev-proactive         # System-forslag
+
+# LEARNING LOOP v2.0 (Kjører automatisk hver 30. minutt)
+# ┌──────────────────────────────────────────────────────────┐
+# │ 1. Auto-detect: Ser filendringer → Lager læring          │
+# │ 2. Apply learning: Sjekker før oppgaver → Bruker beste   │
+# │ 3. Pattern analyzer: Hver 6. time → Finner trender       │
+# │ 4. Self-improve: Daglig kl. 02:00 → Lager skills         │
+# │ 5. Integration: Alt er koblet sammen                     │
+# └──────────────────────────────────────────────────────────┘
+# INGEN MANUELL INPUT NØDVENDIG!
 
 # Kommunikasjon
 vev-telegram-voice    # Send talemelding
