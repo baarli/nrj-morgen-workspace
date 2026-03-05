@@ -44,7 +44,7 @@
 - **Auto-Responder:** `/root/.openclaw/workspace/scripts/vev-telegram-auto-responder.py`
 - **Service:** `systemctl status vev-telegram-responder.service`
 
-**Auto-Responder v2.1 (FIXED):**
+**Auto-Responder v2.1 (auto-updated) (FIXED):**
 - Kjører som system-tjeneste 24/7 ✅
 - Sjekker nye meldinger hvert 2. sekund ✅
 - Svarer automatisk med tekst OG stemme ✅
