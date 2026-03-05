@@ -255,19 +255,41 @@ def send_message(text, chat_id=None):
         log(f"Error sending message: {e}")
         return False
 
-def generate_tts(text):
-    """Generer TTS via ElevenLabs"""
+def generate_tts_with_emotion(text, emotion=None):
+    """Generer TTS med emosjonell tilpasning"""
     import hashlib
-    text_hash = hashlib.md5(text.encode()).hexdigest()[:8]
+    text_hash = hashlib.md5(f"{text}{emotion or 'default'}".encode()).hexdigest()[:8]
     
-    AUDIO_DIR = f"{WORKSPACE}/brain/projects/voice-chat/audio"
+    AUDIO_DIR = f"{WORKSPACE}/brain/projects/voice-chat/audio-emotional"
     Path(AUDIO_DIR).mkdir(parents=True, exist_ok=True)
     
-    filepath = f"{AUDIO_DIR}/auto_{text_hash}.mp3"
+    filepath = f"{AUDIO_DIR}/auto_{emotion or 'neutral'}_{text_hash}.mp3"
     
     # Sjekk cache
     if Path(filepath).exists():
         return filepath
+    
+    # Detekter emosjon hvis ikke spesifisert
+    if not emotion:
+        text_lower = text.lower()
+        if any(word in text_lower for word in ['fantastisk', 'utrolig', 'wow', 'amazing']):
+            emotion = 'excited'
+        elif any(word in text_lower for word in ['bra', 'godt', 'glad', 'happy']):
+            emotion = 'happy'
+        elif any(word in text_lower for word in ['viktig', 'alvorlig', 'problem', 'feil']):
+            emotion = 'serious'
+        else:
+            emotion = 'curious'
+    
+    # Emosjonelle innstillinger
+    emotions = {
+        'excited': {'stability': 0.25, 'similarity_boost': 0.90, 'style': 0.8},
+        'happy': {'stability': 0.35, 'similarity_boost': 0.85, 'style': 0.6},
+        'serious': {'stability': 0.65, 'similarity_boost': 0.70, 'style': 0.2},
+        'curious': {'stability': 0.45, 'similarity_boost': 0.75, 'style': 0.4}
+    }
+    
+    settings = emotions.get(emotion, emotions['curious'])
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{VEV_VOICE_ID}"
     headers = {
@@ -278,7 +300,11 @@ def generate_tts(text):
     data = {
         "text": text,
         "model_id": VEV_VOICE_MODEL,
-        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}
+        "voice_settings": {
+            "stability": settings['stability'],
+            "similarity_boost": settings['similarity_boost'],
+            "style": settings['style']
+        }
     }
     
     try:
@@ -432,11 +458,21 @@ def process_message(message, state):
     # Lagre i historikk
     add_to_history(chat_id, text, response_text)
     
-    # Generer og send talemelding
-    audio_path = generate_tts(response_text)
+    # Generer og send talemelding med emosjon
+    detected_emotion = None
+    text_lower = text.lower()
+    if any(word in text_lower for word in ['fantastisk', 'utrolig', 'wow']):
+        detected_emotion = 'excited'
+    elif any(word in text_lower for word in ['bra', 'godt', 'glad']):
+        detected_emotion = 'happy'
+    elif any(word in text_lower for word in ['viktig', 'alvorlig', 'problem']):
+        detected_emotion = 'serious'
+    
+    audio_path = generate_tts_with_emotion(response_text, detected_emotion)
     if audio_path:
-        send_voice_message(audio_path, chat_id)
-        log(f"Sendt talemelding")
+        emotion_label = detected_emotion or 'neutral'
+        send_voice_message(audio_path, chat_id, caption=f"🎭 {emotion_label}")
+        log(f"Sendt talemelding ({emotion_label})")
         update_profile_stats(chat_id, message_received=True, voice_sent=True)
     else:
         update_profile_stats(chat_id, message_received=True, voice_sent=False)
