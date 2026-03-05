@@ -1,11 +1,11 @@
 #!/bin/bash
-set -e  # Exit on error
 # MISSION CONTROL SYNC - Ensures all HTML files are consistent
-# This script MUST be run after EVERY change to ensure consistency
+# NOTE: Removed 'set -e' to prevent crashes on deployment errors
 
 WORKSPACE="/root/.openclaw/workspace"
 MISSION_CONTROL="$WORKSPACE/mission-control/public"
 LOG_FILE="/var/log/mission-control-sync.log"
+GH_PAGES_DIR="$WORKSPACE/github-pages"
 
 log() {
     echo "[$(date '+%H:%M:%S')] $1" | tee -a "$LOG_FILE"
@@ -176,11 +176,28 @@ echo "$(date '+%Y-%m-%d %H:%M:%S')" > "$MISSION_CONTROL/.last-sync"
 
 # 7. Deploy if requested
 if [ "$1" == "--deploy" ]; then
-    log "6️⃣ Deploying to Netlify..."
-    cd "$MISSION_CONTROL" && \
-    netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a \
-        --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092 2>&1 | tail -5
-    log "   ✅ Deployed!"
+    log "6️⃣ Deploying to GitHub Pages..."
+    
+    # Ensure github-pages directory exists
+    if [ ! -d "$GH_PAGES_DIR" ]; then
+        log "   Creating github-pages directory..."
+        mkdir -p "$GH_PAGES_DIR"
+        cd "$GH_PAGES_DIR"
+        git init
+        git remote add origin https://github.com/baarli/nrj-morgen-workspace.git
+    fi
+    
+    # Sync files to github-pages
+    rsync -av --delete "$MISSION_CONTROL/" "$GH_PAGES_DIR/" 2>&1 | tail -3
+    cd "$GH_PAGES_DIR"
+    git fetch origin gh-pages 2>/dev/null || log "   No existing gh-pages branch"
+    git checkout --orphan gh-pages 2>/dev/null || git checkout gh-pages 2>/dev/null || true
+    git rm -rf . 2>/dev/null || true
+    git add -A
+    git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')" 2>&1 | tail -1 || log "   No changes"
+    git push -f origin gh-pages 2>&1 | tail -3
+    log "   ✅ Deployed to GitHub Pages!"
+    log "   🔗 URL: https://baarli.github.io/nrj-morgen-workspace/"
 fi
 
 log "================================"

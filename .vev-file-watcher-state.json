@@ -182,7 +182,7 @@
   "/root/.openclaw/workspace/scripts/vev-self-improve.py": "83828330cbcc53da05754da7c3a32166",
   "/root/.openclaw/workspace/scripts/vev-subagent-manager.py": "1bb3eaf6858b91a9a70fda2159502304",
   "/root/.openclaw/workspace/scripts/continuous-agent.sh": "0b5da38ceffd3a5a59acd74b35a71d04",
-  "/root/.openclaw/workspace/scripts/auto-sync-mission-control.sh": "f1cca2d1b19282dad115b7da0372aa2f",
+  "/root/.openclaw/workspace/scripts/auto-sync-mission-control.sh": "df1c144da0797de24286052795563988",
   "/root/.openclaw/workspace/scripts/ml-learning-analyzer.sh": "5f5ccfa479ebe0ae456e9d1442e65784",
   "/root/.openclaw/workspace/scripts/agent-wake.sh": "47adfbb8020057fa7adebbdeff4aa488",
   "/root/.openclaw/workspace/scripts/auto-skill-selector.sh": "3a3635ff718be10b8a03fe7788911879",
@@ -237,7 +237,7 @@
   "/root/.openclaw/workspace/scripts/morning-routine.sh": "7b70e806918f0dfd5db232117a4b6044",
   "/root/.openclaw/workspace/scripts/memory-validator-cron.sh": "a2512ca2bb1aa81d5519fde904f2a3fb",
   "/root/.openclaw/workspace/scripts/brainstorm-ideas.sh": "ae7977a8bd5ec18c5ce0f3f83891c69e",
-  "/root/.openclaw/workspace/scripts/mission-control-sync.sh": "0f6cccf679d8a00f2d009cbfa8f426ee",
+  "/root/.openclaw/workspace/scripts/mission-control-sync.sh": "409d84b5f7346eafef497937d27c56a7",
   "/root/.openclaw/workspace/scripts/vev-experience-logger.sh": "2fede1e224d935ee3371001adeddb9fe",
   "/root/.openclaw/workspace/scripts/nrj-weekly-update.sh": "3453bcab19f4d8f1781b83c09c7cf2cc",
   "/root/.openclaw/workspace/scripts/repurpose-content.sh": "99b83f792741655899e824c05294f9b6",
@@ -250,7 +250,7 @@
   "/root/.openclaw/workspace/scripts/skill-activation.sh": "ce53aa53322d7cd26c8d2d95cfa876b2",
   "/root/.openclaw/workspace/scripts/creative-time.sh": "9f699d6e41f30f9f1ca7122d06cac1f4",
   "/root/.openclaw/workspace/scripts/daily-podcast-clips.sh": "13a9d9008c2087ba246d34d53fb2e328",
-  "/root/.openclaw/workspace/scripts/deploy-total-control.sh": "a399d18c3e140c557d1e697dcaea4c91",
+  "/root/.openclaw/workspace/scripts/deploy-total-control.sh": "77e2362732058b91885072045d9969b0",
   "/root/.openclaw/workspace/scripts/agent-dashboard.sh": "476bdf43c3f98519f7ffd8ada640051e",
   "/root/.openclaw/workspace/scripts/summarize.sh": "68a3da9f6909d4e315208b0775d693cb",
   "/root/.openclaw/workspace/scripts/never-stop-mechanism.sh": "b6dd17a8ce280df0aeca26564ec83281",
@@ -280,5 +280,5 @@
   "/root/.openclaw/workspace/AGENTS.md": "fa6e4343bc3c1d633a0bba48bc32a44c",
   "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "90dec2891e30117cca2dcce9bded3a1b",
   "/root/.openclaw/workspace/TOOLS.md": "01494885d76e15b8ab004127ddb33af4",
-  "/root/.openclaw/workspace/MEMORY.md": "b3f34b9bb07772556cce9d992500290e"
+  "/root/.openclaw/workspace/MEMORY.md": "e944491cc250800522a3d7ef0c22a7f3"
 }
