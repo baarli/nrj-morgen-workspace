@@ -44,12 +44,16 @@
 - **Auto-Responder:** `/root/.openclaw/workspace/scripts/vev-telegram-auto-responder.py`
 - **Service:** `systemctl status vev-telegram-responder.service`
 
-**Auto-Responder:**
-- Kjører som system-tjeneste 24/7
-- Sjekker nye meldinger hvert 2. sekund
-- Svarer automatisk med tekst OG stemme
-- Logger all aktivitet
-- Restartes automatisk ved feil
+**Auto-Responder v2.1 (FIXED):**
+- Kjører som system-tjeneste 24/7 ✅
+- Sjekker nye meldinger hvert 2. sekund ✅
+- Svarer automatisk med tekst OG stemme ✅
+- **Kontekst-aware:** Husker siste 10 meldinger ✅
+- **Personlig tilpasning:** Lærer dine interesser ✅
+- **Emosjonell stemme:** Tilpasser tone etter innhold ✅
+- Logger all aktivitet ✅
+- Restartes automatisk ved feil ✅
+- **Fikset:** Duplikate funksjoner fjernet, profil-håndtering robust ✅
 
 **Voice Settings:**
 - **Stemme:** Sebastian (Norsk / Norwegian)

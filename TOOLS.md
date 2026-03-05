@@ -722,13 +722,33 @@ ls -la /tmp/podcast-clips/$(date +%Y%m%d)/
 **Credentials:** `/root/.openclaw/workspace/.credentials/telegram-bot.env`  
 **Status:** ✅ **FUNGERER** - To-veis kommunikasjon aktiv
 
-### Hvordan det fungerer
-- Du sender melding til @Vev_kompis_bot
-- Jeg sjekker med `telegram-poll.py`
-- Jeg ser meldingen og svarer personlig
-- Svar sendes via `telegram-reply.sh`
+### 🤖 Auto-Responder v2.1 (NY - 2026-03-05)
 
-### Scripts
+**Systemd Service:** `vev-telegram-responder.service`
+
+**Funksjoner:**
+- ✅ Kjører 24/7 som system-tjeneste
+- ✅ Mottar meldinger hvert 2. sekund
+- ✅ Svarer automatisk med **tekst OG stemme**
+- ✅ **Kontekst-aware:** Husker siste 10 meldinger
+- ✅ **Personlig:** Lærer dine interesser over tid
+- ✅ **Emosjonell stemme:** Tilpasser tone (excited/happy/serious/curious)
+- ✅ Restartes automatisk ved feil
+- ✅ **Fikset:** Robust profil-håndtering
+
+**Kommandoer:**
+```bash
+# Sjekk status
+systemctl status vev-telegram-responder.service
+
+# Restart
+sudo systemctl restart vev-telegram-responder.service
+
+# Se logger
+sudo journalctl -u vev-telegram-responder.service -f
+```
+
+### Manuelle Scripts (hvis auto-responder er av)
 ```bash
 # Sjekk nye meldinger
 cd /root/.openclaw/workspace && python3 scripts/telegram-poll.py

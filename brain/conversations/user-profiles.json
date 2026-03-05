@@ -26,15 +26,15 @@
           "Bruk det som profilbilde her ogs\u00e5 da",
           "Bruk det som profilbilde her ogs\u00e5 da",
           "Bruk det som profilbilde her ogs\u00e5 da",
-          "Bruk det som profilbilde her ogs\u00e5 da"
+          "Test test"
         ]
       },
       "stats": {
-        "total_messages": 1,
-        "voice_messages_sent": 1,
-        "last_interaction": "2026-03-05T20:26:25.736510"
+        "total_messages": 2,
+        "voice_messages_sent": 2,
+        "last_interaction": "2026-03-05T20:27:18.631939"
       }
     }
   },
-  "last_updated": "2026-03-05T20:26:25.736514"
+  "last_updated": "2026-03-05T20:27:18.631949"
 }

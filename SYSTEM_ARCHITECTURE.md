@@ -98,19 +98,20 @@ vev-init() {
 - ✅ Rydder og vedlikeholder
 - ✅ Oppdaterer todo-lister
 
-#### Telegram Auto-Responder v2.0 (24/7)
+#### Telegram Auto-Responder v2.1 (24/7) ✅ STABIL
 ```bash
 # Systemd service: vev-telegram-responder.service
 ```
 
 **Hva det gjør:**
 - ✅ Lytter etter meldinger hvert 2. sekund
-- ✅ **AI-baserte svar** med OpenClaw integrasjon
+- ✅ **AI-baserte svar** med kontekst-awareness
 - ✅ **Samtale-historikk** (siste 10 meldinger)
 - ✅ **Bruker-profiler** (lærer interesser og preferanser)
 - ✅ **Emosjonell stemme** (tilpasser tone etter kontekst)
 - ✅ Svarer med tekst OG stemme
 - ✅ Restartes automatisk ved feil
+- ✅ **Fikset:** Duplikate funksjoner fjernet, robust profil-håndtering
 
 **Kommandoer:**
 ```bash
