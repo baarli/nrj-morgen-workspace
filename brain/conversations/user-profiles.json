@@ -6,7 +6,11 @@
       "preferences": {
         "communication_style": "casual",
         "response_format": "both_voice_and_text",
-        "topics_of_interest": ["radio", "podcast", "technology"]
+        "topics_of_interest": [
+          "radio",
+          "podcast",
+          "technology"
+        ]
       },
       "conversation_patterns": {
         "greeting_style": "informal",
@@ -16,9 +20,21 @@
       "memory": {
         "last_topic": null,
         "favorite_features": [],
-        "dislikes": []
+        "dislikes": [],
+        "common_phrases": [
+          "Bruk det som profilbilde her ogs\u00e5 da",
+          "Bruk det som profilbilde her ogs\u00e5 da",
+          "Bruk det som profilbilde her ogs\u00e5 da",
+          "Bruk det som profilbilde her ogs\u00e5 da",
+          "Bruk det som profilbilde her ogs\u00e5 da"
+        ]
+      },
+      "stats": {
+        "total_messages": 1,
+        "voice_messages_sent": 1,
+        "last_interaction": "2026-03-05T20:26:25.736510"
       }
     }
   },
-  "last_updated": "2026-03-05T16:57:00"
+  "last_updated": "2026-03-05T20:26:25.736514"
 }
