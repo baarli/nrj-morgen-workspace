@@ -188,43 +188,70 @@ def validate_consistency():
     return len(issues) == 0
 
 def git_commit_changes():
-    """Commit all changes to git"""
+    """Commit all changes to git with retry logic"""
     log("   Committing changes to git...")
     
     import subprocess
+    import time
     
-    try:
-        # Check if there are changes
-        result = subprocess.run(
-            ['git', 'status', '--porcelain'],
-            cwd=WORKSPACE,
-            capture_output=True,
-            text=True
-        )
-        
-        if not result.stdout.strip():
-            log("      No changes to commit")
-            return True
-        
-        # Add all changes
-        subprocess.run(['git', 'add', '-A'], cwd=WORKSPACE, check=True)
-        
-        # Commit with auto-generated message
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        commit_msg = "Auto-sync: Documentation updated at " + timestamp
-        
-        subprocess.run(
-            ['git', 'commit', '-m', commit_msg],
-            cwd=WORKSPACE,
-            check=True
-        )
-        
-        log("      ✅ Changes committed")
-        return True
-        
-    except Exception as e:
-        log(f"      ❌ Git commit failed: {e}")
-        return False
+    max_retries = 3
+    retry_delay = 5
+    
+    for attempt in range(1, max_retries + 1):
+        try:
+            # Check if there are changes
+            result = subprocess.run(
+                ['git', 'status', '--porcelain'],
+                cwd=WORKSPACE,
+                capture_output=True,
+                text=True
+            )
+            
+            if not result.stdout.strip():
+                log("      No changes to commit")
+                return True
+            
+            # Add all changes
+            subprocess.run(['git', 'add', '-A'], cwd=WORKSPACE, check=True)
+            
+            # Commit with auto-generated message
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            commit_msg = "Auto-sync: Documentation updated at " + timestamp
+            
+            subprocess.run(
+                ['git', 'commit', '-m', commit_msg],
+                cwd=WORKSPACE,
+                check=True
+            )
+            
+            # Push with retry
+            for push_attempt in range(1, max_retries + 1):
+                try:
+                    subprocess.run(
+                        ['git', 'push', 'origin', 'master'],
+                        cwd=WORKSPACE,
+                        check=True,
+                        timeout=30
+                    )
+                    log("      ✅ Changes committed and pushed")
+                    return True
+                except Exception as push_e:
+                    log(f"      ⚠️ Push attempt {push_attempt} failed: {push_e}")
+                    if push_attempt < max_retries:
+                        time.sleep(retry_delay * push_attempt)
+                    else:
+                        raise
+            
+        except Exception as e:
+            log(f"      ⚠️ Attempt {attempt} failed: {e}")
+            if attempt < max_retries:
+                log(f"      Retrying in {retry_delay * attempt} seconds...")
+                time.sleep(retry_delay * attempt)
+            else:
+                log(f"      ❌ All {max_retries} attempts failed")
+                return False
+    
+    return False
 
 def main():
     if len(sys.argv) < 3:

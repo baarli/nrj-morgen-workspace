@@ -90,7 +90,7 @@
   "/root/.openclaw/workspace/scripts/bot_toolkit.py": "f56bb6438253fe50ae31d0052e9e2fa4",
   "/root/.openclaw/workspace/scripts/fix_cron_errors.py": "0037c525211b1b3167cd69d12eb0c8f5",
   "/root/.openclaw/workspace/scripts/baarliclaw_toolkit.py": "9843a065c66f540997c51757d09f4d3f",
-  "/root/.openclaw/workspace/scripts/vev-auto-sync-orchestrator.py": "1d2189f9140714d850f1b38749405b8b",
+  "/root/.openclaw/workspace/scripts/vev-auto-sync-orchestrator.py": "f27008c824d0717df657021d966d873e",
   "/root/.openclaw/workspace/scripts/nrj_growth_activator.py": "ef508598c0a018f0933c2ca5f5dc2c41",
   "/root/.openclaw/workspace/scripts/state_toolkit.py": "09a6ce8a21f44a5087cddba39f963c6c",
   "/root/.openclaw/workspace/scripts/morning-routine-v2.py": "62b4e92f8560446e97726df5e953b57e",
@@ -189,6 +189,7 @@
   "/root/.openclaw/workspace/scripts/mandatory-preflight.sh": "617debd50d6b3d98e0655713b2813ee1",
   "/root/.openclaw/workspace/scripts/visualize-data.sh": "7b506eb19a6fddd42411f78607437224",
   "/root/.openclaw/workspace/scripts/vev-doc-auto-update.sh": "15a5862309adf22195db964c9f344208",
+  "/root/.openclaw/workspace/scripts/vev-health-monitor.sh": "ca32270f0bcafbfa84fd2eab960e437b",
   "/root/.openclaw/workspace/scripts/forecast-trends.sh": "df4097dafa00dc812afe1940951df396",
   "/root/.openclaw/workspace/scripts/agent-wrapper.sh": "ac3a69fd0b9082c97840d1ea01749ca3",
   "/root/.openclaw/workspace/scripts/auto-learning-capture.sh": "8491a87f02b0655b0581a6aebfa89171",
@@ -206,6 +207,7 @@
   "/root/.openclaw/workspace/scripts/live-search.sh": "202a54c4bc89c7755d2d115a9d9cfbf9",
   "/root/.openclaw/workspace/scripts/apply-cron-fixes.sh": "64749412ee2b828ca3025f4ece9057e2",
   "/root/.openclaw/workspace/scripts/auto-exec-enforcer.sh": "e179de312343dadd362605fbd5adc112",
+  "/root/.openclaw/workspace/scripts/vev-verify-reliability.sh": "72f067bb18b66377f0e6ec6271abd972",
   "/root/.openclaw/workspace/scripts/vev-master-activator.sh": "095aff5f399393172353e62af2a49255",
   "/root/.openclaw/workspace/scripts/continuous-autonomous-operation.sh": "fa552da6fff1a530b69fb8240370dce3",
   "/root/.openclaw/workspace/scripts/cron-retry-wrapper.sh": "54eb425a8ec8b7550a61e13484884189",
@@ -265,7 +267,7 @@
   "/root/.openclaw/workspace/skills/api-gateway/SKILL.md": "7d98c976ecceac437091d49252e9f3b3",
   "/root/.openclaw/workspace/skills/nrj-dashboard-system/SKILL.md": "7c9f4f50a82a850c77400157f2ac77e6",
   "/root/.openclaw/workspace/AGENTS.md": "effda4361c6d5416ec286cb88699e6ef",
-  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "47fca53a33540ff09701afa3f2b1d1e1",
+  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "c91b72d377fe68da40fb692514bc6385",
   "/root/.openclaw/workspace/TOOLS.md": "01494885d76e15b8ab004127ddb33af4",
   "/root/.openclaw/workspace/MEMORY.md": "b3f34b9bb07772556cce9d992500290e"
 }
