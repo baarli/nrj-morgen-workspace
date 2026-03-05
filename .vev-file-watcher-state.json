@@ -99,6 +99,7 @@
   "/root/.openclaw/workspace/scripts/vev-apply-learning.py": "135b7be108700d1d1e1560b0ce515306",
   "/root/.openclaw/workspace/scripts/url_toolkit.py": "0233fc34ad92f9ee8215fb1566888e5a",
   "/root/.openclaw/workspace/scripts/http_toolkit.py": "9a53b116f43cec5ae7b904c81766d04e",
+  "/root/.openclaw/workspace/scripts/vev-mission-control-api.py": "30e8749662ea3a819062a7c9226798c6",
   "/root/.openclaw/workspace/scripts/git_toolkit.py": "446090f66f057bba630a3d4d601626f2",
   "/root/.openclaw/workspace/scripts/health_check_service.py": "03072561dacedb85bd21ca09b4307768",
   "/root/.openclaw/workspace/scripts/uuid_toolkit.py": "9aaa8592f81323de32e8e18a03b3b505",
