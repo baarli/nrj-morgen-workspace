@@ -249,6 +249,7 @@ BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 | Pre-flight System | ✅ Automatisk | 2026-03-05 |
 | Autonomous Executor | ✅ Cron | 2026-03-05 |
 | Nightly GitHub Backup | ✅ Cron kl. 03:00 | 2026-03-05 |
+| Auto-Sync System | ✅ File Watcher 24/7 | 2026-03-05 |
 | Supabase Backend | ✅ Online | 2026-03-05 |
 
 ## 🔄 Arbeidsflyt
@@ -279,6 +280,7 @@ BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 - **Hvert 2. sekund:** Telegram polling
 - **Hver dag:** Morning Routine (hvis aktivert)
 - **Hver natt kl. 03:00:** GitHub backup
+- **Kontinuerlig (24/7):** File Watcher - auto-sync dokumentasjon
 
 ## 💾 Backup & Gjenoppretting
 
@@ -289,6 +291,41 @@ BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 - Commiter alle endringer
 - Pusher til GitHub
 - Logger til `brain/logs/nightly-github-backup.log`
+
+### Auto-Sync System (NY 2026-03-05)
+
+**File Watcher:** `vev-file-watcher.service`
+
+**Hva det gjør:**
+- Overvåker ALLE filer 24/7
+- Detekterer endringer automatisk
+- Oppdaterer relevant dokumentasjon
+- Commiter til GitHub automatisk
+- Sikrer 100% konsistens
+
+**Kommandoer:**
+```bash
+# Sjekk status
+systemctl status vev-file-watcher.service
+
+# Se logger
+tail -f /root/.openclaw/workspace/brain/logs/file-watcher.log
+tail -f /root/.openclaw/workspace/brain/logs/auto-sync.log
+```
+
+**Hvordan det fungerer:**
+1. Scanner alle filer hvert 30. sekund
+2. Sammenligner med forrige state
+3. Finner avhengigheter (hvilke docs må oppdateres)
+4. Trigger auto-sync orchestrator
+5. Oppdaterer dokumentasjon
+6. Commiter og pusher til GitHub
+
+**Fordeler:**
+- ✅ Aldri utdatert dokumentasjon
+- ✅ 100% konsistens garantert
+- ✅ Ingen manuell innsats nødvendig
+- ✅ Full sporbarhet
 
 **Hvis jeg blir slettet:**
 ```bash
