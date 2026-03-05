@@ -213,6 +213,7 @@
   "/root/.openclaw/workspace/scripts/deploy-video-function-manual.sh": "082879cb12c07e75f03c30063d198806",
   "/root/.openclaw/workspace/scripts/live-search.sh": "202a54c4bc89c7755d2d115a9d9cfbf9",
   "/root/.openclaw/workspace/scripts/apply-cron-fixes.sh": "64749412ee2b828ca3025f4ece9057e2",
+  "/root/.openclaw/workspace/scripts/vev-freeride-auto.sh": "2d8cf46021c85ab4a011b757c2d2137a",
   "/root/.openclaw/workspace/scripts/auto-exec-enforcer.sh": "e179de312343dadd362605fbd5adc112",
   "/root/.openclaw/workspace/scripts/vev-verify-reliability.sh": "72f067bb18b66377f0e6ec6271abd972",
   "/root/.openclaw/workspace/scripts/vev-work-monitor.sh": "c4e866397517061a41bcf435b311dc80",
@@ -275,8 +276,8 @@
   "/root/.openclaw/workspace/skills/system-manager/SKILL.md": "fd22fe41c3485b7c179e1acecc12c097",
   "/root/.openclaw/workspace/skills/api-gateway/SKILL.md": "7d98c976ecceac437091d49252e9f3b3",
   "/root/.openclaw/workspace/skills/nrj-dashboard-system/SKILL.md": "7c9f4f50a82a850c77400157f2ac77e6",
-  "/root/.openclaw/workspace/AGENTS.md": "7929fa400622b54e33a04cc5957fbacb",
-  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "2ccb500ac6def99e2d445f65c076a0e1",
+  "/root/.openclaw/workspace/AGENTS.md": "fa6e4343bc3c1d633a0bba48bc32a44c",
+  "/root/.openclaw/workspace/SYSTEM_ARCHITECTURE.md": "90dec2891e30117cca2dcce9bded3a1b",
   "/root/.openclaw/workspace/TOOLS.md": "01494885d76e15b8ab004127ddb33af4",
   "/root/.openclaw/workspace/MEMORY.md": "b3f34b9bb07772556cce9d992500290e"
 }
