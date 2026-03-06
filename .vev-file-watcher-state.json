@@ -225,6 +225,7 @@
   "/root/.openclaw/workspace/scripts/session-end-handler.sh": "0f8f3d54fcf2c4e17b715bb1ec155abe",
   "/root/.openclaw/workspace/scripts/vev-activity-tracker.sh": "23d51cdaa7d681c25d78312a852b638c",
   "/root/.openclaw/workspace/scripts/skill-health-check.sh": "ad0a6d3415beff2934b317dc3448e7c9",
+  "/root/.openclaw/workspace/scripts/manual-deploy-github-pages.sh": "00ef7ae0bc27c9b7496d897690208ac1",
   "/root/.openclaw/workspace/scripts/dashboard.sh": "5fd3503673bcadcf910c3c27801c929c",
   "/root/.openclaw/workspace/scripts/telegram-send.sh": "c0d85cd46ee45b273bd5e0b874705af8",
   "/root/.openclaw/workspace/scripts/voice-transcribe.sh": "8eb697ca88cbd1ae2ec757c593a111d0",
