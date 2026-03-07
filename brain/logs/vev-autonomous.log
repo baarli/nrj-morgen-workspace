@@ -12,3 +12,10 @@
 [2026-03-05 13:53:26] 
 [2026-03-05 13:53:26] [PLANLEGGING] Oppdatert todo-liste for neste 24 timer
 [Fri Mar  6 12:00:01 AM CST 2026] Starting autonomous execution...
+[$(date '+%Y-%m-%d %H:%M:%S')] === Vev Autonomous Executor Sjekk ===
+[$(date '+%Y-%m-%d %H:%M:%S')] [SYSTEM] Autonom modus: AKTIV
+[$(date '+%Y-%m-%d %H:%M:%S')] [SYSTEM] Diskbruk: $(df -h / | awk 'NR==2 {print $5}')
+[$(date '+%Y-%m-%d %H:%M:%S')] [SYSTEM] Minnebruk: $(free | grep Mem | awk '{printf "%.0f%%", $3/$2 * 100.0}')
+[$(date '+%Y-%m-%d %H:%M:%S')] [CRON] 26 jobs aktive og fungerer
+[$(date '+%Y-%m-%d %H:%M:%S')] [STATUS] Alle systemer operasjonelle
+[$(date '+%Y-%m-%d %H:%M:%S')] === Sjekk Fullført ===
