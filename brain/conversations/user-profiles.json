@@ -22,19 +22,19 @@
         "favorite_features": [],
         "dislikes": [],
         "common_phrases": [
-          "Bruk det som profilbilde her ogs\u00e5 da",
           "Test test",
           "status",
           "Hva er status p\u00e5 prosjektene du holder p\u00e5 med",
-          "Hva er status p\u00e5 prosjektene du holder p\u00e5 med"
+          "Hva er status p\u00e5 prosjektene du holder p\u00e5 med",
+          "Hvordan har du det i dag mister?"
         ]
       },
       "stats": {
-        "total_messages": 6,
-        "voice_messages_sent": 6,
-        "last_interaction": "2026-03-06T01:13:01.681484"
+        "total_messages": 7,
+        "voice_messages_sent": 7,
+        "last_interaction": "2026-03-07T19:42:49.495872"
       }
     }
   },
-  "last_updated": "2026-03-06T01:13:01.681495"
+  "last_updated": "2026-03-07T19:42:49.495881"
 }
