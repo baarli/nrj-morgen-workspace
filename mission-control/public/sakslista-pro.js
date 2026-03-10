@@ -523,6 +523,7 @@ function renderSaker() {
                  data-index="${index}"
                  tabindex="0"
                  onfocus="focusedSakIndex = ${index}">
+                ${finalImageUrl ? `<div class="sak-thumbnail"><img src="${escapeHtml(finalImageUrl)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>` : ''}
                 <div class="sak-checkbox">
                     <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelection('${sak.id}')">
                 </div>

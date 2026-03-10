@@ -58,7 +58,7 @@ SKILL.md (Individual Skills)
 - **Primary:** kimi-coding/k2p5
 - **Fallback:** OpenRouter (gpt-4o, claude-3-opus, mistral-large)
 - **Auto-Switch:** FreeRide system
-- **API Key:** `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`
+- **API Key:** `[Se .credentials/openrouter.env]`
 
 ### Layer 3: Autonomous Core
 - NEVER_ASK: True

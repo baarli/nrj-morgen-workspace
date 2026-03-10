@@ -22,19 +22,19 @@
         "favorite_features": [],
         "dislikes": [],
         "common_phrases": [
-          "Test test",
           "status",
           "Hva er status p\u00e5 prosjektene du holder p\u00e5 med",
           "Hva er status p\u00e5 prosjektene du holder p\u00e5 med",
-          "Hvordan har du det i dag mister?"
+          "Hvordan har du det i dag mister?",
+          "Det er mye mas og lite autonom jobbing si"
         ]
       },
       "stats": {
-        "total_messages": 7,
-        "voice_messages_sent": 7,
-        "last_interaction": "2026-03-07T19:42:49.495872"
+        "total_messages": 8,
+        "voice_messages_sent": 8,
+        "last_interaction": "2026-03-11T01:41:38.251681"
       }
     }
   },
-  "last_updated": "2026-03-07T19:42:49.495881"
+  "last_updated": "2026-03-11T01:41:38.251689"
 }

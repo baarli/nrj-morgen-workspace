@@ -241,7 +241,7 @@ bash /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
 ---
 
 ### Brave Search API
-- **API Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **API Key:** `[Se .credentials/brave.env]`
 - **Brukes i:** Morning Routine, nyhetssøk, trending
 - **Dokumentasjon:** https://api.search.brave.com/app/documentation
 
@@ -744,7 +744,7 @@ ls -la /tmp/podcast-clips/$(date +%Y%m%d)/
 ## Telegram Bot - @Vev_kompis_bot (2026-03-05) ✅ FUNGERER
 
 **Bot:** @Vev_kompis_bot (navn: Vev)  
-**Token:** `8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU`  
+**Token:** `[Se .credentials/telegram-bot.env]`  
 **Chat ID:** 6426967326 (N B)  
 **Credentials:** `/root/.openclaw/workspace/.credentials/telegram-bot.env`  
 **Status:** ✅ **FUNGERER** - To-veis kommunikasjon aktiv
@@ -790,15 +790,15 @@ cd /root/.openclaw/workspace && python3 scripts/telegram-poll.py
 ### API-kall
 ```bash
 # Hent bot-info
-curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getMe"
+curl -s "https://api.telegram.org/bot[Se .credentials/telegram-bot.env]/getMe"
 
 # Send melding
-curl -s -X POST "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/sendMessage" \
+curl -s -X POST "https://api.telegram.org/bot[Se .credentials/telegram-bot.env]/sendMessage" \
   -d "chat_id=6426967326" \
   -d "text=Hei fra BaarliClaw!"
 
 # Sjekk meldinger
-curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getUpdates"
+curl -s "https://api.telegram.org/bot[Se .credentials/telegram-bot.env]/getUpdates"
 ```
 
 ### 🎙️ Voice Chat / Talemeldinger v2.0 (NY 2026-03-05)
@@ -863,7 +863,7 @@ vev-test-suite
 - **Emosjoner:** excited, happy, serious, curious
 - **Modell:** ElevenFlash 2.5
 - **API:** ElevenLabs
-- **API Key:** `0198de23418bce571b2a563958e510d23314d16c9e66fbe017423e9741418704`
+- **API Key:** `[Se .credentials/elevenlabs.env]`
 - **Script:** `/root/.openclaw/workspace/scripts/vev-telegram-voice.py`
 
 **Voice Chat i Mission Control:**
@@ -876,7 +876,7 @@ vev-test-suite
 - Bot: @Vev_kompis_bot (Vev)
 - Bruker: N B
 - Chat ID: 6426967326
-- Token: 8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU
+- Token: [Se .credentials/telegram-bot.env]
 
 ---
 

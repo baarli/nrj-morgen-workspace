@@ -351,10 +351,21 @@ def step3_delete_old():
     return result
 
 def step4_insert_articles(articles):
-    """STEG 4: Insert nye saker"""
-    log("STEG 4: Inserter nye saker...", "💾")
+    """STEG 4: Insert nye saker med AI-genererte bilder"""
+    log("STEG 4: Inserter nye saker med AI-bilder...", "💾")
     
     inserted = 0
+    
+    # Importer AI bildegenerator
+    import sys
+    sys.path.insert(0, '/root/.openclaw/workspace/scripts')
+    try:
+        from ai_image_generator import generate_news_image
+        ai_available = True
+        log("AI bildegenerering tilgjengelig", "🎨")
+    except Exception as e:
+        ai_available = False
+        log(f"AI bildegenerering ikke tilgjengelig: {e}", "⚠️")
     
     for i, article in enumerate(articles, 1):
         title = article.get('short_title', article.get('title', ''))
@@ -363,15 +374,27 @@ def step4_insert_articles(articles):
         if not title or not url:
             continue
         
-        # Hent bilde
-        image_url = fetch_image_from_url(url)
+        # HENT BILDE: Prioriter AI-generering, fallback til meta-tags
+        image_url = None
+        if ai_available:
+            log(f"{i}/{len(articles)}: Genererer AI-bilde...", "🎨")
+            article_id = str(uuid.uuid4())
+            image_url = generate_news_image(
+                title, 
+                article.get('description', ''), 
+                article_id
+            )
+        
+        # Fallback til meta-tags hvis AI feilet
         if not image_url:
-            image_url = get_fallback_image(article.get('source', ''))
+            image_url = fetch_image_from_url(url)
+            if not image_url:
+                image_url = get_fallback_image(article.get('source', ''))
         
         # Lag notes
         description = article.get('description', '')
         first_sentence = description.split('.')[0] if description else ''
-        notes = f"{first_sentence}\n\nKilde: {article.get('source', 'Ukjent')}"
+        notes = f"{first_sentence}\n\nKilde: {article.get('source', 'Ukjent')}" 
         
         # Lag description med bilde
         desc_with_image = description

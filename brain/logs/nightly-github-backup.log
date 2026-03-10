@@ -77,3 +77,37 @@ fatal: Authentication failed for 'https://github.com/baarli/nrj-morgen-workspace
 [2026-03-10 03:00:01] =========================================
 [2026-03-10 03:00:01] Checking for changes...
 [2026-03-10 03:00:01] Adding all changes...
+warning: adding embedded git repository: mission-control/build
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint: 
+hint: 	git submodule add <url> mission-control/build
+hint: 
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint: 
+hint: 	git rm --cached mission-control/build
+hint: 
+hint: See "git help submodule" for more information.
+[2026-03-10 03:00:01] Creating commit...
+[gh-pages e6ecbc6] Nightly backup - 2026-03-10
+ 24 files changed, 3988 insertions(+), 69 deletions(-)
+ create mode 100644 .mandatory-preflight-complete-20260309
+ create mode 100644 .memory-validated-20260309
+ create mode 100644 .memory-validator-complete-20260309
+ create mode 100644 memory/self-reflection/2026-03-10.md
+ create mode 160000 mission-control/build
+ create mode 100644 mission-control/mission-control-deploy.zip
+[2026-03-10 03:00:01] Pushing to GitHub...
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/baarli/nrj-morgen-workspace.git/'
+[2026-03-10 03:00:01] ❌ Push failed
+[2026-03-10 03:00:01] ✅ Nightly backup complete
+
+[2026-03-11 03:00:01] =========================================
+[2026-03-11 03:00:01] 🌙 NIGHTLY GITHUB BACKUP STARTED
+[2026-03-11 03:00:01] =========================================
+[2026-03-11 03:00:01] Checking for changes...
+[2026-03-11 03:00:01] Adding all changes...

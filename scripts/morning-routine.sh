@@ -1,1 +1,0 @@
-/root/.openclaw/workspace/scripts/integrated-morning-routine.sh
