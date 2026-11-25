@@ -13,13 +13,14 @@ Data lagres i:
 IKKE i agenda_items - dashboard panelene henter data direkte fra disse tabellene.
 """
 
+import os
 import json
 import urllib.request
 from datetime import datetime
 
 # Supabase konfigurasjon
 SUPABASE_URL = "https://kvniauxokdtmpvjtfnej.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bmlhdXhva2R0bXB2anRmbmVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTM2NzIzNCwiZXhwIjoyMDY2OTQzMjM0fQ.OkhTtq9QAQ3xMzZYKyWyCjj7PiqMZJKSvpA0jcBJqpE"
+SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
 
 def invoke_nielsen_scrape():
