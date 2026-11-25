@@ -44,3 +44,12 @@ Thumbs.db
 # Build outputs
 dist/
 build-backup-*/
+
+# Local credentials and generated Python bytecode
+/.credentials/
+.env
+*.env
+!.env.example
+!*.env.example
+__pycache__/
+*.pyc
