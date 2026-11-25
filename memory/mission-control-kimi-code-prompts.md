@@ -111,7 +111,7 @@ mission-control-gh-pages/
 
 **API-nøkler (hardkodet i nåværende fil):**
 - Supabase URL: https://kvniauxokdtmpvjtfnje.supabase.co
-- Supabase Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bmlhdXhva2R0bXB2anRmbmVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTM2NzIzNCwiZXhwIjoyMDY2OTQzMjM0fQ.OkhTtq9QAQ3xMzZYKyWyCjj7PiqMZJKSvpA0jcBJqpE
+- Supabase Key: SUPABASE_SERVICE_ROLE_KEY_FROM_PRIVATE_ENVIRONMENT
 - Brave Key: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
 
 Start med å sette opp prosjektstrukturen og konfigurasjon, deretter migrer koden komponent for komponent.

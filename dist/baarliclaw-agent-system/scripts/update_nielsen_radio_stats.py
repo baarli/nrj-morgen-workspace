@@ -4,13 +4,14 @@ Manuell oppdatering av radiotall for NRJ Morgen
 Bruker offentlig tilgjengelige data fra Nielsen 2024-2025
 """
 
+import os
 import json
 import urllib.request
 from datetime import datetime
 
 # Supabase konfigurasjon
 SUPABASE_URL = "https://kvniauxokdtmpvjtfnej.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bmlhdXhva2R0bXB2anRmbmVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTM2NzIzNCwiZXhwIjoyMDY2OTQzMjM0fQ.OkhTtq9QAQ3xMzZYKyWyCjj7PiqMZJKSvpA0jcBJqpE"
+SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 BAARLI_CLAW_ID = "10aa1508-6d52-490c-8ae5-fa3da9a152c4"
 

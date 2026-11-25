@@ -225,7 +225,7 @@ Response:
 
 ### Supabase Service Key
 ```javascript
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bmlhdXhva2R0bXB2anRmbmVqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTM2NzIzNCwiZXhwIjoyMDY2OTQzMjM0fQ.OkhTtq9QAQ3xMzZYKyWyCjj7PiqMZJKSvpA0jcBJqpE';
+const SUPABASE_KEY = 'SUPABASE_SERVICE_ROLE_KEY_FROM_PRIVATE_ENVIRONMENT';
 ```
 
 ### RLS (Row Level Security)
