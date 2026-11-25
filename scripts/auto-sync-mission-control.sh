@@ -26,7 +26,7 @@ log "3️⃣ Deploying to Netlify..."
 cd "$WORKSPACE/mission-control/public" && \
 netlify deploy --prod \
     --site=834576a6-da2b-4412-9433-315f6437508a \
-    --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092 2>&1 | tail -5 | tee -a "$LOG_FILE"
+    --auth="${NETLIFY_AUTH_TOKEN:?Set NETLIFY_AUTH_TOKEN}" 2>&1 | tail -5 | tee -a "$LOG_FILE"
 
 # 4. Update timestamp
 echo "$(date '+%Y-%m-%d %H:%M:%S')" > "$WORKSPACE/mission-control/public/.last-auto-sync"

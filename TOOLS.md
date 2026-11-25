@@ -56,7 +56,7 @@ Når jeg velger mellom verktøy, prioriterer jeg basert på:
 **Deploy:**
 ```bash
 cd /root/.openclaw/workspace/mission-control/public
-netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092
+netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a --auth=NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME
 ```
 
 **URL:** https://creative-muffin-dcf3a0.netlify.app
@@ -214,7 +214,7 @@ bash /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
 ---
 
 ### Brave Search API
-- **API Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **API Key:** `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 - **Brukes i:** Morning Routine, nyhetssøk, trending
 - **Dokumentasjon:** https://api.search.brave.com/app/documentation
 
@@ -287,7 +287,7 @@ python3 update_nrj_dashboard.py
 ### Datakilder
 
 **Nielsen Radio (API):**
-- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=bd551853-f42b-4b86-813a-79faf3a718e9`
+- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=NIELSEN_API_URL_FROM_PRIVATE_RUNTIME`
 - Siste tilgjengelige: **Uke 7, 2026** (69,000 daglige lyttere)
 - Forsinkelse: 1 uke
 
@@ -717,7 +717,7 @@ ls -la /tmp/podcast-clips/$(date +%Y%m%d)/
 ## Telegram Bot - @Vev_kompis_bot (2026-03-05) ✅ FUNGERER
 
 **Bot:** @Vev_kompis_bot (navn: Vev)  
-**Token:** `8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU`  
+**Token:** `TELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME`\
 **Chat ID:** 6426967326 (N B)  
 **Credentials:** `/root/.openclaw/workspace/.credentials/telegram-bot.env`  
 **Status:** ✅ **FUNGERER** - To-veis kommunikasjon aktiv
@@ -763,15 +763,15 @@ cd /root/.openclaw/workspace && python3 scripts/telegram-poll.py
 ### API-kall
 ```bash
 # Hent bot-info
-curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getMe"
+curl -s "https://api.telegram.org/botTELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME/getMe"
 
 # Send melding
-curl -s -X POST "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/sendMessage" \
+curl -s -X POST "https://api.telegram.org/botTELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME/sendMessage" \
   -d "chat_id=6426967326" \
   -d "text=Hei fra BaarliClaw!"
 
 # Sjekk meldinger
-curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getUpdates"
+curl -s "https://api.telegram.org/botTELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME/getUpdates"
 ```
 
 ### 🎙️ Voice Chat / Talemeldinger v2.0 (NY 2026-03-05)
@@ -836,7 +836,7 @@ vev-test-suite
 - **Emosjoner:** excited, happy, serious, curious
 - **Modell:** ElevenFlash 2.5
 - **API:** ElevenLabs
-- **API Key:** `0198de23418bce571b2a563958e510d23314d16c9e66fbe017423e9741418704`
+- **API Key:** `ELEVENLABS_API_KEY_FROM_PRIVATE_RUNTIME`
 - **Script:** `/root/.openclaw/workspace/scripts/vev-telegram-voice.py`
 
 **Voice Chat i Mission Control:**
@@ -849,7 +849,7 @@ vev-test-suite
 - Bot: @Vev_kompis_bot (Vev)
 - Bruker: N B
 - Chat ID: 6426967326
-- Token: 8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU
+- Token: TELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME
 
 ---
 

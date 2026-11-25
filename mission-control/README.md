@@ -111,7 +111,7 @@ mission-control/public/
 cd /root/.openclaw/workspace/mission-control/public
 netlify deploy --prod \
   --site=834576a6-da2b-4412-9433-315f6437508a \
-  --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092
+  --auth=NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME
 ```
 
 **URL:** https://creative-muffin-dcf3a0.netlify.app

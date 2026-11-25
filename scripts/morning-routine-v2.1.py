@@ -18,8 +18,8 @@ SUPABASE_URL = "https://kvniauxokdtmpvjtfnej.supabase.co"
 SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or os.environ['SUPABASE_KEY']
 TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 CREATED_BY = "10aa1508-6d52-490c-8ae5-fa3da9a152c4"
-BRAVE_KEY = os.environ.get('BRAVE_API_KEY') or "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
-OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or "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"
+BRAVE_KEY = os.environ.get('BRAVE_API_KEY') or os.environ.get("BRAVE_API_KEY", "")
+OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or os.environ.get("OPENAI_API_KEY", "")
 
 TOMORROW = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
 

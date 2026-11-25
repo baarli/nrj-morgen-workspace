@@ -64,7 +64,7 @@ class AIResearchModule:
     """AI-drevet research modul for nyheter"""
     
     def __init__(self):
-        self.brave_api_key = CREDS.get('BRAVE_API_KEY', 'BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev')
+        self.brave_api_key = CREDS.get('BRAVE_API_KEY', os.environ.get("BRAVE_API_KEY", ""))
         self.categories = {
             'reality_tv': ['Farmen', 'Paradise Hotel', 'Kompani Lauritzen', 'Love Island'],
             'celebrity_drama': ['brudd', 'raser', 'avsløringer', 'skandale'],

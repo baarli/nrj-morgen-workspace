@@ -118,7 +118,7 @@ CREATE TABLE brave_searches (
 GET https://api.search.brave.com/res/v1/news/search
 
 Headers:
-  X-Subscription-Token: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
+  X-Subscription-Token: BRAVE_API_KEY_FROM_PRIVATE_RUNTIME
   Accept: application/json
 
 Query Parameters:

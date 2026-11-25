@@ -177,7 +177,7 @@ deploy_changes() {
     
     # Deploy to Netlify
     log "Deploying to Netlify..."
-    netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092 2>&1 | tail -5
+    netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a --auth="${NETLIFY_AUTH_TOKEN:?Set NETLIFY_AUTH_TOKEN}" 2>&1 | tail -5
     
     log "✅ Deployment complete"
 }

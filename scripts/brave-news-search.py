@@ -3,7 +3,7 @@
 NRJ MORGEN - SANNTIDS NYHETSSØK
 Optimalisert for kommersiell morgenradio med høyt tempo og bred appell (18–35)
 
-BRAVE API KEY: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
+BRAVE API KEY: BRAVE_API_KEY_FROM_PRIVATE_RUNTIME
 
 VIKTIG - KUN LETT UNDERHOLDNING:
 ✅ Kjendisnyheter (brudd, drama, avsløringer)

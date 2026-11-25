@@ -27,7 +27,7 @@ class AIResearchEngine:
     """AI-drevet research motor"""
     
     def __init__(self):
-        self.brave_api_key = os.getenv('BRAVE_API_KEY', 'BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev')
+        self.brave_api_key = os.getenv('BRAVE_API_KEY', os.environ.get("BRAVE_API_KEY", ""))
     
     def search(self, query: str, freshness: str = "pd") -> ResearchResult:
         """Søk etter nyheter"""
