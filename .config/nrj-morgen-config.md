@@ -66,7 +66,7 @@ bash /root/.openclaw/workspace/scripts/integrated-morning-routine.sh
 ## 🔑 API Nøkler
 
 ### Brave Search API
-- **Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **Key:** `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 - **Brukes til:** Nyhetssøk, Morning Routine, Trending Pulse
 - **Dokumentasjon:** https://api.search.brave.com/app/documentation
 - **Lagret i:** `.credentials/nrj-morgen.env`

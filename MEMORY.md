@@ -140,7 +140,7 @@ vev-telegram-voice --test
 ### Credentials
 
 **ElevenLabs:**
-- API Key: `0198de23418bce571b2a563958e510d23314d16c9e66fbe017423e9741418704`
+- API Key: `ELEVENLABS_API_KEY_FROM_PRIVATE_RUNTIME`
 - Voice ID: `4kCDY3HJwvO7Zp3con83` (Sebastian - Norsk)
 - Model: `eleven_flash_v2_5`
 
@@ -710,7 +710,7 @@ from data_analyzer import TextAnalyzer
 ## 🔑 API Nøkler og Tokens
 
 ### Brave Search API
-- **Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **Key:** `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 - **Brukes til:** Nyhetssøk, Morning Routine v2.0, Trending Pulse
 - **Lagret i:** `.credentials/nrj-morgen.env`
 - **Oppdatert:** 2026-02-24
@@ -1097,7 +1097,7 @@ python3 update_nrj_dashboard.py
 ### Datakilder
 
 **Nielsen API:**
-- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=bd551853-f42b-4b86-813a-79faf3a718e9`
+- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=NIELSEN_API_URL_FROM_PRIVATE_RUNTIME`
 - Forsinkelse: 1 uke (uke 8 kommer neste uke)
 - Publiseres: Onsdag/torsdag
 - Format: JSON
@@ -1475,11 +1475,11 @@ Etter hver endring jeg gjør:
 ### Netlify Konto
 - **Eier:** niklasbaarli@gmail.com
 - **Site ID:** `834576a6-da2b-4412-9433-315f6437508a`
-- **Token:** `nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092`
+- **Token:** `NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME`
 
 ### Deploy
 ```bash
-export NETLIFY_AUTH_TOKEN="nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092"
+export NETLIFY_AUTH_TOKEN="NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME"
 cd /root/.openclaw/workspace/mission-control/public
 netlify deploy --prod
 ```

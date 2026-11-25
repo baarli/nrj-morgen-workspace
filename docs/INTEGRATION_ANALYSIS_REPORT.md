@@ -80,7 +80,7 @@ COMMIT;
 ```python
 # morning-routine-v2.1.py
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
-BRAVE_KEY = "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
+BRAVE_KEY = "BRAVE_API_KEY_FROM_PRIVATE_RUNTIME"
 OPENAI_KEY = "sk-proj-siJLBYXi6DDjl2DxsZf7..."
 
 # update_nrj_dashboard.py (samme nøkler)

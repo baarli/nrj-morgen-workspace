@@ -112,7 +112,7 @@ mission-control-gh-pages/
 **API-nøkler (hardkodet i nåværende fil):**
 - Supabase URL: https://kvniauxokdtmpvjtfnje.supabase.co
 - Supabase Key: SUPABASE_SERVICE_ROLE_KEY_FROM_PRIVATE_ENVIRONMENT
-- Brave Key: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
+- Brave Key: BRAVE_API_KEY_FROM_PRIVATE_RUNTIME
 
 Start med å sette opp prosjektstrukturen og konfigurasjon, deretter migrer koden komponent for komponent.
 ```
@@ -288,7 +288,7 @@ export async function createAgendaItem(item: Omit<AgendaItem, 'id'>): Promise<Ag
 
 **2. Brave News Service (src/services/brave.ts)**
 ```typescript
-const BRAVE_API_KEY = 'BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev';
+const BRAVE_API_KEY = 'BRAVE_API_KEY_FROM_PRIVATE_RUNTIME';
 
 export interface BraveNewsResult {
   title: string;

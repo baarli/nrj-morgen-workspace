@@ -5,6 +5,7 @@ Konsolidert versjon for NRJ Dashboard
 Henter data fra Nielsen Radio og Podtoppen
 """
 
+import os
 import sys
 import json
 import csv
@@ -33,7 +34,7 @@ class DashboardUpdaterMaster:
     @retry_on_error(max_retries=3, base_delay=5)
     def fetch_nielsen(self) -> dict:
         """Fetch Nielsen Radio data"""
-        url = "https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=bd551853-f42b-4b86-813a-79faf3a718e9"
+        url = os.environ.get("NIELSEN_API_URL", "")
         
         req = urllib.request.Request(url, headers={
             'User-Agent': 'Mozilla/5.0 (compatible; NRJ Dashboard Bot)'

@@ -105,7 +105,7 @@ python3 update_nrj_dashboard.py
 ### Datakilder
 
 **Nielsen API:**
-- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=bd551853-f42b-4b86-813a-79faf3a718e9`
+- URL: `https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=NIELSEN_API_URL_FROM_PRIVATE_RUNTIME`
 - Forsinkelse: 1 uke (uke 8 kommer neste uke)
 - Publiseres: Onsdag/torsdag
 - Format: JSON

@@ -92,7 +92,7 @@ Denne morgenrutinen henter automatisk 15 lettbeinte underholdningssaker til NRJ 
 
 ### API-nøkler (i `.credentials/live-search.env`):
 ```
-BRAVE_API_KEY=BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
+BRAVE_API_KEY=BRAVE_API_KEY_FROM_PRIVATE_RUNTIME
 OPENAI_API_KEY=sk-proj-8JhWXlh4W7-...
 ```
 

@@ -76,7 +76,7 @@ CREATED_BY = os.environ.get('CREATED_BY', '10aa1508-6d52-490c-8ae5-fa3da9a152c4'
 PODCAST_RSS = "https://rss.podplaystudio.com/4035.xml"
 
 # Nielsen API
-NIELSEN_API_URL = "https://eu-iport.nielsen-iwatch.com/api/Chart?dataid=8eb6daca-1266-4af8-8e8f-f39107dc63fb&publish_key=bd551853-f42b-4b86-813a-79faf3a718e9"
+NIELSEN_API_URL = os.environ.get("NIELSEN_API_URL", "")
 PODTOPPEN_URL = "https://podtoppen.tnslistene.no/export.php"
 
 # Ensure directories exist

@@ -13,14 +13,14 @@ Manage and deploy Mission Control dashboard for BaarliClaw Agent system.
 
 ### Deploy Dashboard
 ```bash
-export NETLIFY_AUTH_TOKEN="nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092"
+export NETLIFY_AUTH_TOKEN="NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME"
 cd /root/.openclaw/workspace/mission-control/public
 netlify deploy --prod
 ```
 
 ### Check Status
 ```bash
-export NETLIFY_AUTH_TOKEN="nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092"
+export NETLIFY_AUTH_TOKEN="NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME"
 netlify status
 ```
 
