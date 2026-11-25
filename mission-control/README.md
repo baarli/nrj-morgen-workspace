@@ -187,3 +187,7 @@ document.getElementById('sidebar').classList.toggle('open');
 ---
 
 **Husk:** Én fil. Én sannhet. Ingen duplikater. 🚀
+
+## Server credentials
+
+Provision `SUPABASE_SERVICE_ROLE_KEY` in the private runtime environment before running the server scripts. For the systemd installer, set it in `/etc/mission-control/backend.env` and restrict that file to the service operator. Static Pages assets use the public Supabase key and are subject to normal row-level security. Use an authenticated dashboard for privileged operations.
