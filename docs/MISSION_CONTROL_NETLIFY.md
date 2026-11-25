@@ -27,7 +27,7 @@
 - **Sist oppdatert:** 2026-02-23
 
 ### API Token
-- **Token:** `nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092`
+- **Token:** `NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME`
 - **Type:** Personal Access Token
 - **Scope:** Full tilgang til kontoen
 
@@ -49,7 +49,7 @@
 ### Deploy Kommandoer
 ```bash
 # Sett token
-export NETLIFY_AUTH_TOKEN="nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092"
+export NETLIFY_AUTH_TOKEN="NETLIFY_AUTH_TOKEN_FROM_PRIVATE_RUNTIME"
 
 # Gå til prosjekt
 cd /root/.openclaw/workspace/mission-control

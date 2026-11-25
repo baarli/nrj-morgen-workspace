@@ -26,7 +26,7 @@ logger = setup_logging("brave-news-search-v2")
 cache = MemoryCache(default_ttl=300)  # 5 min cache
 
 # API KEY
-BRAVE_API_KEY = "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "")
 
 # KATEGORIER
 CATEGORIES = {

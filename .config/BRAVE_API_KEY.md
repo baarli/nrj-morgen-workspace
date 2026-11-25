@@ -1,6 +1,6 @@
 # Brave API Key - Mission Control
 
-**API Key:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+**API Key:** `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 
 **Brukes i:**
 - Morning Routine (brave-news-search.py)

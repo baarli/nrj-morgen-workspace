@@ -53,7 +53,7 @@ Lagres i: `/tmp/content-pipeline-results-YYYYMMDD.json`
 `/var/log/content-pipeline-v3.log`
 
 ## API Keys
-- Brave Search API: `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- Brave Search API: `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 - Supabase: Lastes fra `.credentials/nrj-morgen.env`
 
 ## Siste kjøring

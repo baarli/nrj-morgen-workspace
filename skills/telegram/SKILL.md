@@ -7,7 +7,7 @@ description: Send and receive messages via Telegram Bot API for 24/7 communicati
 
 ## Bot Info
 **Bot:** @Vev_kompis_bot (navn: Vev)  
-**Token:** `8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU`  
+**Token:** `TELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME`
 **Chat ID:** 6426967326 (N B)  
 **Credentials:** `/root/.openclaw/workspace/.credentials/telegram-bot.env`  
 **Status:** ✅ FUNGERER - To-veis kommunikasjon aktiv
@@ -39,18 +39,18 @@ cd /root/.openclaw/workspace && python3 scripts/telegram-poll.py
 
 ### Send Message
 ```bash
-curl -s -X POST "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/sendMessage" \
+curl -s -X POST "https://api.telegram.org/botTELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME/sendMessage" \
   -d "chat_id=6426967326" \
   -d "text=Ditt svar"
 ```
 
 ### Get Updates
 ```bash
-curl -s "https://api.telegram.org/bot8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU/getUpdates"
+curl -s "https://api.telegram.org/botTELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME/getUpdates"
 ```
 
 ## Viktig å huske
 - Bruker: N B (Chat ID: 6426967326)
 - Bot: @Vev_kompis_bot (navn: Vev)
-- Token: 8585778087:AAGNtnHCH3ki0fwu-9Hhmm_h37gku49SZQU
+- Token: TELEGRAM_BOT_TOKEN_FROM_PRIVATE_RUNTIME
 - Kommunikasjon: To-veis, jeg svarer personlig
