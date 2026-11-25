@@ -134,7 +134,7 @@ bash integrated-morning-routine.sh
 
 ## 🔑 API Nøkler
 
-- **Brave Search:** `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev`
+- **Brave Search:** `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME`
 - **Supabase:** Service key i `.credentials/nrj-morgen.env`
 
 ---

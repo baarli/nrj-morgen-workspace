@@ -179,7 +179,7 @@ if [ "$1" == "--deploy" ]; then
     log "6️⃣ Deploying to Netlify..."
     cd "$MISSION_CONTROL" && \
     netlify deploy --prod --site=834576a6-da2b-4412-9433-315f6437508a \
-        --auth=nfp_8B3dDBwZS9W1GSHTUy3am4fia6iZmF6b0092 2>&1 | tail -5
+        --auth="${NETLIFY_AUTH_TOKEN:?Set NETLIFY_AUTH_TOKEN}" 2>&1 | tail -5
     log "   ✅ Deployed!"
 fi
 

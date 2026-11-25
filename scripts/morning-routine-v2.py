@@ -3,7 +3,7 @@
 NRJ MORGEN - UTVIKLET MORNING ROUTINE v2.0
 Henter nyheter fra multiple kilder, samler i pot, velger topp 10, genererer titler med OpenAI
 
-BRAVE API KEY: BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev
+BRAVE API KEY: BRAVE_API_KEY_FROM_PRIVATE_RUNTIME
 OPENAI API KEY: [i .credentials/live-search.env]
 
 KILDER:
@@ -50,7 +50,7 @@ SUPABASE_URL = "https://kvniauxokdtmpvjtfnej.supabase.co"
 SUPABASE_KEY = os.environ.get('SUPABASE_SERVICE_ROLE_KEY') or os.environ['SUPABASE_KEY']
 TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 CREATED_BY = "10aa1508-6d52-490c-8ae5-fa3da9a152c4"
-BRAVE_KEY = os.environ.get('BRAVE_API_KEY') or "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
+BRAVE_KEY = os.environ.get('BRAVE_API_KEY') or os.environ.get("BRAVE_API_KEY", "")
 
 TODAY = datetime.now().strftime('%Y-%m-%d')
 CUTOFF_DATE = (datetime.now() - timedelta(hours=48)).strftime('%Y-%m-%d')
@@ -113,7 +113,7 @@ def generate_short_title(original_title, description):
         import urllib.request
         import json
         
-        OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or "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"
+        OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or os.environ.get("OPENAI_API_KEY", "")
         
         prompt = f"""Original tittel: {original_title}
 Beskrivelse: {description[:200]}

@@ -35,7 +35,7 @@ log "📚 Auto-validating MEMORY.md content..."
 PANEL_ID=$(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$MEMORY_FILE" | head -1)
 UPDATE_SCRIPT=$(grep -c "update_nrj_dashboard.py" "$MEMORY_FILE")
 DASHBOARD_URL=$(grep -c "creative-muffin-dcf3a0" "$MEMORY_FILE")
-BRAVE_KEY=$(grep -c "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev" "$MEMORY_FILE")
+BRAVE_KEY=$(grep -c "BRAVE_API_KEY_FROM_PRIVATE_RUNTIME" "$MEMORY_FILE")
 
 log "   Panel ID found: $([ -n "$PANEL_ID" ] && echo "YES ($PANEL_ID)" || echo "NO")"
 log "   Update script mentioned: $([ $UPDATE_SCRIPT -gt 0 ] && echo "YES" || echo "NO")"

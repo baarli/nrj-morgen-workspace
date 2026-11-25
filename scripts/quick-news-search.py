@@ -3,12 +3,13 @@
 🔍 Raskt nyhetssøk - Morning Routine style
 """
 
+import os
 import sys
 sys.path.insert(0, '/root/.openclaw/workspace/scripts')
 
 from baarliclaw_toolkit import BraveSearchClient
 
-BRAVE_API_KEY = 'BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev'
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "")
 
 # Kategorier
 queries = [

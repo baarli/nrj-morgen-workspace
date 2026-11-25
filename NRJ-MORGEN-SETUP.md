@@ -15,7 +15,7 @@
 | Supabase Service Key | `eyJhbGci...BJqpE` |
 | Supabase Anon Key | `eyJhbGci...ELfSA` |
 | NRJ Refresh Token | `5djoyezt2flm` |
-| Brave API Key | `BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev` |
+| Brave API Key | `BRAVE_API_KEY_FROM_PRIVATE_RUNTIME` |
 | GitHub | `baarliclaw@gmail.com` / `Clawbot1234!` |
 | Gmail | `baarliclaw@gmail.com` / `Clawbot1234!` |
 | Tenant ID | `a0000000-0000-0000-0000-000000000001` |

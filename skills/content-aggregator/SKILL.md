@@ -126,7 +126,7 @@ python3 ai-generate-title.py "Original long news title here" "Description text"
 
 ```python
 # Configuration
-BRAVE_API_KEY = "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
+BRAVE_API_KEY = "BRAVE_API_KEY_FROM_PRIVATE_RUNTIME"
 SEARCH_URL = "https://api.search.brave.com/res/v1/news/search"
 
 # Parameters

@@ -33,8 +33,8 @@ TENANT_ID = "a0000000-0000-0000-0000-000000000001"
 CREATED_BY = "10aa1508-6d52-490c-8ae5-fa3da9a152c4"
 PROFILE_PICTURE = "https://lh3.googleusercontent.com/a/ACg8ocLyiG1iwB_rfOCAN64WGPUUIWprTMX0JfUDsoy7dHkd6AVdaQ=s96-c"
 
-BRAVE_KEY = "BSAt0WSIpXP0Hp6sPvNwaaGuLoyewev"
-OPENAI_KEY = "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"
+BRAVE_KEY = os.environ.get("BRAVE_API_KEY", "")
+OPENAI_KEY = os.environ.get("OPENAI_API_KEY", "")
 
 TOMORROW = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
 TODAY_STR = datetime.now().strftime('%A %d. %B').capitalize()
