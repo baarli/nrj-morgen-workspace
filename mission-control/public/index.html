@@ -496,7 +496,7 @@
                         </div>
                         <div class="text-secondary">
                             <p>✅ Mission Control 2026 UI deployed</p>
-                            <p>✅ Morning Routine completed - 12 saker funnet</p>
+                            <p>Kjøringsstatus for morgenrutinen er utilgjengelig i denne visningen.</p>
                             <p>✅ 4 nye saker lagt til for 2026-02-25</p>
                             <p>✅ Cron jobs fikset - 18 oppdatert</p>
                         </div>
@@ -1018,11 +1018,7 @@
                         </div>
                         
                         <div class="list-item">
-                            <div class="status-dot online"></div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600;">NRJ MORGEN – Konsolidert Morgen-Rutine</div>
-                                <div class="text-muted" style="font-size: 0.875rem;">04:50 man-fre • Henter 15 saker til sakslista</div>
-                            </div>
+                            <div class="text-muted">Denne visningen mottar ingen kjøringsstatus.</div>
                         </div>
                     </div>
                 </div>
@@ -2130,7 +2126,6 @@
                 };
                 
                 this.modifiers = {
-                    'Ctrl+r': { action: () => runMorningRoutine(), description: 'Morgenrutinen er utilgjengelig' },
                     'Ctrl+e': { action: () => calendar.exportToICS(), description: 'Eksporter kalender' },
                     'Ctrl+t': { action: () => testRunner.runAllTests(), description: 'Kjør tester' },
                     'Ctrl+s': { action: () => exportManager.exportJSON(), description: 'Lagre data' }
