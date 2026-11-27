@@ -11,13 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Copy files to docs
+      - name: Stage Mission Control web files
+        id: stage
+        shell: bash
         run: |
-          cp -r mission-control/public/* docs/
-          touch docs/.nojekyll
+          publish_dir="$(mktemp -d "${RUNNER_TEMP}/mission-control-pages.XXXXXX")"
+          cp -r mission-control/public/[!.]* "$publish_dir/"
+          touch "$publish_dir/.nojekyll"
+          printf 'directory=%s\n' "$publish_dir" >> "$GITHUB_OUTPUT"
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ${{ steps.stage.outputs.directory }}
