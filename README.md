@@ -2,11 +2,13 @@
 
 **Versjon:** 2.0 (Strukturert & Autonom)  
 **Sist oppdatert:** 2026-03-05  
-**Status:** ✅ Aktiv, Lærende, Proaktiv
+**Kilderolle:** Historisk støttearkiv for BaarliClaw og NRJ Morgen. Driftsbeskrivelsene nedenfor gjelder mars 2026.
 
 ---
 
 ## 🚀 HURTIGSTART
+
+[Hovedrepoet](https://github.com/baarli/nrjmorgen-34a3ba9f) inneholder gjeldende NRJ Morgen-kode. I dette arkivet ligger skriptene i [scripts](scripts/), og den kuraterte statiske Mission Control-kilden ligger i [mission-control/public](mission-control/public/).
 
 **Ny her? Start med:**
 1. **[BaarliClaw-OS.md](BaarliClaw-OS.md)** - Operativsystem og oversikt
@@ -15,7 +17,7 @@
 
 **Vil du forstå systemet?**
 - **[ARKITEKTUR.md](ARKITEKTUR.md)** - Dokument-hierarki
-- **[AUTONOMI.md](AUTONOMI.md)** - Hvordan struktur støtter frihet
+- **[VEV-AUTONOMI.md](VEV-AUTONOMI.md)** - Hvordan struktur støtter frihet
 - **[PRINCIPLES.md](PRINCIPLES.md)** - Kjerneprinsipper
 
 ---
@@ -26,7 +28,7 @@
 |-----|-------------------|-------------------|
 | **BaarliClaw-OS.md** | Operativsystem, oversikt, arbeidsflyt | Alltid først |
 | **ARKITEKTUR.md** | Dokument-hierarki, ansvarsfordeling | Ved forvirring |
-| **AUTONOMI.md** | Hvordan struktur støtter kreativitet | Ved behov |
+| **VEV-AUTONOMI.md** | Hvordan struktur støtter kreativitet | Ved behov |
 | **AGENTS.md** | System-oversikt, status | Ofte |
 | **MEMORY.md** | Langsiktig minne, læring | Ofte |
 | **TOOLS.md** | Verktøy, scripts, API-er | Ved behov |
@@ -61,7 +63,7 @@
 📁 workspace/
 ├── 📄 BaarliClaw-OS.md          # Start her
 ├── 📄 ARKITEKTUR.md             # Dokument-hierarki
-├── 📄 AUTONOMI.md               # Frihet innenfor struktur
+├── 📄 VEV-AUTONOMI.md               # Frihet innenfor struktur
 ├── 📄 AGENTS.md                 # System-oversikt
 ├── 📄 MEMORY.md                 # Langsiktig minne
 ├── 📄 TOOLS.md                  # Verktøy
@@ -109,7 +111,7 @@ Jeg er **BaarliClaw** - en autonom AI-assistent med:
 - **Kreativitet:** Struktur er mitt verktøy, ikke min herre
 - **Mål:** Hjelpe deg på best mulig måte
 
-Les mer: **[SOUL.md](SOUL.md)** + **[AUTONOMI.md](AUTONOMI.md)**
+Les mer: **[SOUL.md](SOUL.md)** + **[VEV-AUTONOMI.md](VEV-AUTONOMI.md)**
 
 ---
 
