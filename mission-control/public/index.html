@@ -496,7 +496,7 @@
                         </div>
                         <div class="text-secondary">
                             <p>✅ Mission Control 2026 UI deployed</p>
-                            <p>✅ Morning Routine completed - 12 saker funnet</p>
+                            <p>Kjøringsstatus for morgenrutinen er utilgjengelig i denne visningen.</p>
                             <p>✅ 4 nye saker lagt til for 2026-02-25</p>
                             <p>✅ Cron jobs fikset - 18 oppdatert</p>
                         </div>
@@ -510,8 +510,8 @@
                             <h3>Dagens Saker</h3>
                             <p class="text-muted">13 saker for 2026-02-25</p>
                         </div>
-                        <button class="btn btn-primary" onclick="runMorningRoutine()">
-                            <i class="fas fa-play"></i> Morning Routine
+                        <button class="btn btn-secondary" type="button" disabled>
+                            Morgenrutinen er utilgjengelig
                         </button>
                     </div>
 
@@ -798,7 +798,7 @@
                             <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 0.75rem;">
                                 <div style="font-weight: 600; margin-bottom: 0.5rem;">⚡ Handlinger</div>
                                 <div class="text-muted" style="font-size: 0.875rem;">
-                                    "Kjør morning routine"<br>
+                                    Morgenrutinen er utilgjengelig<br>
                                     "Eksporter kalender"<br>
                                     "Kjør tester"
                                 </div>
@@ -1018,11 +1018,7 @@
                         </div>
                         
                         <div class="list-item">
-                            <div class="status-dot online"></div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600;">NRJ MORGEN – Konsolidert Morgen-Rutine</div>
-                                <div class="text-muted" style="font-size: 0.875rem;">04:50 man-fre • Henter 15 saker til sakslista</div>
-                            </div>
+                            <div class="text-muted">Denne visningen mottar ingen kjøringsstatus.</div>
                         </div>
                     </div>
                 </div>
@@ -1179,9 +1175,7 @@
         document.documentElement.setAttribute('data-theme', savedTheme);
 
         function runMorningRoutine() {
-            if (confirm('Start Morning Routine nå?')) {
-                alert('Morning Routine startet!');
-            }
+            alert('Morgenrutinen er utilgjengelig i denne visningen.');
         }
         
         // Content Calendar System
@@ -2132,7 +2126,6 @@
                 };
                 
                 this.modifiers = {
-                    'Ctrl+r': { action: () => runMorningRoutine(), description: 'Kjør Morning Routine' },
                     'Ctrl+e': { action: () => calendar.exportToICS(), description: 'Eksporter kalender' },
                     'Ctrl+t': { action: () => testRunner.runAllTests(), description: 'Kjør tester' },
                     'Ctrl+s': { action: () => exportManager.exportJSON(), description: 'Lagre data' }
