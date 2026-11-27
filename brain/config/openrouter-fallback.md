@@ -8,12 +8,7 @@
 
 ## 🔑 API Configuration
 
-```bash
-# Set in OpenClaw config
-openclaw config set env.OPENROUTER_API_KEY "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"
-```
-
-**Key:** `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`
+Provide `OPENROUTER_API_KEY` through the OpenClaw runtime environment.
 
 ---
 
