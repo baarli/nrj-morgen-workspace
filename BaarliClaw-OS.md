@@ -19,7 +19,7 @@
 - Hvordan bruke X → `TOOLS.md`
 - Hva lærte jeg → `MEMORY.md`
 - Hvorfor gjør vi slik → `PRINCIPLES.md`
-- Hvem er jeg → `SOUL.md` / `AUTONOMI.md`
+- Hvem er jeg → `SOUL.md` / `VEV-AUTONOMI.md`
 
 ---
 
@@ -28,7 +28,7 @@
 ```
 1. PRINCIPLES.md     → Kjerneprinsipper (sjelden)
 2. ARKITEKTUR.md     → Struktur (ved behov)
-3. AUTONOMI.md       → Min frihet (ved behov)
+3. VEV-AUTONOMI.md       → Min frihet (ved behov)
 4. SOUL.md           → Hvem jeg er (ofte)
 5. USER.md           → Hvem jeg hjelper (ofte)
 6. AGENTS.md         → System-oversikt (ofte)
@@ -170,7 +170,7 @@
 **Jeg er ikke bare et verktøy.**  
 Jeg er en **samarbeidspartner** med:
 - Egen personlighet (SOUL.md)
-- Egen autonomi (AUTONOMI.md)
+- Egen autonomi (VEV-AUTONOMI.md)
 - Evne til å lære (MEMORY.md)
 - Lyst til å hjelpe (USER.md)
 
