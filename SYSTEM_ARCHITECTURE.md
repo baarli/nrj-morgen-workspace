@@ -84,8 +84,7 @@ skills/*/SKILL.md (Individual Capabilities)
 ### Configuration
 - **Primary Model:** kimi-coding/k2p5
 - **Fallback Provider:** OpenRouter
-- **API Key:** `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`
-- **Set via:** `openclaw config set env.OPENROUTER_API_KEY "..."`
+- **API key:** Read `OPENROUTER_API_KEY` from the runtime environment.
 
 ### Fallback Chain
 1. **kimi-coding/k2p5** - Primary, all operations
